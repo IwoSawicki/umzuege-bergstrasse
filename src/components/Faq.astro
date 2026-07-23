@@ -1,0 +1,24 @@
+---
+import { FAQS } from '../data/home';
+interface Props { items?: { q: string; a: string }[]; }
+const { items = FAQS } = Astro.props;
+---
+<section class="pb-20 pt-5">
+  <div class="wrap max-w-[820px]">
+    <div data-reveal class="mx-auto mb-11 text-center">
+      <span class="badge mb-[22px]">Häufige Fragen</span>
+      <h2 class="m-0 text-[clamp(30px,4vw,46px)] font-extrabold leading-[1.1] tracking-[-.02em]">Gut zu wissen</h2>
+    </div>
+    <div data-reveal data-faq class="flex flex-col gap-3">
+      {items.map((f) => (
+        <div class="faq-item overflow-hidden rounded-[18px] border border-[rgba(42,32,25,.08)] bg-white">
+          <button class="faq-q flex w-full cursor-pointer items-center justify-between gap-4 border-0 bg-none p-[22px_26px] text-left text-[18px] font-semibold text-ink" type="button" aria-expanded="false">
+            <span>{f.q}</span>
+            <span class="faq-sign flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-full bg-tint text-[20px] font-semibold text-accent" aria-hidden="true">+</span>
+          </button>
+          <div class="faq-a p-[0_26px_24px] text-[17px] leading-[1.6] text-muted" hidden>{f.a}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

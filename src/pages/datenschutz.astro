@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import MobileCta from '../components/MobileCta.astro';
+import { SITE } from '../config/site';
+---
+<BaseLayout title="Datenschutzerklärung" description={`Datenschutzerklärung von ${SITE.name}`} path="/datenschutz" noindex>
+  <Nav />
+  <main id="inhalt" class="page-root">
+    <section class="pb-20 pt-24">
+      <div class="wrap max-w-[760px]">
+        <h1 class="mb-8 text-[clamp(30px,4vw,46px)] font-extrabold tracking-[-.02em]">Datenschutzerklärung</h1>
+        <div class="prose">
+          <p class="rounded-xl bg-tint p-4 text-sm">
+            <strong>Hinweis:</strong> Dies ist eine Kurz-Vorlage und ersetzt keine Rechtsberatung. Bitte vor
+            dem Livegang durch eine vollständige, DSGVO-konforme Datenschutzerklärung ersetzen (z. B. mit
+            einem geprüften Generator oder anwaltlicher Beratung) – insbesondere zu Kontaktformular,
+            Hosting, Schriftarten und ggf. Karten-/Analyse-Diensten.
+          </p>
+
+          <h2>Verantwortlicher</h2>
+          <p>
+            {SITE.legalName}<br />
+            {SITE.contact.email}
+          </p>
+
+          <h2>Kontaktformular</h2>
+          <p>
+            Wenn Sie uns über das Formular kontaktieren, verarbeiten wir die von Ihnen angegebenen Daten
+            (Name, Telefon, E-Mail und Angaben zum Umzug) ausschließlich zur Bearbeitung Ihrer Anfrage und
+            für Anschlussfragen. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b bzw. f DSGVO.
+          </p>
+
+          <h2>Ihre Rechte</h2>
+          <p>
+            Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung,
+            Datenübertragbarkeit sowie Widerspruch. Zudem steht Ihnen ein Beschwerderecht bei einer
+            Aufsichtsbehörde zu.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <MobileCta />
+</BaseLayout>

@@ -1,0 +1,26 @@
+---
+import { STATS } from '../data/home';
+---
+<section class="pb-[70px] pt-5">
+  <div class="wrap">
+    <div
+      data-reveal
+      data-stats
+      class="grid grid-cols-4 gap-7 border-y border-[rgba(42,32,25,.12)] py-11 max-[900px]:grid-cols-2 max-[560px]:py-7"
+    >
+      {STATS.map((s) => (
+        <div class="text-center">
+          <div
+            class="text-[clamp(34px,4vw,48px)] font-extrabold tracking-[-.02em] text-espresso"
+            data-stat-value
+            data-stat-target={s.target}
+            data-stat-format={s.format}
+          >
+            {s.display}
+          </div>
+          <div class="mt-1.5 text-base text-muted">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

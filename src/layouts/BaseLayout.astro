@@ -1,0 +1,84 @@
+---
+import '../styles/global.css';
+import { SITE, absUrl, canonicalUrl } from '../config/site';
+import { website } from '../lib/schema';
+
+export interface Props {
+  title: string;
+  description?: string;
+  /** Pfad der aktuellen Seite (für Canonical/OG). Default: aktuelle URL. */
+  path?: string;
+  image?: string;
+  noindex?: boolean;
+  /** Zusätzliche JSON-LD-Objekte (LocalBusiness, FAQPage, Breadcrumb …). */
+  jsonLd?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description = SITE.description,
+  path = Astro.url.pathname,
+  image = '/og-default.svg',
+  noindex = false,
+  jsonLd = [],
+} = Astro.props;
+
+const canonical = canonicalUrl(path);
+const ogImage = absUrl(image);
+const fullTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
+
+// WebSite-Schema auf allen Seiten
+const schemas = [website(), ...jsonLd];
+---
+<!doctype html>
+<html lang="de" class={SITE.theme}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content={SITE.themeColor} />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Schrift -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    {schemas.map((s) => (
+      <script type="application/ld+json" set:html={JSON.stringify(s)} />
+    ))}
+  </head>
+  <body>
+    <a
+      href="#inhalt"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-espresso focus:px-5 focus:py-3 focus:text-white"
+      >Zum Inhalt springen</a
+    >
+    <slot />
+    <script>
+      import '../scripts/ui.ts';
+    </script>
+  </body>
+</html>

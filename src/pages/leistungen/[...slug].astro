@@ -1,0 +1,113 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import MobileCta from '../../components/MobileCta.astro';
+import Faq from '../../components/Faq.astro';
+import { service, breadcrumb, faqPage, localBusiness } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const services = (await getCollection('services')).filter((s) => !s.data.draft);
+  return services.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+const path = `/leistungen/${entry.id}`;
+
+// Weitere Leistungen für interne Verlinkung
+const others = (await getCollection('services'))
+  .filter((s) => !s.data.draft && s.id !== entry.id)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const locations = (await getCollection('locations'))
+  .filter((l) => !l.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const jsonLd = [
+  localBusiness(),
+  service({ name: data.title, description: data.excerpt, path }),
+  breadcrumb([
+    { name: 'Start', path: '/' },
+    { name: 'Leistungen', path: '/#leistungen' },
+    { name: data.tab || data.title, path },
+  ]),
+  ...(data.faqs?.length ? [faqPage(data.faqs)] : []),
+];
+---
+<BaseLayout
+  title={data.metaTitle || data.title}
+  description={data.metaDescription}
+  path={path}
+  jsonLd={jsonLd}
+>
+  <Nav />
+  <main id="inhalt" class="page-root">
+    <!-- Hero -->
+    <section
+      class="pt-[70px] max-[560px]:pt-10"
+      style="background-image:linear-gradient(rgba(42,32,25,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(42,32,25,.045) 1px,transparent 1px);background-size:64px 64px;background-position:center"
+    >
+      <div class="wrap">
+        <nav aria-label="Brotkrümel" class="mb-5 text-sm text-muted">
+          <a href="/" class="hover:text-accent">Start</a> ›
+          <a href="/#leistungen" class="hover:text-accent">Leistungen</a> ›
+          <span class="text-ink">{data.tab || data.title}</span>
+        </nav>
+        <div class="grid grid-cols-2 items-center gap-16 max-[900px]:grid-cols-1 max-[900px]:gap-9">
+          <div data-reveal>
+            <span class="badge mb-[22px]">Leistung</span>
+            <h1 class="m-0 mb-5 text-[clamp(32px,5vw,58px)] font-extrabold leading-[1.05] tracking-[-.02em]">
+              {data.title}
+            </h1>
+            <p class="m-0 mb-7 text-[19px] text-muted">{data.excerpt}</p>
+            <a href="/#kontakt" class="btn btn-dark">Angebot anfordern <span class="arr text-[19px]">→</span></a>
+          </div>
+          <div data-reveal class="photo-ph h-[clamp(300px,38vw,440px)] items-end p-[22px]">
+            <div data-parallax class="photo-fill"></div>
+            <span class="photo-label">{data.photoLabel}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inhalt -->
+    <section class="py-16">
+      <div class="wrap max-w-[820px]">
+        <article class="prose"><Content /></article>
+      </div>
+    </section>
+
+    {data.faqs?.length ? <Faq items={data.faqs} /> : null}
+
+    <!-- Interne Verlinkung -->
+    <section class="pb-20 pt-5">
+      <div class="wrap">
+        <h2 class="mb-6 text-[clamp(24px,3vw,34px)] font-extrabold tracking-[-.02em]">Weitere Leistungen</h2>
+        <div class="grid grid-cols-3 gap-5 max-[900px]:grid-cols-1">
+          {others.map((s) => (
+            <a href={`/leistungen/${s.id}`} class="hover-lift card block p-7">
+              <h3 class="m-0 mb-2 text-xl font-bold">{s.data.tab || s.data.title}</h3>
+              <p class="m-0 text-base text-muted">{s.data.excerpt}</p>
+              <span class="mt-4 inline-flex items-center gap-2 font-semibold text-accent">Mehr erfahren <span class="arr">→</span></span>
+            </a>
+          ))}
+        </div>
+
+        <h2 class="mb-6 mt-14 text-[clamp(24px,3vw,34px)] font-extrabold tracking-[-.02em]">Wir sind für Sie da in</h2>
+        <div class="flex flex-wrap gap-[10px]">
+          {locations.map((l) => (
+            <a href={`/umzug/${l.id}`} class="chip">{l.data.name}</a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <MobileCta />
+</BaseLayout>

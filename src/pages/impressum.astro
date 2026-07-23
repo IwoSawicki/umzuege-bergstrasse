@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import MobileCta from '../components/MobileCta.astro';
+import { SITE, isFilled } from '../config/site';
+
+const addr = isFilled(SITE.address.street)
+  ? `${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`
+  : '[ADRESSE]';
+---
+<BaseLayout title="Impressum" description={`Impressum von ${SITE.name}`} path="/impressum" noindex>
+  <Nav />
+  <main id="inhalt" class="page-root">
+    <section class="pb-20 pt-24">
+      <div class="wrap max-w-[760px]">
+        <h1 class="mb-8 text-[clamp(30px,4vw,46px)] font-extrabold tracking-[-.02em]">Impressum</h1>
+        <div class="prose">
+          <p class="rounded-xl bg-tint p-4 text-sm">
+            <strong>Hinweis:</strong> Dies ist eine Vorlage. Bitte vor dem Livegang mit den echten,
+            rechtlich geprüften Angaben (Anbieterkennzeichnung nach § 5 DDG/TMG) ersetzen.
+          </p>
+
+          <h2>Angaben gemäß § 5 DDG</h2>
+          <p>
+            {SITE.legalName}<br />
+            {SITE.legal.owner}<br />
+            {addr}
+          </p>
+
+          <h2>Kontakt</h2>
+          <p>
+            Telefon: {SITE.contact.phone}<br />
+            E-Mail: {SITE.contact.email}
+          </p>
+
+          {isFilled(SITE.legal.vatId) && (
+            <>
+              <h2>Umsatzsteuer-ID</h2>
+              <p>{SITE.legal.vatId}</p>
+            </>
+          )}
+
+          <h2>Verbraucherstreitbeilegung</h2>
+          <p>
+            Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer
+            Verbraucherschlichtungsstelle teilzunehmen.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <MobileCta />
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import { TESTIMONIALS } from '../data/home';
+---
+<section id="stimmen" class="pb-20 pt-5">
+  <div class="wrap">
+    <div data-reveal class="mx-auto mb-12 max-w-[680px] text-center">
+      <span class="mb-[22px] inline-block rounded-full bg-espresso px-[18px] py-2 text-sm font-semibold text-white">
+        4,9 ★ Kundenbewertung
+      </span>
+      <h2 class="m-0 text-[clamp(30px,4vw,46px)] font-extrabold leading-[1.1] tracking-[-.02em]">
+        Das sagen unsere Kunden
+      </h2>
+    </div>
+    <div class="grid grid-cols-3 gap-6 max-[900px]:grid-cols-1" data-stagger>
+      {TESTIMONIALS.map((t) => (
+        <figure class="hover-lift card m-0 flex h-full flex-col gap-[18px] p-[34px]">
+          <div class="text-[19px] tracking-[2px] text-accent" aria-label="5 von 5 Sternen">★★★★★</div>
+          <blockquote class="m-0 flex-1 text-[18px] leading-[1.55]">„{t.quote}“</blockquote>
+          <figcaption class="flex items-center gap-3">
+            <div class="flex h-11 w-11 items-center justify-center rounded-full bg-tint font-bold text-accent">
+              {t.initial}
+            </div>
+            <div>
+              <div class="text-[15px] font-bold">{t.name}</div>
+              <div class="text-sm text-muted">{t.ort}</div>
+            </div>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

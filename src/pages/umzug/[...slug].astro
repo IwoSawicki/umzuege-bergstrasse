@@ -1,0 +1,111 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import MobileCta from '../../components/MobileCta.astro';
+import Faq from '../../components/Faq.astro';
+import { localBusiness, breadcrumb, faqPage, service } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const locations = (await getCollection('locations')).filter((l) => !l.data.draft);
+  return locations.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+const path = `/umzug/${entry.id}`;
+
+const services = (await getCollection('services'))
+  .filter((s) => !s.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const others = (await getCollection('locations'))
+  .filter((l) => !l.data.draft && l.id !== entry.id)
+  .sort((a, b) => a.data.order - b.data.order);
+
+// LocalBusiness mit ortsspezifischem areaServed
+const jsonLd = [
+  localBusiness({ areaServed: { '@type': 'City', name: data.name } }),
+  service({ name: `Umzug ${data.name}`, description: data.metaDescription, path, areaServed: data.name }),
+  breadcrumb([
+    { name: 'Start', path: '/' },
+    { name: `Umzug ${data.name}`, path },
+  ]),
+  ...(data.faqs?.length ? [faqPage(data.faqs)] : []),
+];
+---
+<BaseLayout
+  title={data.metaTitle || `Umzug ${data.name}`}
+  description={data.metaDescription}
+  path={path}
+  jsonLd={jsonLd}
+>
+  <Nav />
+  <main id="inhalt" class="page-root">
+    <section
+      class="pt-[70px] max-[560px]:pt-10"
+      style="background-image:linear-gradient(rgba(42,32,25,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(42,32,25,.045) 1px,transparent 1px);background-size:64px 64px;background-position:center"
+    >
+      <div class="wrap">
+        <nav aria-label="Brotkrümel" class="mb-5 text-sm text-muted">
+          <a href="/" class="hover:text-accent">Start</a> ›
+          <span class="text-ink">Umzug {data.name}</span>
+        </nav>
+        <div class="grid grid-cols-2 items-center gap-16 max-[900px]:grid-cols-1 max-[900px]:gap-9">
+          <div data-reveal>
+            <span class="badge mb-[22px]">Einsatzgebiet</span>
+            <h1 class="m-0 mb-5 text-[clamp(32px,5vw,58px)] font-extrabold leading-[1.05] tracking-[-.02em]">
+              Umzug in <span class="text-accent">{data.name}</span>
+            </h1>
+            <p class="m-0 mb-7 text-[19px] text-muted">{data.intro}</p>
+            <a href="/#kontakt" class="btn btn-dark">Angebot anfordern <span class="arr text-[19px]">→</span></a>
+          </div>
+          <div data-reveal class="photo-ph h-[clamp(300px,38vw,440px)] items-end p-[22px]">
+            <div data-parallax class="photo-fill"></div>
+            <span class="photo-label">{data.photoLabel}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16">
+      <div class="wrap max-w-[820px]">
+        <article class="prose"><Content /></article>
+      </div>
+    </section>
+
+    {data.faqs?.length ? <Faq items={data.faqs} /> : null}
+
+    <section class="pb-20 pt-5">
+      <div class="wrap">
+        <h2 class="mb-6 text-[clamp(24px,3vw,34px)] font-extrabold tracking-[-.02em]">Unsere Leistungen in {data.name}</h2>
+        <div class="grid grid-cols-2 gap-5 max-[900px]:grid-cols-1 lg:grid-cols-4">
+          {services.map((s) => (
+            <a href={`/leistungen/${s.id}`} class="hover-lift card block p-6">
+              <h3 class="m-0 mb-2 text-lg font-bold">{s.data.tab || s.data.title}</h3>
+              <span class="inline-flex items-center gap-2 text-sm font-semibold text-accent">Mehr <span class="arr">→</span></span>
+            </a>
+          ))}
+        </div>
+
+        {others.length ? (
+          <>
+            <h2 class="mb-6 mt-14 text-[clamp(24px,3vw,34px)] font-extrabold tracking-[-.02em]">Auch in Ihrer Nähe</h2>
+            <div class="flex flex-wrap gap-[10px]">
+              {others.map((l) => (
+                <a href={`/umzug/${l.id}`} class="chip">{l.data.name}</a>
+              ))}
+            </div>
+          </>
+        ) : null}
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <MobileCta />
+</BaseLayout>

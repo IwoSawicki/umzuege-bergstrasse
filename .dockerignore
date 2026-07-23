@@ -1,0 +1,15 @@
+node_modules
+dist
+.astro
+.git
+.github
+.vscode
+.DS_Store
+*.log
+npm-debug.log*
+README.md
+DEPLOY.md
+mirror
+Dockerfile
+.dockerignore
+.gitignore

@@ -1,0 +1,51 @@
+---
+const benefits = [
+  {
+    title: 'Kostenlose Besichtigung',
+    text: 'Wir verschaffen uns vor Ort ein genaues Bild – unverbindlich und ohne Kosten für Sie.',
+    icon: '<circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4-4"></path>',
+  },
+  {
+    title: 'Festpreisgarantie',
+    text: 'Ihr Angebot ist verbindlich – keine versteckten Kosten, keine bösen Überraschungen.',
+    icon: '<path d="M20.6 8.4l-8-5.4a1 1 0 0 0-1.2 0l-8 5.4A1 1 0 0 0 3 9.2V20a1 1 0 0 0 1 1h5v-6h6v6h5a1 1 0 0 0 1-1V9.2a1 1 0 0 0-.4-.8z"></path>',
+  },
+  {
+    title: 'Vollständig versichert',
+    text: 'Ihr Hausrat ist während des gesamten Umzugs umfassend abgesichert.',
+    icon: '<path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"></path><path d="M9 12l2 2 4-4"></path>',
+  },
+  {
+    title: 'Alles aus einer Hand',
+    text: 'Umzug, Entrümpelung und Entsorgung – Sie haben nur einen Ansprechpartner.',
+    icon: '<path d="M12 3l9 4.5v9L12 21l-9-4.5v-9z"></path><path d="M3 7.5L12 12l9-4.5M12 12v9"></path>',
+  },
+];
+---
+<section class="py-20">
+  <div class="wrap">
+    <div data-reveal class="accent-fill rounded-[var(--radius-block)] bg-accent p-[clamp(40px,6vw,80px)]">
+      <div class="mx-auto mb-14 max-w-[720px] text-center">
+        <span class="badge mb-[22px] border-white/50 text-white">Ihre Vorteile</span>
+        <h2 class="m-0 mb-4 text-[clamp(30px,4.5vw,52px)] font-extrabold leading-[1.08] tracking-[-.02em] text-white">
+          Ihr Weg zum sorgenfreien Umzug
+        </h2>
+        <p class="m-0 text-[18px] text-white/85">
+          Von der ersten Besichtigung bis zur besenreinen Übergabe – alles aus einer Hand, transparent und
+          zum Festpreis.
+        </p>
+      </div>
+      <div class="grid grid-cols-4 gap-[34px] max-[900px]:grid-cols-2 max-[900px]:gap-7 max-[560px]:grid-cols-1" data-stagger>
+        {benefits.map((b) => (
+          <div class="feat">
+            <div class="ico mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/[.16]">
+              <svg width="26" height="26" viewBox="0 0 24 24" stroke="#fff" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round" set:html={b.icon} />
+            </div>
+            <h3 class="m-0 mb-2 text-[21px] font-bold text-white">{b.title}</h3>
+            <p class="m-0 text-base text-white/[.82]">{b.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,43 @@
+---
+interface Props {
+  titleLead?: string;
+  titleRest?: string;
+  highlight?: string;
+  subtitle?: string;
+  photoLabel?: string;
+}
+const {
+  titleLead = 'Stressfrei umziehen &',
+  titleRest = 'entrümpeln an der',
+  highlight = 'Bergstraße',
+  subtitle = 'Persönlich, zuverlässig und aus einer Hand – vom sorgfältigen Privatumzug bis zur diskreten Haushaltsauflösung in Südhessen.',
+  photoLabel = 'Foto: Umzugsteam mit Kartons im Treppenhaus',
+} = Astro.props;
+---
+<section
+  id="top"
+  class="pt-[70px] max-[560px]:pt-10"
+  style="background-image:linear-gradient(rgba(42,32,25,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(42,32,25,.045) 1px,transparent 1px);background-size:64px 64px;background-position:center"
+>
+  <div class="wrap max-w-[920px] text-center">
+    <h1
+      data-reveal
+      class="m-0 mb-[22px] text-[clamp(38px,6vw,72px)] font-extrabold leading-[1.04] tracking-[-.02em]"
+    >
+      <span class="block">{titleLead}</span>{titleRest}{' '}<span class="text-accent" set:html={highlight}></span>
+    </h1>
+    <p data-reveal class="mx-auto mb-[30px] max-w-[640px] text-[19px] text-muted [text-wrap:pretty]">
+      {subtitle}
+    </p>
+    <a data-reveal href="/#kontakt" class="btn btn-dark !px-[30px] !py-[17px]">
+      Angebot anfordern <span class="arr text-[19px]">→</span>
+    </a>
+  </div>
+
+  <div class="wrap mt-[54px]">
+    <div data-reveal class="photo-ph h-[min(58vh,520px)] items-end justify-start p-[26px]">
+      <div data-parallax class="photo-fill"></div>
+      <span class="photo-label">{photoLabel}</span>
+    </div>
+  </div>
+</section>

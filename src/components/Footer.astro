@@ -1,0 +1,69 @@
+---
+import { NAV, SITE, isFilled } from '../config/site';
+const address = isFilled(SITE.address.street)
+  ? `${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`
+  : '[ADRESSE]';
+const year = new Date().getFullYear();
+---
+<footer class="mt-5 overflow-hidden rounded-t-[var(--radius-block)] bg-espresso text-white">
+  <div class="wrap pt-[clamp(64px,8vw,100px)]">
+    <div class="flex flex-col items-start gap-5 border-b border-white/[.12] pb-[clamp(44px,6vw,72px)]">
+      <span class="text-[13px] font-semibold uppercase tracking-[.18em] text-accent">Bereit für den nächsten Schritt?</span>
+      <a href="/#kontakt" class="mega max-w-[980px] text-[clamp(30px,5.2vw,68px)] font-extrabold leading-[1.08] tracking-[-.02em] text-white max-[560px]:!text-[clamp(26px,8vw,34px)]">
+        Lassen Sie uns über Ihren Umzug sprechen <span class="arr text-accent">→</span>
+      </a>
+    </div>
+
+    <div class="foot-grid grid grid-cols-[1.6fr_1fr_1fr_auto] gap-10 border-b border-white/[.12] py-12 max-[900px]:grid-cols-2 max-[560px]:grid-cols-1 max-[560px]:gap-7">
+      <div>
+        <div class="mb-4 flex flex-col text-[22px] font-extrabold leading-none tracking-[.04em]">
+          <span class="text-accent">BERGSTRASSE</span>
+          <span>UMZÜGE</span>
+          <span class="mt-[5px] text-[11px] font-semibold tracking-[.16em] text-white/60">&amp; ENTRÜMPELUNG</span>
+        </div>
+        <p class="m-0 max-w-[340px] text-base text-white/65">
+          Ihr regionaler Partner für Umzüge und Entrümpelungen an der Bergstraße – persönlich, zuverlässig,
+          aus einer Hand.
+        </p>
+      </div>
+
+      <div>
+        <div class="mb-[18px] text-xs font-semibold uppercase tracking-[.16em] text-white/45">Navigation</div>
+        <div class="flex flex-col gap-2.5">
+          {NAV.map((item) => (
+            <a href={item.href} class="foot-link text-white/75">{item.label}</a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div class="mb-[18px] text-xs font-semibold uppercase tracking-[.16em] text-white/45">Kontakt</div>
+        <div class="flex flex-col gap-2.5 text-white/75">
+          <span data-contact="phone">{SITE.contact.phone}</span>
+          <span data-contact="email">{SITE.contact.email}</span>
+          <span data-contact="address">{address}</span>
+          <div class="mt-2 flex gap-2.5">
+            <a href={SITE.social.instagram || '#'} class="soc flex h-[38px] w-[38px] items-center justify-center rounded-[10px] bg-white/10 text-white" aria-label="Instagram">IG</a>
+            <a href={SITE.social.facebook || '#'} class="soc flex h-[38px] w-[38px] items-center justify-center rounded-[10px] bg-white/10 text-white" aria-label="Facebook">FB</a>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" data-scroll-top class="top-btn h-14 w-14 cursor-pointer rounded-full border border-white/[.22] bg-none text-[20px] text-white" aria-label="Nach oben">↑</button>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap justify-between gap-4 pt-6 text-sm text-white/55">
+      <span>© {year} {SITE.name} &amp; Entrümpelung</span>
+      <div class="flex gap-[22px]">
+        <a href="/impressum" class="foot-link text-white/55">Impressum</a>
+        <a href="/datenschutz" class="foot-link text-white/55">Datenschutz</a>
+      </div>
+    </div>
+
+    <div aria-hidden="true" class="mt-7 select-none whitespace-nowrap text-center text-[clamp(56px,12.6vw,192px)] font-extrabold leading-[.8] tracking-[-.02em] text-white/[.06] max-[560px]:!mt-4 max-[560px]:!text-[15.5vw]" style="margin-bottom:-0.14em">
+      BERGSTRASSE
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,24 @@
+---
+import { STEPS } from '../data/home';
+---
+<section class="pb-20 pt-[30px]">
+  <div class="wrap">
+    <div data-reveal class="mx-auto mb-[52px] max-w-[680px] text-center">
+      <span class="badge mb-[22px]">So einfach geht’s</span>
+      <h2 class="m-0 text-[clamp(30px,4vw,46px)] font-extrabold leading-[1.1] tracking-[-.02em]">
+        In vier Schritten zum fertigen Umzug
+      </h2>
+    </div>
+    <div class="grid grid-cols-4 gap-7 max-[900px]:grid-cols-2 max-[560px]:grid-cols-1 max-[560px]:gap-4" data-stagger>
+      {STEPS.map((st) => (
+        <div class="step-card hover-lift card p-8">
+          <div class="step-num mb-5 flex h-[46px] w-[46px] items-center justify-center rounded-xl bg-tint text-[19px] font-extrabold text-accent">
+            {st.n}
+          </div>
+          <h3 class="m-0 mb-2 text-xl font-bold">{st.title}</h3>
+          <p class="m-0 text-base text-muted">{st.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

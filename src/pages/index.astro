@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Stats from '../components/Stats.astro';
+import About from '../components/About.astro';
+import Services from '../components/Services.astro';
+import Process from '../components/Process.astro';
+import Benefits from '../components/Benefits.astro';
+import ServiceArea from '../components/ServiceArea.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Contact from '../components/Contact.astro';
+import Faq from '../components/Faq.astro';
+import Footer from '../components/Footer.astro';
+import MobileCta from '../components/MobileCta.astro';
+import { SITE } from '../config/site';
+import { FAQS } from '../data/home';
+import { localBusiness, faqPage } from '../lib/schema';
+
+const jsonLd = [localBusiness(), faqPage(FAQS)];
+---
+<BaseLayout
+  title={`${SITE.name} – ${SITE.tagline}`}
+  description={SITE.description}
+  path="/"
+  jsonLd={jsonLd}
+>
+  <Nav />
+  <main id="inhalt" class="page-root">
+    <Hero />
+    <Stats />
+    <About />
+    <Services />
+    <Process />
+    <Benefits />
+    <ServiceArea />
+    <Testimonials />
+    <Contact />
+    <Faq />
+  </main>
+  <Footer />
+  <MobileCta />
+</BaseLayout>

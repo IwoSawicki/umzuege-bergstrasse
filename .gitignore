@@ -1,4 +1,17 @@
+# Build-Output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# Logs & System
+*.log
+npm-debug.log*
 .DS_Store
 Thumbs.db
-node_modules/
-*.log
+
+# Env
+.env
+.env.production
+.env.local
