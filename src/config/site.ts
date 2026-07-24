@@ -13,7 +13,7 @@ export const SITE = {
   url: 'https://umzuege-bergstrasse.de',
 
   name: 'Umzüge Bergstraße',
-  legalName: 'Umzüge Bergstraße', // [TODO] vollständige Firmierung inkl. Rechtsform
+  legalName: 'Umzüge Bergstraße', // Marken-/Anzeigename
   shortName: 'UB',
 
   tagline: 'Umzüge & Entrümpelung an der Bergstraße',
@@ -31,13 +31,13 @@ export const SITE = {
     whatsapp: '', // optional
   },
 
-  /** Adresse wird auf der Seite NICHT angezeigt (showAddress:false). Ort/Region
-      bleiben nur in den Structured Data für lokale Sichtbarkeit. */
+  /** Adresse wird auf der Seite NICHT angezeigt (showAddress:false) – nur im
+      Impressum (gesetzlich Pflicht). Ort/Region bleiben in den Structured Data. */
   showAddress: false,
   address: {
-    street: '[STRASSE HAUSNR.]', // wird nicht angezeigt
-    postalCode: '[PLZ]', // wird nicht angezeigt
-    city: 'Bensheim', // Ort (nur für JSON-LD / lokale SEO)
+    street: 'Heidelbergerstraße 15D',
+    postalCode: '64385',
+    city: 'Reichelsheim',
     region: 'Hessen',
     country: 'DE',
   },
@@ -61,17 +61,21 @@ export const SITE = {
     facebook: '', // [TODO] volle URL
   },
 
-  /** Wird für Impressum benötigt */
+  /** Wird für Impressum & Datenschutz benötigt */
   legal: {
-    owner: '[INHABER / GESCHÄFTSFÜHRER]', // [TODO]
-    vatId: '', // USt-IdNr., optional
+    /** Rechtsträger, unter dem die Marke läuft */
+    brandOf: 'Stolz Marketing, Inh. Iwo Sawicki',
+    owner: 'Iwo Sawicki',
+    vatId: 'DE350093785',
+    /** Hosting-Anbieter für die Datenschutzerklärung – [TODO] eintragen */
+    host: '[HOSTING-ANBIETER, z. B. Hetzner Online GmbH, Industriestr. 25, 91710 Gunzenhausen]',
   },
 } as const;
 
 export const NAV = [
   { href: '/#warum', label: 'Über uns' },
   { href: '/#leistungen', label: 'Leistungen' },
-  { href: '/#stimmen', label: 'Kundenstimmen' },
+  { href: '/#versprechen', label: 'Versprechen' },
   { href: '/#kontakt', label: 'Kontakt' },
 ];
 

@@ -2,7 +2,7 @@
 name: "Zwingenberg"
 order: 4
 metaTitle: "Umzug Zwingenberg – Umzugsfirma & Entrümpelung | Umzüge Bergstraße"
-metaDescription: "Umzug in Zwingenberg zum Festpreis: Privat- & Firmenumzüge, Entrümpelung und Entsorgung. Regionaler Betrieb an der Bergstraße, zuverlässig & versichert. Jetzt anfragen."
+metaDescription: "Umzug in Zwingenberg zum Festpreis: Privat- & Firmenumzüge, Entrümpelung und Entsorgung. Regionaler Betrieb an der Bergstraße, zuverlässig & sorgfältig. Jetzt anfragen."
 intro: "Zwingenberg, die älteste Stadt an der Bergstraße, liegt direkt in unserem Einsatzgebiet – vom malerischen Altstadtkern bis zu den Wohnlagen am Melibokus."
 postalCodes: ["64673"]
 neighbours: ["Bensheim", "Lorsch"]
@@ -27,7 +27,7 @@ und wissen, worauf es beim Umzug in engen Lagen ankommt.
 - **Entrümpelung & Haushaltsauflösung** – einfühlsam und diskret
 - **Fachgerechte Entsorgung** mit Wertanrechnung
 
-## Fairer Festpreis, volle Sicherheit
+## Fairer Festpreis
 
-Nach der kostenlosen Besichtigung steht Ihr verbindliches Festpreisangebot. Ihr Hausrat
-ist während des gesamten Umzugs umfassend versichert.
+Nach der kostenlosen Besichtigung steht Ihr verbindliches Festpreisangebot – ohne
+versteckte Kosten. Ihr Hab und Gut behandeln wir mit größter Sorgfalt.

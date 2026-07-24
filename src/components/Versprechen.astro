@@ -1,0 +1,45 @@
+---
+// Interim-Sektion statt Kundenstimmen, solange noch keine echten Bewertungen
+// vorliegen. Sobald echte Reviews da sind: in index.astro <Versprechen /> wieder
+// durch <Testimonials /> ersetzen und TESTIMONIALS in src/data/home.ts füllen.
+const promises = [
+  {
+    title: 'Pünktlich & verlässlich',
+    text: 'Wir kommen wie vereinbart und halten, was wir zusagen.',
+    icon: '<circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>',
+  },
+  {
+    title: 'Fairer Festpreis',
+    text: 'Ihr Angebot ist verbindlich – keine versteckten Kosten, keine bösen Überraschungen.',
+    icon: '<path d="M20.6 8.4l-8-5.4a1 1 0 0 0-1.2 0l-8 5.4A1 1 0 0 0 3 9.2V20a1 1 0 0 0 1 1h5v-6h6v6h5a1 1 0 0 0 1-1V9.2a1 1 0 0 0-.4-.8z"></path>',
+  },
+  {
+    title: 'Sorgsam mit Ihrem Hab und Gut',
+    text: 'Wir behandeln Ihr Eigentum, als wäre es unser eigenes – mit Sorgfalt bei jedem Handgriff.',
+    icon: '<path d="M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.5-7 10-7 10z"></path>',
+  },
+];
+---
+<section id="versprechen" class="pb-20 pt-5">
+  <div class="wrap">
+    <div data-reveal class="mx-auto mb-12 max-w-[680px] text-center">
+      <span class="mb-[22px] inline-block rounded-full bg-espresso px-[18px] py-2 text-sm font-semibold text-white">
+        Unser Anspruch
+      </span>
+      <h2 class="m-0 text-[clamp(30px,4vw,46px)] font-extrabold leading-[1.1] tracking-[-.02em]">
+        Unser Versprechen an Sie
+      </h2>
+    </div>
+    <div class="grid grid-cols-3 gap-6 max-[900px]:grid-cols-1" data-stagger>
+      {promises.map((p) => (
+        <div class="hover-lift card flex h-full flex-col gap-4 p-[34px]">
+          <div class="flex h-14 w-14 items-center justify-center rounded-2xl bg-tint text-accent">
+            <svg width="26" height="26" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round" set:html={p.icon} />
+          </div>
+          <h3 class="m-0 text-xl font-bold">{p.title}</h3>
+          <p class="m-0 text-[17px] leading-[1.55] text-muted">{p.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

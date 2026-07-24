@@ -30,5 +30,5 @@ Innenstadt bis zum Einfamilienhaus in den Stadtteilen: Wir planen Ihren Umzug pa
 ## Warum Kunden aus Bensheim uns wählen
 
 Kurze Wege, feste Ansprechpartner und ein verbindlicher Festpreis nach kostenloser
-Besichtigung. Wir behandeln Ihr Eigentum mit dem Respekt, den es verdient – dafür stehen
-unsere über 4,9 Sterne aus zahlreichen Bewertungen.
+Besichtigung. Wir behandeln Ihr Eigentum mit dem Respekt, den es verdient – dafür geben
+wir als regionaler Betrieb jeden Tag unser Bestes.

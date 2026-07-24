@@ -2,7 +2,7 @@
 name: "Heppenheim"
 order: 2
 metaTitle: "Umzug Heppenheim – Umzugsfirma & Entrümpelung | Umzüge Bergstraße"
-metaDescription: "Umzug in Heppenheim zum Festpreis: Privat- & Firmenumzüge, Entrümpelung, Haushaltsauflösung und Entsorgung. Regional, zuverlässig, versichert. Jetzt anfragen."
+metaDescription: "Umzug in Heppenheim zum Festpreis: Privat- & Firmenumzüge, Entrümpelung, Haushaltsauflösung und Entsorgung. Regional, zuverlässig, sorgfältig. Jetzt anfragen."
 intro: "In Heppenheim und rund um die historische Altstadt sind wir regelmäßig im Einsatz – vom engen Gässchen bis zum Neubaugebiet."
 postalCodes: ["64646"]
 neighbours: ["Bensheim", "Weinheim"]
@@ -27,7 +27,7 @@ eingestellt und sorgen dafür, dass Ihr Umzug reibungslos abläuft.
 - **Entrümpelung & Haushaltsauflösung** mit Fingerspitzengefühl
 - **Fachgerechte Entsorgung** inklusive Wertanrechnung
 
-## Festpreis und volle Absicherung
+## Fairer Festpreis
 
-Nach einer kostenlosen Besichtigung erhalten Sie Ihr verbindliches Festpreisangebot.
-Ihr Hausrat ist während des gesamten Umzugs umfassend versichert.
+Nach einer kostenlosen Besichtigung erhalten Sie Ihr verbindliches Festpreisangebot –
+ohne versteckte Kosten. Ihr Hab und Gut behandeln wir mit größter Sorgfalt.

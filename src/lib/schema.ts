@@ -23,9 +23,11 @@ export function localBusiness(extra: Record<string, unknown> = {}) {
   if (isFilled(SITE.contact.phone)) node.telephone = SITE.contact.phone;
   if (isFilled(SITE.contact.email)) node.email = SITE.contact.email;
 
+  // Service-Area-Business: Straße/PLZ nur in die Structured Data, wenn die
+  // Adresse ohnehin öffentlich angezeigt wird. Ort/Region bleiben immer (lokale SEO).
   const addr: Record<string, string> = { '@type': 'PostalAddress', addressCountry: SITE.address.country };
-  if (isFilled(SITE.address.street)) addr.streetAddress = SITE.address.street;
-  if (isFilled(SITE.address.postalCode)) addr.postalCode = SITE.address.postalCode;
+  if (SITE.showAddress && isFilled(SITE.address.street)) addr.streetAddress = SITE.address.street;
+  if (SITE.showAddress && isFilled(SITE.address.postalCode)) addr.postalCode = SITE.address.postalCode;
   if (isFilled(SITE.address.city)) addr.addressLocality = SITE.address.city;
   if (SITE.address.region) addr.addressRegion = SITE.address.region;
   node.address = addr;

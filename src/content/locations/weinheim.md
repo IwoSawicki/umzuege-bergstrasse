@@ -2,7 +2,7 @@
 name: "Weinheim"
 order: 3
 metaTitle: "Umzug Weinheim – Umzugsunternehmen mit Festpreis | Umzüge Bergstraße"
-metaDescription: "Umzug in Weinheim zum Festpreis: Privat- und Firmenumzüge, Entrümpelung und Entsorgung. Regionaler Betrieb an der Bergstraße, versichert. Jetzt Angebot anfordern."
+metaDescription: "Umzug in Weinheim zum Festpreis: Privat- und Firmenumzüge, Entrümpelung und Entsorgung. Regionaler Betrieb an der Bergstraße, zuverlässig & sorgfältig. Jetzt Angebot anfordern."
 intro: "Weinheim an der Bergstraße gehört fest zu unserem Einsatzgebiet – von der Altstadt bis in die Wohnviertel am Hang."
 postalCodes: ["69469"]
 neighbours: ["Heppenheim", "Hemsbach"]
@@ -30,4 +30,4 @@ sorgfältig und führen ihn zuverlässig durch.
 ## Alles aus einer Hand
 
 Von der kostenlosen Besichtigung über den Festpreis bis zur besenreinen Übergabe
-kümmern wir uns um alles – zuverlässig, fair und vollständig versichert.
+kümmern wir uns um alles – zuverlässig, fair und mit größter Sorgfalt.

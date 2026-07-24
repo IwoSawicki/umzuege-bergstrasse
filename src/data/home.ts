@@ -1,10 +1,11 @@
 /** Inhalte für die Startseiten-Sektionen (zentral pflegbar). */
 
+// Ehrliche Leistungsversprechen statt erfundener Track-Record-Zahlen.
 export const STATS = [
-  { target: 20, format: 'plus', display: '20+', label: 'Jahre Erfahrung' },
-  { target: 5000, format: 'thousand', display: '5.000+', label: 'Umzüge' },
-  { target: 4.9, format: 'rating', display: '4,9 ★', label: 'Bewertungen' },
-  { target: 100, format: 'percent', display: '100 %', label: 'versichert' },
+  { display: '0 €', label: 'Kostenlose Besichtigung' },
+  { display: '100 %', label: 'Festpreis-Garantie' },
+  { display: '24 Std.', label: 'Schnelle Rückmeldung' },
+  { display: '7 Tage', label: 'Flexible Termine' },
 ] as const;
 
 export const STEPS = [
@@ -14,11 +15,10 @@ export const STEPS = [
   { n: '4', title: 'Besenreine Übergabe', text: 'Wir übergeben alles sauber und ordentlich – fertig zum Wohlfühlen.' },
 ];
 
-export const TESTIMONIALS = [
-  { quote: 'Vom ersten Anruf bis zur Übergabe alles perfekt organisiert. Das Team war pünktlich, freundlich und unglaublich sorgfältig mit unseren Möbeln.', name: 'Familie Weber', ort: 'Bensheim', initial: 'W' },
-  { quote: 'Die Haushaltsauflösung meiner Mutter war eine schwierige Situation – umso dankbarer bin ich für den diskreten und einfühlsamen Umgang.', name: 'Sabine Krämer', ort: 'Heppenheim', initial: 'K' },
-  { quote: 'Fairer Festpreis, keine Überraschungen und besenreine Übergabe. Genau so wünscht man sich einen Umzug. Absolute Empfehlung!', name: 'Thomas Adler', ort: 'Weinheim', initial: 'A' },
-];
+// ECHTE Kundenstimmen hier eintragen, sobald vorhanden – dann in index.astro
+// die <Versprechen />-Sektion wieder durch <Testimonials /> ersetzen.
+// Format: { quote, name, ort, initial }
+export const TESTIMONIALS: { quote: string; name: string; ort: string; initial: string }[] = [];
 
 export const FAQS = [
   { q: 'Was kostet ein Umzug oder eine Entrümpelung?', a: 'Der Preis richtet sich nach Umfang, Entfernung und Aufwand. Nach einer kostenlosen Besichtigung erhalten Sie ein verbindliches Festpreisangebot – ohne versteckte Kosten.' },
@@ -26,7 +26,7 @@ export const FAQS = [
   { q: 'Ist die Besichtigung wirklich kostenlos?', a: 'Ja. Die Besichtigung vor Ort ist für Sie unverbindlich und kostenfrei – so erhalten Sie ein präzises Angebot ohne jedes Risiko.' },
   { q: 'Entsorgen Sie auch und wird Wertvolles angerechnet?', a: 'Wir entsorgen fachgerecht und umweltbewusst. Verwertbare Gegenstände rechnen wir Ihnen an und reduzieren so Ihre Gesamtkosten.' },
   { q: 'In welchem Umkreis sind Sie tätig?', a: 'Wir sind an der gesamten Bergstraße und im Umland unterwegs – von Weinheim bis Zwingenberg und weit darüber hinaus. Fragen Sie uns gern zu Ihrem Ort.' },
-  { q: 'Ist mein Hausrat während des Umzugs versichert?', a: 'Selbstverständlich. Ihr Hausrat ist während des gesamten Umzugs umfassend versichert – für Ihre volle Sicherheit.' },
+  { q: 'Stellen Sie Umzugskartons und Verpackungsmaterial?', a: 'Auf Wunsch bringen wir Umzugskartons, Packmaterial und Möbeldecken mit und nehmen die Kartons nach dem Umzug wieder mit. Sprechen Sie uns einfach darauf an.' },
 ];
 
 /** Orte im Einsatzgebiet. `slug` verlinkt (falls vorhanden) auf /umzug/<slug>. */

@@ -22,7 +22,7 @@ nach einem Trauerfall, begegnen wir Ihnen mit besonderem Feingefühl.
 ## So läuft Ihre Entrümpelung ab
 
 - Kostenlose Besichtigung und Festpreisangebot
-- Diskrete, zügige Räumung durch geschultes Team
+- Diskrete, zügige Räumung durch ein eingespieltes Team
 - Fachgerechte Trennung und Entsorgung
 - **Wertanrechnung** verwertbarer Gegenstände
 - Besenreine – auf Wunsch renovierungsbereite – Übergabe
