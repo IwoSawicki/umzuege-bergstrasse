@@ -190,8 +190,23 @@ const contactRows = [
               </div>
             ))}
           </div>
-          <div class="map-ph flex h-[150px] items-center justify-center rounded-2xl" style="background:repeating-linear-gradient(45deg,#ece0cf,#ece0cf 12px,#e6d8c3 12px,#e6d8c3 24px)">
-            <span class="font-mono text-[11px] uppercase tracking-[.1em] text-[#8f7f6c]">Karte: Bergstraße / Bensheim</span>
+          <!-- Karte: OpenStreetMap, aus Datenschutzgründen erst auf Klick geladen -->
+          <div>
+            <div data-map class="relative h-[180px] overflow-hidden rounded-2xl bg-tint">
+              <button
+                type="button"
+                data-map-load
+                class="absolute inset-0 flex cursor-pointer flex-col items-center justify-center gap-1.5 border-0 bg-transparent p-4 text-center"
+                aria-label="Karte des Einsatzgebiets an der Bergstraße anzeigen"
+              >
+                <span class="flex h-11 w-11 items-center justify-center rounded-full bg-accent text-white shadow-sm">
+                  <svg width="22" height="22" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+                </span>
+                <span class="text-[14.5px] font-semibold text-ink">Karte anzeigen</span>
+                <span class="text-[12px] text-muted">Es wird OpenStreetMap geladen.</span>
+              </button>
+            </div>
+            <p class="m-0 mt-2 text-[13px] text-muted">Unser Einsatzgebiet an der Bergstraße und im Umland.</p>
           </div>
         </div>
       </div>
@@ -340,9 +355,33 @@ const contactRows = [
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initQuoteForm);
-  } else {
+  // Karte (OpenStreetMap) erst auf Klick laden – DSGVO-freundliche Zwei-Klick-Lösung
+  function initMap() {
+    document.querySelectorAll<HTMLButtonElement>('[data-map-load]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const wrap = btn.closest<HTMLElement>('[data-map]');
+        if (!wrap) return;
+        const iframe = document.createElement('iframe');
+        // Ausschnitt: Einsatzgebiet Bergstraße (Weinheim–Bensheim–Zwingenberg)
+        iframe.src =
+          'https://www.openstreetmap.org/export/embed.html?bbox=8.50%2C49.50%2C8.75%2C49.76&layer=mapnik';
+        iframe.title = 'Einsatzgebiet an der Bergstraße (OpenStreetMap)';
+        iframe.loading = 'lazy';
+        iframe.referrerPolicy = 'no-referrer';
+        iframe.className = 'absolute inset-0 h-full w-full border-0';
+        wrap.innerHTML = '';
+        wrap.appendChild(iframe);
+      });
+    });
+  }
+
+  function init() {
     initQuoteForm();
+    initMap();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
   }
 </script>
