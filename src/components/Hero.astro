@@ -1,17 +1,18 @@
 ---
+import { Image } from 'astro:assets';
+import heroImg from '../assets/hero-transporter.webp';
+
 interface Props {
   titleLead?: string;
   titleRest?: string;
   highlight?: string;
   subtitle?: string;
-  photoLabel?: string;
 }
 const {
   titleLead = 'Stressfrei umziehen &',
   titleRest = 'entrümpeln an der',
   highlight = 'Bergstraße',
   subtitle = 'Persönlich, zuverlässig und aus einer Hand – vom sorgfältigen Privatumzug bis zur diskreten Haushaltsauflösung in Südhessen.',
-  photoLabel = 'Foto: Umzugsteam mit Kartons im Treppenhaus',
 } = Astro.props;
 ---
 <section
@@ -35,9 +36,17 @@ const {
   </div>
 
   <div class="wrap mt-[54px]">
-    <div data-reveal class="photo-ph h-[min(58vh,520px)] items-end justify-start p-[26px]">
-      <div data-parallax class="photo-fill"></div>
-      <span class="photo-label">{photoLabel}</span>
+    <div data-reveal class="photo-ph h-[min(58vh,520px)]">
+      <Image
+        src={heroImg}
+        alt="Transporter von Umzüge Bergstraße – beladebereit an der Straße"
+        data-parallax
+        class="photo-fill object-cover"
+        widths={[768, 1200, 1774]}
+        sizes="(max-width: 1180px) 100vw, 1180px"
+        loading="eager"
+        fetchpriority="high"
+      />
     </div>
   </div>
 </section>

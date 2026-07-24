@@ -1,10 +1,19 @@
 ---
+import { Image } from 'astro:assets';
+import aboutImg from '../assets/ueber-uns-treppe.jpg';
 ---
 <section id="warum" class="pb-20 pt-10">
   <div class="wrap grid grid-cols-2 items-center gap-16 max-[900px]:grid-cols-1 max-[900px]:gap-9">
-    <div data-reveal class="photo-ph h-[clamp(340px,42vw,480px)] items-end p-[22px]">
-      <div data-parallax class="photo-fill"></div>
-      <span class="photo-label">Foto: Umzugsteam vor Transporter</span>
+    <div data-reveal class="photo-ph h-[clamp(340px,42vw,480px)]">
+      <Image
+        src={aboutImg}
+        alt="Umzugshelfer trägt sorgfältig Umzugskartons durchs Treppenhaus"
+        data-parallax
+        class="photo-fill object-cover"
+        widths={[560, 900, 1200]}
+        sizes="(max-width: 900px) 100vw, 560px"
+        loading="lazy"
+      />
     </div>
     <div data-reveal>
       <span class="badge mb-[22px]">Warum Bergstraße Umzüge?</span>
