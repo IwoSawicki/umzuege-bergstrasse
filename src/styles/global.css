@@ -109,7 +109,12 @@
 
   /* Foto-/Karten-Platzhalter (bis echte Bilder vorliegen) */
   .photo-ph { position: relative; border-radius: var(--radius-photo); display: flex; align-items: flex-end; overflow: hidden; }
-  .photo-fill { position: absolute; inset: -60px 0; will-change: transform;
+  /* Füllt den Container (inkl. 60px Überstand oben/unten für die Parallax-
+     Bewegung). Wichtig: explizite width/height + object-fit, damit auch <img>
+     (Ersatz-Elemente) den Container vollständig füllen – top/bottom allein
+     strecken ein Bild nicht. */
+  .photo-fill { position: absolute; top: -60px; left: 0; width: 100%; height: calc(100% + 120px);
+    max-width: none; object-fit: cover; object-position: center; will-change: transform;
     background: repeating-linear-gradient(45deg,#ece0cf,#ece0cf 14px,#e6d8c3 14px,#e6d8c3 28px); }
   .photo-label { position: relative; font-family: ui-monospace, monospace; font-size: 12px;
     letter-spacing: .1em; text-transform: uppercase; color: #8f7f6c;
