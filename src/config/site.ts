@@ -25,30 +25,30 @@ export const SITE = {
   themeColor: '#101418',
 
   contact: {
-    phone: '[TELEFONNUMMER]', // [TODO] z. B. "06251 1234567"
-    phoneHref: '', // [TODO] z. B. "+4962511234567" (nur Ziffern + Ländervorwahl)
-    email: '[E-MAIL]', // [TODO] z. B. "info@umzuege-bergstrasse.de"
+    phone: '0178 4444 156',
+    phoneHref: '+491784444156',
+    email: 'kontakt@umzuege-bergstrasse.de',
     whatsapp: '', // optional
   },
 
+  /** Adresse wird auf der Seite NICHT angezeigt (showAddress:false). Ort/Region
+      bleiben nur in den Structured Data für lokale Sichtbarkeit. */
+  showAddress: false,
   address: {
-    street: '[STRASSE HAUSNR.]', // [TODO]
-    postalCode: '[PLZ]', // [TODO]
-    city: 'Bensheim', // [TODO] Hauptsitz
+    street: '[STRASSE HAUSNR.]', // wird nicht angezeigt
+    postalCode: '[PLZ]', // wird nicht angezeigt
+    city: 'Bensheim', // Ort (nur für JSON-LD / lokale SEO)
     region: 'Hessen',
     country: 'DE',
   },
 
-  /** Für JSON-LD geoCoordinates (optional, verbessert lokale Sichtbarkeit) */
-  geo: {
-    latitude: 49.6809, // Bensheim (Näherung) – [TODO] exakte Koordinaten
-    longitude: 8.6216,
-  },
+  /** Kein Ladenlokal → keine Geo-Koordinaten (Adresse soll nicht sichtbar sein). */
+  geo: null as { latitude: number; longitude: number } | null,
 
-  openingHours: '[ÖFFNUNGSZEITEN]', // [TODO] Anzeige-Text, z. B. "Mo–Fr 8–18 Uhr, Sa nach Absprache"
-  /** Strukturierte Öffnungszeiten für JSON-LD (leer lassen = wird ausgelassen) */
+  openingHours: 'Montag bis Samstag, 8–20 Uhr',
+  /** Strukturierte Öffnungszeiten für JSON-LD */
   openingHoursSpec: [
-    // { days: ['Monday','Tuesday','Wednesday','Thursday','Friday'], opens: '08:00', closes: '18:00' },
+    { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '08:00', closes: '20:00' },
   ] as { days: string[]; opens: string; closes: string }[],
 
   rating: {

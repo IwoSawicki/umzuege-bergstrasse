@@ -19,7 +19,7 @@ const icons = {
 const contactRows = [
   { key: 'phone', label: 'Telefon', value: phone, icon: icons.phone },
   { key: 'email', label: 'E-Mail', value: email, icon: icons.mail },
-  { key: 'address', label: 'Adresse', value: address, icon: icons.pin },
+  ...(SITE.showAddress ? [{ key: 'address', label: 'Adresse', value: address, icon: icons.pin }] : []),
   { key: 'hours', label: 'Öffnungszeiten', value: hours, icon: icons.clock },
 ];
 ---
@@ -157,7 +157,13 @@ const contactRows = [
                 </div>
                 <div>
                   <div class="font-semibold">{r.label}</div>
-                  <div class="text-muted" data-contact={r.key}>{r.value}</div>
+                  {r.key === 'phone' ? (
+                    <a href={`tel:${SITE.contact.phoneHref}`} class="text-muted hover:text-accent" data-contact="phone">{r.value}</a>
+                  ) : r.key === 'email' ? (
+                    <a href={`mailto:${SITE.contact.email}`} class="text-muted hover:text-accent" data-contact="email">{r.value}</a>
+                  ) : (
+                    <div class="text-muted" data-contact={r.key}>{r.value}</div>
+                  )}
                 </div>
               </div>
             ))}
