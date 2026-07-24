@@ -4,18 +4,19 @@
   "version": "1.0.0",
   "private": true,
   "description": "Homepage für Umzüge Bergstraße – Umzüge & Entrümpelung an der Bergstraße (Astro + Tailwind)",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
+    "start": "astro preview --host --port ${PORT:-3000}",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
     "astro": "7.1.3",
-    "@astrojs/sitemap": "3.7.3"
-  },
-  "devDependencies": {
+    "@astrojs/sitemap": "3.7.3",
     "tailwindcss": "4.3.3",
     "@tailwindcss/vite": "4.3.3"
   }

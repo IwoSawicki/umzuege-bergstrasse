@@ -10,6 +10,19 @@ ausgeliefert. Dokploy baut das mitgelieferte `Dockerfile` und startet den Contai
 | `Dockerfile`   | Multi-Stage-Build: Node baut Astro → nginx liefert `dist/`  |
 | `nginx.conf`   | Saubere URLs, gzip, Cache-Header, Security-Header, 404       |
 | `.dockerignore`| hält das Build-Image schlank                                 |
+| `nixpacks.toml`| Fallback, falls Build-Type „Nixpacks" (pinnt Node 22)       |
+| `.nvmrc`       | Node-Version 22 (Astro 7 benötigt ≥ 22.12)                  |
+
+## ⚠️ Wichtig: Build-Type in Dokploy
+
+Dokploy nutzt standardmäßig **Nixpacks**. Damit die schlanke nginx-Variante gebaut
+wird, in der Application unter **General → Build Type** auf **Dockerfile** stellen
+(Pfad `./Dockerfile`). Das ist der empfohlene Weg (kleineres Image, statische
+Auslieferung über nginx).
+
+> Falls „Nixpacks" aktiv bleibt, funktioniert der Build trotzdem: `nixpacks.toml`
+> und `.nvmrc` erzwingen Node 22, und der Start-Befehl liefert den statischen Build
+> per `astro preview` aus. Der Dockerfile-/nginx-Weg ist aber performanter.
 
 ## Schritt für Schritt (Dokploy)
 
@@ -18,9 +31,9 @@ ausgeliefert. Dokploy baut das mitgelieferte `Dockerfile` und startet den Contai
    - Als Quelle das Git-Repository verbinden (GitHub) und den Branch wählen
      (z. B. `main`, nach dem Merge).
 
-2. **Build-Type = Dockerfile**
-   - Dokploy erkennt das `Dockerfile` im Repo-Root automatisch. Falls nicht:
-     Build-Type manuell auf **Dockerfile** stellen, Pfad `./Dockerfile`.
+2. **Build-Type = Dockerfile** (wichtig!)
+   - Standardmäßig steht Dokploy auf **Nixpacks** – das erzeugt ein anderes Image.
+   - Unter *General → Build Type* auf **Dockerfile** stellen, Pfad `./Dockerfile`.
 
 3. **Port**
    - Container-Port **80** angeben (nginx lauscht auf 80).

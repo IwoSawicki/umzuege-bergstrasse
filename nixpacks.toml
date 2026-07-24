@@ -1,0 +1,9 @@
+# Fallback-Konfiguration, falls Dokploy den Build-Type "Nixpacks" nutzt.
+# EMPFOHLEN ist der Build-Type "Dockerfile" (nginx, schneller & schlanker).
+# Diese Datei stellt sicher, dass auch der Nixpacks-Build funktioniert:
+#  - Node 22 (Astro 7 benötigt >= 22.12)
+#  - Auslieferung des statischen Builds über den Start-Befehl aus package.json
+#    ("astro preview"), NICHT den Dev-Server.
+
+[variables]
+NIXPACKS_NODE_VERSION = "22"
