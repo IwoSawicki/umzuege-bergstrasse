@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ConsentBanner from '../components/ConsentBanner.astro';
 import { SITE, absUrl, canonicalUrl } from '../config/site';
 import { website } from '../lib/schema';
 
@@ -77,6 +78,7 @@ const schemas = [website(), ...jsonLd];
       >Zum Inhalt springen</a
     >
     <slot />
+    <ConsentBanner />
     <script>
       import '../scripts/ui.ts';
     </script>

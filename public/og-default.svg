@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="#101418"/>
+  <rect width="1200" height="630" fill="#2A2019"/>
   <g font-family="'Hanken Grotesk',system-ui,sans-serif">
-    <rect x="80" y="70" width="90" height="90" rx="22" fill="#00E354"/>
-    <text x="125" y="132" font-size="44" font-weight="800" fill="#101418" text-anchor="middle">UB</text>
+    <rect x="80" y="70" width="90" height="90" rx="22" fill="#E87B2E"/>
+    <text x="125" y="132" font-size="44" font-weight="800" fill="#2A2019" text-anchor="middle">UB</text>
     <text x="80" y="330" font-size="82" font-weight="800" fill="#ffffff">Umzüge Bergstraße</text>
-    <text x="80" y="410" font-size="40" font-weight="600" fill="#00E354">Umzüge &amp; Entrümpelung · Südhessen</text>
-    <text x="80" y="500" font-size="30" font-weight="500" fill="#9aa1a0">Kostenlose Besichtigung · Festpreisgarantie · Vollständig versichert</text>
+    <text x="80" y="410" font-size="40" font-weight="600" fill="#E87B2E">Umzüge &amp; Entrümpelung · Südhessen</text>
+    <text x="80" y="500" font-size="30" font-weight="500" fill="#b3a698">Kostenlose Besichtigung · Festpreisgarantie · Persönlich &amp; regional</text>
   </g>
 </svg>

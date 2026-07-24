@@ -68,22 +68,22 @@
     transition: transform .18s, background .2s, color .2s, box-shadow .2s;
     text-align: center;
   }
-  .btn-dark { background: var(--espresso); color: #fff; padding: 16px 28px; font-size: 17px; }
+  .btn-dark { background: var(--espresso); color: #fff; padding: 12px 22px; font-size: 15.5px; }
   .btn-dark:hover { color: #fff; transform: translateY(-2px); filter: brightness(.82); }
-  .btn-white { background: #fff; color: var(--espresso); padding: 16px 28px; font-size: 17px; }
+  .btn-white { background: #fff; color: var(--espresso); padding: 12px 22px; font-size: 15.5px; }
   .btn-white:hover { color: var(--espresso); transform: translateY(-2px); }
-  .btn-sm { padding: 13px 22px; font-size: 15px; }
+  .btn-sm { padding: 11px 18px; font-size: 14.5px; }
 
   /* Primärer CTA in Akzentfarbe. Textfarbe folgt der Farbwelt:
      Orange → weiß; Knallgrün/Tannengelb (helle Akzente) → dunkler Text. */
-  .btn-accent { background: var(--accent); color: #fff; padding: 16px 28px; font-size: 17px; box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 35%, transparent); }
+  .btn-accent { background: var(--accent); color: #fff; padding: 12px 22px; font-size: 15.5px; box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent); }
   .btn-accent:hover { background: var(--accent-dark); color: #fff; transform: translateY(-2px); }
   .theme-green .btn-accent, .theme-pine .btn-accent { color: var(--espresso); }
   .theme-green .btn-accent:hover, .theme-pine .btn-accent:hover { color: var(--espresso); }
   .theme-green .btn-accent .arr, .theme-pine .btn-accent .arr { color: var(--espresso); }
 
   /* Sekundärer CTA (z. B. Telefonnummer): neutral, mit Rahmen */
-  .btn-outline { background: #fff; color: var(--ink); border: 1.5px solid color-mix(in srgb, var(--ink) 18%, transparent); padding: 15px 26px; font-size: 17px; }
+  .btn-outline { background: #fff; color: var(--ink); border: 1.5px solid color-mix(in srgb, var(--ink) 18%, transparent); padding: 11px 20px; font-size: 15.5px; }
   .btn-outline:hover { color: var(--ink); border-color: var(--accent); background: var(--tint); transform: translateY(-2px); }
 
   /* Badge / Pill */

@@ -1,0 +1,112 @@
+---
+/**
+ * Cookie-Consent-Banner (DSGVO/TDDDG) mit Google Consent Mode v2.
+ *
+ * - Statistik-/Marketing-Skripte (GA4, Google Ads) laden ERST nach Einwilligung.
+ * - IDs werden zentral in src/config/site.ts (analytics.gaId / analytics.adsId)
+ *   gepflegt. Solange sie leer sind, wird gar nichts geladen – der Banner
+ *   speichert die Einwilligung aber schon, sodass sie beim Nachrüsten greift.
+ * - Auswahl liegt in localStorage ("ub-consent"); über einen Link mit
+ *   data-consent-open (Footer: "Cookie-Einstellungen") jederzeit änderbar.
+ */
+import { SITE } from '../config/site';
+const gaId = SITE.analytics.gaId;
+const adsId = SITE.analytics.adsId;
+---
+<div
+  id="consent-banner"
+  hidden
+  role="dialog"
+  aria-modal="false"
+  aria-label="Cookie-Einstellungen"
+  class="fixed inset-x-0 bottom-0 z-[80] p-3 sm:p-4"
+>
+  <div class="mx-auto max-w-[720px] rounded-[22px] border border-[rgba(42,32,25,.1)] bg-white p-5 shadow-[0_18px_60px_rgba(42,32,25,.25)] sm:p-6">
+    <h2 class="m-0 mb-1.5 text-[17px] font-bold">🍪 Cookies &amp; Datenschutz</h2>
+    <p class="m-0 mb-4 text-[14.5px] leading-[1.55] text-muted">
+      Wir nutzen Cookies, um unsere Website zu verbessern und – nur mit Ihrer Einwilligung – für
+      Statistik (Google Analytics) und Werbung (Google Ads). Details in der{' '}
+      <a href="/datenschutz">Datenschutzerklärung</a>.
+    </p>
+    <div class="flex flex-wrap items-center gap-2.5">
+      <button type="button" data-consent-accept class="btn btn-accent !px-6 !py-3 !text-[15px]">Alle akzeptieren</button>
+      <button type="button" data-consent-decline class="btn btn-outline !px-6 !py-3 !text-[15px]">Nur notwendige</button>
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ gaId, adsId }}>
+  (function () {
+    var KEY = 'ub-consent';
+    var banner = document.getElementById('consent-banner');
+    if (!banner) return;
+
+    // Google Consent Mode v2: Standard = alles verweigert (muss VOR gtag.js stehen)
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    window.gtag = window.gtag || gtag;
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      wait_for_update: 500,
+    });
+
+    function readChoice() {
+      try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch { return null; }
+    }
+    function saveChoice(granted) {
+      try { localStorage.setItem(KEY, JSON.stringify({ granted: granted, ts: Date.now() })); } catch {}
+    }
+
+    var scriptsLoaded = false;
+    function loadGoogleScripts() {
+      if (scriptsLoaded) return;
+      var primaryId = gaId || adsId;
+      if (!primaryId) return; // noch keine IDs gepflegt → nichts laden
+      scriptsLoaded = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.googletagmanager.com/gtag/js?id=' + primaryId;
+      document.head.appendChild(s);
+      gtag('js', new Date());
+      if (gaId) gtag('config', gaId);
+      if (adsId) gtag('config', adsId);
+    }
+
+    function applyConsent(granted) {
+      if (granted) {
+        gtag('consent', 'update', {
+          ad_storage: 'granted',
+          ad_user_data: 'granted',
+          ad_personalization: 'granted',
+          analytics_storage: 'granted',
+        });
+        loadGoogleScripts();
+      }
+    }
+
+    function show() { banner.hidden = false; }
+    function hide() { banner.hidden = true; }
+
+    var choice = readChoice();
+    if (choice === null) {
+      show();
+    } else {
+      applyConsent(!!choice.granted);
+    }
+
+    banner.querySelector('[data-consent-accept]').addEventListener('click', function () {
+      saveChoice(true); applyConsent(true); hide();
+    });
+    banner.querySelector('[data-consent-decline]').addEventListener('click', function () {
+      saveChoice(false); hide();
+    });
+
+    // "Cookie-Einstellungen"-Links (z. B. im Footer) öffnen den Banner erneut
+    document.querySelectorAll('[data-consent-open]').forEach(function (el) {
+      el.addEventListener('click', function (e) { e.preventDefault(); show(); });
+    });
+  })();
+</script>

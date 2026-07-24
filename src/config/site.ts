@@ -21,14 +21,24 @@ export const SITE = {
     'Persönlich, zuverlässig und aus einer Hand – vom sorgfältigen Privatumzug bis zur diskreten Haushaltsauflösung an der Bergstraße. Kostenlose Besichtigung & Festpreisgarantie.',
 
   /** Farbwelt: '' (Orange) | 'theme-green' (Knallgrün) | 'theme-pine' (Tannengrün & Gelb) */
-  theme: 'theme-green',
-  themeColor: '#101418',
+  theme: '',
+  themeColor: '#2A2019',
 
   contact: {
     phone: '0178 4444 156',
     phoneHref: '+491784444156',
     email: 'kontakt@umzuege-bergstrasse.de',
     whatsapp: '', // optional
+  },
+
+  /** Zieladresse für Formular-Anfragen (FormSubmit.co-Endpunkt).
+      Erste Anfrage löst eine Aktivierungs-Mail aus – einmal bestätigen! */
+  leadEmail: 'iwo@stolz-marketing.de',
+
+  /** Google-IDs – eintragen, sobald vorhanden. Solange leer, lädt nichts. */
+  analytics: {
+    gaId: '', // z. B. 'G-XXXXXXXXXX' (Google Analytics 4)
+    adsId: '', // z. B. 'AW-XXXXXXXXX' (Google Ads Conversion)
   },
 
   /** Adresse wird auf der Seite NICHT angezeigt (showAddress:false) – nur im
