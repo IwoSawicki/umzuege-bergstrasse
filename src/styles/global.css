@@ -74,6 +74,18 @@
   .btn-white:hover { color: var(--espresso); transform: translateY(-2px); }
   .btn-sm { padding: 13px 22px; font-size: 15px; }
 
+  /* Primärer CTA in Akzentfarbe. Textfarbe folgt der Farbwelt:
+     Orange → weiß; Knallgrün/Tannengelb (helle Akzente) → dunkler Text. */
+  .btn-accent { background: var(--accent); color: #fff; padding: 16px 28px; font-size: 17px; box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 35%, transparent); }
+  .btn-accent:hover { background: var(--accent-dark); color: #fff; transform: translateY(-2px); }
+  .theme-green .btn-accent, .theme-pine .btn-accent { color: var(--espresso); }
+  .theme-green .btn-accent:hover, .theme-pine .btn-accent:hover { color: var(--espresso); }
+  .theme-green .btn-accent .arr, .theme-pine .btn-accent .arr { color: var(--espresso); }
+
+  /* Sekundärer CTA (z. B. Telefonnummer): neutral, mit Rahmen */
+  .btn-outline { background: #fff; color: var(--ink); border: 1.5px solid color-mix(in srgb, var(--ink) 18%, transparent); padding: 15px 26px; font-size: 17px; }
+  .btn-outline:hover { color: var(--ink); border-color: var(--accent); background: var(--tint); transform: translateY(-2px); }
+
   /* Badge / Pill */
   .badge {
     display: inline-block; border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
