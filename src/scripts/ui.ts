@@ -67,16 +67,27 @@ function initTabs() {
 }
 
 function initFaq() {
-  document.querySelectorAll<HTMLElement>('[data-faq] .faq-item').forEach((item) => {
+  const container = document.querySelector<HTMLElement>('[data-faq]');
+  if (!container) return;
+  const items = Array.from(container.querySelectorAll<HTMLElement>('.faq-item'));
+  if (!items.length) return;
+
+  const setOpen = (item: HTMLElement, open: boolean) => {
+    item.classList.toggle('is-open', open);
     const btn = item.querySelector<HTMLButtonElement>('.faq-q');
-    const answer = item.querySelector<HTMLElement>('.faq-a');
     const sign = item.querySelector<HTMLElement>('.faq-sign');
-    if (!btn || !answer) return;
-    btn.addEventListener('click', () => {
-      const open = item.classList.toggle('is-open');
-      answer.hidden = !open;
-      btn.setAttribute('aria-expanded', String(open));
-      if (sign) sign.textContent = open ? '−' : '+';
+    if (btn) btn.setAttribute('aria-expanded', String(open));
+    if (sign) sign.textContent = open ? '−' : '+';
+  };
+
+  items.forEach((item) => {
+    setOpen(item, false); // Accordion startet geschlossen
+    const btn = item.querySelector<HTMLButtonElement>('.faq-q');
+    btn?.addEventListener('click', () => {
+      const willOpen = !item.classList.contains('is-open');
+      // Nur eine Frage gleichzeitig offen
+      items.forEach((other) => { if (other !== item) setOpen(other, false); });
+      setOpen(item, willOpen);
     });
   });
 }

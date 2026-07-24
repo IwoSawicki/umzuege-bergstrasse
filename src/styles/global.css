@@ -171,9 +171,16 @@ a:hover .arr, button:hover .arr { transform: translateX(5px); }
   font-size: 16px; color: #fff; background: transparent; transition: background .2s; }
 .svc-tab.is-active { background: rgba(255,255,255,.13); }
 
-/* FAQ */
-.faq-a[hidden] { display: none; }
-.faq-item.is-open .faq-a { animation: faqIn .35s cubic-bezier(.22,1,.36,1) backwards; }
+/* FAQ – weiche Höhen-Animation über grid-template-rows.
+   Standard geschlossen (kein Aufblitzen); ohne JS öffnet ein <noscript>-Style
+   die Antworten (SEO/Barrierefreiheit). */
+.faq-a { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .38s cubic-bezier(.22,1,.36,1); }
+.faq-a-inner { overflow: hidden; min-height: 0; }
+.faq-item.is-open .faq-a { grid-template-rows: 1fr; }
+.faq-sign { transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .25s; }
+.faq-item.is-open .faq-sign { transform: rotate(180deg); }
+.faq-q { transition: color .2s; }
+.faq-q:hover { color: var(--accent-dark); }
 
 /* Theme-spezifische Overrides der Muster-Platzhalter */
 .theme-green .accent-fill { background: var(--espresso) !important; }
