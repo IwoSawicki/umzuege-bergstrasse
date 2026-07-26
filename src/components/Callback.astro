@@ -1,0 +1,118 @@
+---
+/**
+ * Rückruf-Sektion direkt unter der Hero.
+ * Bewusst minimal: nur Name + Telefon – die niedrigste Hürde für eine
+ * Kontaktaufnahme. Versand wie beim Hauptformular über FormSubmit.
+ */
+import { SITE } from '../config/site';
+---
+<section id="rueckruf" class="pt-12 max-[560px]:pt-8">
+  <div class="wrap">
+    <div data-reveal class="rounded-[var(--radius-block)] bg-tint p-[clamp(24px,4vw,44px)]">
+      <div class="grid grid-cols-[1.05fr_1fr] items-center gap-10 max-[900px]:grid-cols-1 max-[900px]:gap-7">
+        <!-- Text -->
+        <div>
+          <span class="accent-fill mb-4 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-[7px] text-[13px] font-semibold text-white">
+            <svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 5c0 8 7 15 15 15l0-3-4-2-2 2c-2-1-5-4-6-6l2-2-2-4z"></path></svg>
+            Rückruf-Service
+          </span>
+          <h2 class="m-0 mb-3 text-[clamp(24px,3.2vw,36px)] font-extrabold leading-[1.12] tracking-[-.02em]">
+            Innerhalb von 4 Stunden einen <span class="text-accent">Rückruf</span> erhalten
+          </h2>
+          <p class="m-0 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-[16px] text-muted">
+            <span class="inline-flex items-center gap-2">
+              <svg width="17" height="17" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" class="text-accent"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+              Montag bis Samstag, 8–20 Uhr
+            </span>
+            <span class="inline-flex items-center gap-2">
+              <svg width="17" height="17" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" class="text-accent"><path d="M20 6L9 17l-5-5"></path></svg>
+              Kostenlos &amp; unverbindlich
+            </span>
+          </p>
+        </div>
+
+        <!-- Formular -->
+        <div>
+          <div data-cb-success hidden class="rounded-[18px] bg-white p-6 text-center">
+            <div class="mb-1.5 text-[32px]">✓</div>
+            <h3 class="m-0 mb-1 text-[19px] font-bold">Danke – wir rufen zurück!</h3>
+            <p class="m-0 text-[15px] text-muted">Innerhalb von 4 Stunden (Mo–Sa, 8–20 Uhr).</p>
+          </div>
+
+          <div data-cb-error hidden class="mb-3 rounded-[14px] border border-red-300 bg-red-50 p-3.5 text-[14.5px] text-red-800">
+            Das hat nicht geklappt. Bitte rufen Sie uns direkt an:
+            <a href={`tel:${SITE.contact.phoneHref}`} class="font-bold">{SITE.contact.phone}</a>
+          </div>
+
+          <form
+            data-cb-form
+            data-endpoint={`https://formsubmit.co/ajax/${SITE.leadEmail}`}
+            action={`https://formsubmit.co/${SITE.leadEmail}`}
+            method="post"
+            novalidate
+            class="flex flex-col gap-3"
+          >
+            <input type="hidden" name="_subject" value="Rückruf-Wunsch über umzuege-bergstrasse.de" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="anfrage" value="Rückruf-Service" />
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;width:0;overflow:hidden" />
+
+            <div class="grid grid-cols-2 gap-3 max-[560px]:grid-cols-1">
+              <input name="name" autocomplete="name" placeholder="Ihr Name" required class="field" aria-label="Name" />
+              <input name="telefon" type="tel" autocomplete="tel" placeholder="Ihre Telefonnummer" required class="field" aria-label="Telefonnummer" />
+            </div>
+            <button type="submit" data-cb-submit class="btn btn-accent w-full justify-center">
+              Rückruf anfordern <span class="arr text-[19px]">→</span>
+            </button>
+            <p class="m-0 text-center text-[13px] text-muted">
+              🔒 Nur für Ihren Rückruf. Keine Werbeanrufe.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initCallback() {
+    document.querySelectorAll<HTMLFormElement>('[data-cb-form]').forEach((form) => {
+      const wrap = form.parentElement;
+      const success = wrap?.querySelector<HTMLElement>('[data-cb-success]');
+      const errorBox = wrap?.querySelector<HTMLElement>('[data-cb-error]');
+      const btn = form.querySelector<HTMLButtonElement>('[data-cb-submit]');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (typeof form.reportValidity === 'function' && !form.reportValidity()) return;
+        const endpoint = form.dataset.endpoint;
+        if (!endpoint) return;
+
+        if (errorBox) errorBox.hidden = true;
+        const label = btn?.innerHTML || '';
+        if (btn) { btn.disabled = true; btn.textContent = 'Wird gesendet …'; }
+        try {
+          const res = await fetch(endpoint, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' },
+          });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          form.style.display = 'none';
+          if (success) success.hidden = false;
+        } catch {
+          if (errorBox) errorBox.hidden = false;
+        } finally {
+          if (btn) { btn.disabled = false; btn.innerHTML = label; }
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCallback);
+  } else {
+    initCallback();
+  }
+</script>

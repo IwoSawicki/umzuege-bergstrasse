@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
+import Callback from '../components/Callback.astro';
 import Stats from '../components/Stats.astro';
 import About from '../components/About.astro';
 import Services from '../components/Services.astro';
@@ -28,6 +29,7 @@ const jsonLd = [localBusiness(), faqPage(FAQS)];
   <Nav />
   <main id="inhalt" class="page-root">
     <Hero />
+    <Callback />
     <Stats />
     <About />
     <Services />
