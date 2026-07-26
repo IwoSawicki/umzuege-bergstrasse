@@ -1,0 +1,38 @@
+---
+/**
+ * Wort-Bild-Marke: UB-Truck + Schriftzug "UMZÜGE BERGSTRASSE".
+ * Die beiden Wörter stehen untereinander und sind links wie rechts bündig
+ * (exakt gleiche Breite über textLength).
+ *
+ * Farbe: erbt currentColor – über Utility-Klassen steuerbar, z. B.
+ *   <Logo class="text-accent" />   oder   <Logo class="text-white" />
+ * Der Truck kann davon abweichen (truckClass), z. B. immer Orange.
+ */
+import UbTruck from '../assets/ub-truck.svg';
+
+interface Props {
+  /** Höhe des Trucks (Tailwind-Klassen), z. B. "h-9" */
+  size?: string;
+  /** Klassen für den gesamten Block (Textfarbe) */
+  class?: string;
+  /** Abweichende Farbe nur für den Truck, z. B. "text-accent" */
+  truckClass?: string;
+}
+const { size = 'h-9', class: cls = '', truckClass = '' } = Astro.props;
+---
+<span class:list={['inline-flex items-center gap-2.5', cls]}>
+  <UbTruck class:list={[size, 'w-auto shrink-0', truckClass]} aria-hidden="true" />
+  <svg
+    viewBox="0 0 196 64"
+    class:list={[size, 'w-auto shrink-0']}
+    role="img"
+    aria-label="Umzüge Bergstraße"
+    fill="currentColor"
+  >
+    <!-- y=31 lässt oben Platz für die Umlaut-Punkte des Ü -->
+    <text x="0" y="31" textLength="196" lengthAdjust="spacing"
+          font-family="inherit" font-weight="800" font-size="31">UMZÜGE</text>
+    <text x="0" y="60" textLength="196" lengthAdjust="spacing"
+          font-family="inherit" font-weight="800" font-size="20.5">BERGSTRASSE</text>
+  </svg>
+</span>
