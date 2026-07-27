@@ -1,0 +1,176 @@
+---
+/**
+ * Stilisierte Karte des Einsatzgebiets an der Bergstraße.
+ *
+ * Die Positionen sind aus echten Koordinaten gerechnet, damit die Karte
+ * geografisch stimmt (Rhein im Westen, Odenwald im Osten, die Bergstraße
+ * als Nord-Süd-Achse dazwischen):
+ *   x = 20 + (lon  - 8.40 ) * 844.4
+ *   y = 40 + (49.72 - lat ) * 889
+ * Das Seitenverhältnis (420:224) entspricht der Kartenbox, damit beim
+ * Füllen nichts Wesentliches abgeschnitten wird.
+ */
+interface Props {
+  class?: string;
+}
+const { class: cls = '' } = Astro.props;
+
+// Orte mit eigener Unterseite bekommen ein Label, der Rest kleine Punkte.
+const towns = [
+  { name: 'Zwingenberg', x: 197, y: 40, anchor: 'end', dx: -10, dy: 4 },
+  { name: 'Bensheim', x: 206, y: 76, anchor: 'start', dx: 12, dy: 4, home: true },
+  { name: 'Heppenheim', x: 223, y: 111, anchor: 'start', dx: 11, dy: 4 },
+  { name: 'Weinheim', x: 248, y: 191, anchor: 'start', dx: 11, dy: 4 },
+];
+const dots = [
+  { name: 'Einhausen', x: 189, y: 93 },
+  { name: 'Lorsch', x: 163, y: 102 },
+  { name: 'Bürstadt', x: 71, y: 111 },
+  { name: 'Lampertheim', x: 79, y: 147 },
+  { name: 'Hemsbach', x: 231, y: 156 },
+  { name: 'Viernheim', x: 172, y: 200 },
+  { name: 'Lautertal', x: 273, y: 58 },
+  { name: 'Fürth', x: 358, y: 102 },
+  { name: 'Rimbach', x: 324, y: 129 },
+  { name: 'Birkenau', x: 282, y: 182 },
+];
+---
+<svg
+  viewBox="0 0 420 224"
+  class:list={['region-map', cls]}
+  role="img"
+  aria-label="Karte des Einsatzgebiets: die Bergstraße zwischen Zwingenberg, Bensheim, Heppenheim und Weinheim, westlich der Rhein, östlich der Odenwald."
+  preserveAspectRatio="xMidYMid meet"
+>
+  <defs>
+    <!-- Weicher Farbverlauf für die Odenwald-Höhen -->
+    <linearGradient id="rm-wald" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="var(--espresso)" stop-opacity=".13" />
+      <stop offset="1" stop-color="var(--espresso)" stop-opacity=".22" />
+    </linearGradient>
+    <!-- Sanfter Auslauf des Einsatzgebiets zum Rand hin -->
+    <radialGradient id="rm-gebiet">
+      <stop offset=".55" stop-color="var(--accent)" stop-opacity=".13" />
+      <stop offset="1" stop-color="var(--accent)" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Rheinebene als Grundfläche -->
+  <rect width="420" height="224" fill="var(--tint)" />
+
+  <!-- Einsatzgebiet -->
+  <ellipse cx="200" cy="120" rx="170" ry="95" fill="url(#rm-gebiet)" />
+  <ellipse
+    cx="200" cy="120" rx="170" ry="95"
+    fill="none" stroke="var(--accent)" stroke-opacity=".38"
+    stroke-width="1.6" stroke-dasharray="7 7"
+  />
+
+  <!-- Odenwald: Waldfläche östlich der Bergstraße -->
+  <path
+    d="M200 -6C198 20 204 34 210 56 216 78 224 92 230 118 236 144 244 158 252 180 258 198 262 214 264 230L426 230 426 -6Z"
+    fill="url(#rm-wald)"
+  />
+  <!-- Höhenzüge im Odenwald -->
+  <g fill="none" stroke="var(--espresso)" stroke-opacity=".15" stroke-width="1.4" stroke-linecap="round">
+    <path d="M239 8C250 30 246 58 256 82 266 106 262 132 272 156" />
+    <path d="M286 0C298 28 292 60 304 90 316 120 310 150 320 182" />
+    <path d="M338 18C350 48 344 78 356 110" />
+  </g>
+
+  <!-- Rhein -->
+  <path
+    d="M58 -8C44 30 66 52 52 80 40 106 62 126 48 154 36 180 54 200 44 232"
+    fill="none" stroke="#A6C4D2" stroke-width="8" stroke-linecap="round"
+  />
+  <path
+    d="M58 -8C44 30 66 52 52 80 40 106 62 126 48 154 36 180 54 200 44 232"
+    fill="none" stroke="#C7DCE6" stroke-width="3" stroke-linecap="round"
+  />
+
+  <!-- A5 (parallel zur Bergstraße durch die Rheinebene) -->
+  <path
+    d="M176 -6C172 46 178 96 186 142 192 180 198 202 202 232"
+    fill="none" stroke="var(--muted)" stroke-opacity=".34" stroke-width="3.4" stroke-linecap="round"
+  />
+  <!-- B3 – die Bergstraße selbst, verbindet die Orte -->
+  <path
+    d="M193 -4C195 20 198 32 202 48 208 66 214 86 222 106 228 124 228 138 232 154 238 172 244 178 249 192 254 206 256 218 258 232"
+    fill="none" stroke="var(--accent)" stroke-opacity=".55" stroke-width="2.6" stroke-linecap="round"
+  />
+
+  <!-- Straßennummern -->
+  <g class="rm-road" text-anchor="middle">
+    <rect x="161" y="6" width="22" height="14" rx="4" fill="var(--muted)" fill-opacity=".55" />
+    <text x="172" y="16.5" fill="#fff">A5</text>
+    <rect x="247" y="204" width="22" height="14" rx="4" fill="var(--accent)" fill-opacity=".75" />
+    <text x="258" y="214.5" fill="#fff">B3</text>
+  </g>
+
+  <!-- Landschaftsnamen -->
+  <g class="rm-area">
+    <text x="336" y="208" text-anchor="middle" fill="var(--espresso)" fill-opacity=".66">ODENWALD</text>
+    <text x="47" y="36" text-anchor="middle" fill="#4A7285" transform="rotate(-8 47 36)">RHEIN</text>
+  </g>
+
+  <!-- Umliegende Orte -->
+  <g fill="var(--muted)" fill-opacity=".6">
+    {dots.map((d) => <circle cx={d.x} cy={d.y} r="3"><title>{d.name}</title></circle>)}
+  </g>
+
+  <!-- Orte mit eigener Seite -->
+  {towns.map((t) => (
+    <g class:list={['rm-town', { 'rm-home': t.home }]}>
+      {t.home ? (
+        <>
+          <circle class="rm-pulse" cx={t.x} cy={t.y} r="9" fill="var(--accent)" fill-opacity=".3" />
+          <circle cx={t.x} cy={t.y} r="6.5" fill="var(--accent)" stroke="#fff" stroke-width="2.4" />
+        </>
+      ) : (
+        <circle cx={t.x} cy={t.y} r="5" fill="var(--espresso)" stroke="#fff" stroke-width="2.2" />
+      )}
+      <text
+        x={t.x + t.dx}
+        y={t.y + t.dy}
+        text-anchor={t.anchor}
+        fill={t.home ? 'var(--accent-text)' : 'var(--ink)'}
+      >{t.name}</text>
+    </g>
+  ))}
+</svg>
+
+<style>
+  .region-map { display: block; width: 100%; height: 100%; }
+  /* Heller Halo unter der Schrift, damit Labels über Wald und Straßen lesbar bleiben */
+  .region-map text {
+    font-family: inherit;
+    paint-order: stroke;
+    stroke: var(--cream);
+    stroke-width: 3.5px;
+    stroke-linejoin: round;
+  }
+  .rm-town text { font-size: 13px; font-weight: 700; }
+  .rm-home text { font-size: 14px; }
+  .rm-road text { font-size: 9.5px; font-weight: 700; stroke-width: 0; }
+  .rm-area text { font-size: 10px; font-weight: 700; letter-spacing: .16em; }
+
+  /* Einspaltiges Layout: die Karte wird kleiner dargestellt, deshalb
+     wachsen die Beschriftungen in Nutzereinheiten mit. */
+  @media (max-width: 900px) {
+    .rm-town text { font-size: 17px; }
+    .rm-home text { font-size: 18.5px; }
+    .rm-road text { font-size: 12px; }
+    .rm-area text { font-size: 12.5px; }
+    .region-map text { stroke-width: 4.5px; }
+  }
+
+  .rm-pulse { transform-box: fill-box; transform-origin: center; animation: rmPulse 2.6s ease-out infinite; }
+  @keyframes rmPulse {
+    0% { transform: scale(.65); opacity: .55; }
+    70% { transform: scale(2.1); opacity: 0; }
+    100% { transform: scale(2.1); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rm-pulse { animation: none; }
+  }
+</style>
