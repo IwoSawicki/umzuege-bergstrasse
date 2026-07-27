@@ -61,9 +61,15 @@ export const SITE = {
     { days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'], opens: '08:00', closes: '20:00' },
   ] as { days: string[]; opens: string; closes: string }[],
 
+  /** Sterne-Schnitt für die Structured Data (AggregateRating).
+      WICHTIG: count MUSS die tatsächliche Anzahl echter Bewertungen sein.
+      Solange 0, wird kein aggregateRating ausgegeben – erfundene Werte sind
+      ein Verstoß gegen Googles Richtlinien für strukturierte Daten und
+      nach UWG abmahnfähig. Erst befüllen, wenn die Bewertungen wirklich
+      öffentlich sichtbar sind (z. B. im Google-Unternehmensprofil). */
   rating: {
-    value: '4.9',
-    count: 127, // [TODO] echte Anzahl Bewertungen
+    value: '',
+    count: 0,
   },
 
   social: {
