@@ -170,11 +170,24 @@ a:hover .arr, button:hover .arr { transform: translateX(5px); }
 .top-btn { transition: background .25s, transform .25s, border-color .25s; }
 .top-btn:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-4px); }
 
-/* Leistungs-Tabs */
-.svc-tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
-  padding: 16px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;
-  font-size: 16px; color: #fff; background: transparent; transition: background .2s; }
+/* Leistungs-Tabs (2×2 auf Mobil, 4 nebeneinander ab 760px) */
+.svc-tab { min-width: 0; display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 16px 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600;
+  font-size: 16px; line-height: 1.2; text-align: center; color: #fff; background: transparent;
+  hyphens: auto; overflow-wrap: anywhere;
+  transition: background .25s cubic-bezier(.22,1,.36,1), transform .25s cubic-bezier(.22,1,.36,1); }
+.svc-tab svg { flex-shrink: 0; }
+.svc-tab:hover { background: rgba(255,255,255,.07); }
 .svc-tab.is-active { background: rgba(255,255,255,.13); }
+.svc-tab.is-active:active { transform: scale(.97); }
+/* Auf Mobil steht das Icon über dem Label – sonst passen lange Wörter
+   wie „Entrümpelung“ nicht in die halbbreite Zelle. */
+@media (max-width: 760px) {
+  .svc-tab { flex-direction: column; gap: 7px; padding: 13px 4px;
+    font-size: clamp(12px, 3.3vw, 14px); letter-spacing: -.01em; }
+}
+/* Wischen soll nicht mit dem vertikalen Scrollen kollidieren */
+[data-tab-panel] { touch-action: pan-y; }
 
 /* FAQ – weiche Höhen-Animation über grid-template-rows.
    Standard geschlossen (kein Aufblitzen); ohne JS öffnet ein <noscript>-Style
@@ -199,8 +212,11 @@ a:hover .arr, button:hover .arr { transform: translateX(5px); }
 .theme-pine .map-ph { background: repeating-linear-gradient(45deg,#ece5d2,#ece5d2 12px,#e4dcc4 12px,#e4dcc4 24px) !important; }
 .theme-pine .step-card:hover .step-num { color: var(--espresso); }
 
-@keyframes tabIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-@keyframes tabIn2 { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+/* Richtungsabhängige Slide-Transition beim Wechsel der Leistung */
+@keyframes svcInRight { from { opacity: 0; transform: translateX(46px); } to { opacity: 1; transform: none; } }
+@keyframes svcInLeft  { from { opacity: 0; transform: translateX(-46px); } to { opacity: 1; transform: none; } }
+/* Schritte im mehrstufigen Anfrageformular */
+@keyframes stepIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
 @keyframes faqIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
 
 /* Platz für die fixierte mobile CTA-Leiste */

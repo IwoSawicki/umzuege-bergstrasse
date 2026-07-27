@@ -40,11 +40,15 @@ function initTabs() {
   } catch {
     data = [];
   }
-  let toggle = false;
+  let current = 0;
 
   const select = (i: number) => {
     const s = data[i];
-    if (!s) return;
+    if (!s || i === current) return;
+    // Richtung bestimmt, aus welcher Seite der neue Inhalt hereinkommt
+    const forward = i > current;
+    current = i;
+
     tabs.forEach((b, idx) => {
       const on = idx === i;
       b.classList.toggle('is-active', on);
@@ -54,15 +58,54 @@ function initTabs() {
     if (elText) elText.textContent = s.text;
     if (elImg) elImg.textContent = s.imgLabel;
     if (elLink && s.href) elLink.setAttribute('href', s.href);
+
     if (!reduceMotion) {
-      toggle = !toggle;
       panel.style.animation = 'none';
-      void panel.offsetWidth; // reflow
-      panel.style.animation = `${toggle ? 'tabIn' : 'tabIn2'} .5s cubic-bezier(.22,1,.36,1) backwards`;
+      void panel.offsetWidth; // Reflow, damit die Animation neu startet
+      panel.style.animation =
+        `${forward ? 'svcInRight' : 'svcInLeft'} .5s cubic-bezier(.22,1,.36,1)`;
     }
   };
+
   tabs.forEach((b) =>
     b.addEventListener('click', () => select(parseInt(b.dataset.tab || '0', 10))),
+  );
+
+  // Wischen zwischen den Leistungen (Touch)
+  let sx = 0;
+  let sy = 0;
+  panel.addEventListener(
+    'touchstart',
+    (e) => {
+      sx = e.changedTouches[0].clientX;
+      sy = e.changedTouches[0].clientY;
+    },
+    { passive: true },
+  );
+  panel.addEventListener(
+    'touchend',
+    (e) => {
+      const dx = e.changedTouches[0].clientX - sx;
+      const dy = e.changedTouches[0].clientY - sy;
+      // nur eindeutig horizontale Gesten auswerten (kein Konflikt mit Scrollen)
+      if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      const next = dx < 0 ? current + 1 : current - 1;
+      if (next >= 0 && next < data.length) select(next);
+    },
+    { passive: true },
+  );
+
+  // Pfeiltasten für Tastaturbedienung
+  tabs.forEach((b) =>
+    b.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      const next = current + (e.key === 'ArrowRight' ? 1 : -1);
+      if (next >= 0 && next < data.length) {
+        select(next);
+        tabs[next].focus();
+      }
+    }),
   );
 }
 

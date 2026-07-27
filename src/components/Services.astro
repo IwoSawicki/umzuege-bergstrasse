@@ -45,7 +45,7 @@ const panelData = services.map((s) => ({
 ---
 <section id="leistungen" class="pb-20 pt-10">
   <div class="wrap">
-    <div data-reveal class="on-espresso rounded-[var(--radius-block)] bg-espresso p-[clamp(40px,6vw,80px)] text-white">
+    <div data-reveal class="on-espresso rounded-[var(--radius-block)] bg-espresso p-[clamp(26px,6vw,80px)] text-white">
       <div class="mx-auto mb-11 max-w-[760px] text-center">
         <span class="badge badge-onDark mb-[22px]">Umfassende Umzugslösungen</span>
         <h2 class="m-0 mb-4 text-[clamp(30px,4.5vw,52px)] font-extrabold leading-[1.08] tracking-[-.02em]">
@@ -57,11 +57,11 @@ const panelData = services.map((s) => ({
         </p>
       </div>
 
-      <div class="tabs-scroll mb-11 max-[900px]:overflow-x-auto">
+      <div class="mb-11">
         <div
           role="tablist"
           aria-label="Leistungen"
-          class="flex min-w-[560px] gap-2 rounded-[18px] bg-white/[.06] p-2"
+          class="grid grid-cols-4 gap-2 rounded-[18px] bg-white/[.06] p-2 max-[760px]:grid-cols-2"
         >
           {services.map((s, i) => (
             <button
