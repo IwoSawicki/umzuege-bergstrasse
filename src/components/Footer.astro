@@ -62,6 +62,9 @@ const year = new Date().getFullYear();
       </div>
     </div>
 
-    <div aria-hidden="true" class="mt-7 select-none whitespace-nowrap text-right text-[clamp(40px,8.6vw,132px)] font-extrabold leading-[.8] tracking-[-.03em] text-white/[.06] max-[560px]:!mt-4 max-[560px]:!text-[12.5vw]" style="margin-bottom:-0.14em">BERGSTRASSE</div>
+    <!-- Rein dekoratives Wasserzeichen. Der Schriftzug steckt bewusst im
+         ::after (siehe global.css) und nicht im HTML: so ist er kein
+         Textinhalt, für den ein Lesekontrast gefordert wird. -->
+    <div aria-hidden="true" class="foot-watermark mt-7 select-none whitespace-nowrap text-right text-[clamp(40px,8.6vw,132px)] font-extrabold leading-[.8] tracking-[-.03em] text-white/[.06] max-[560px]:!mt-4 max-[560px]:!text-[12.5vw]" style="margin-bottom:-0.14em"></div>
   </div>
 </footer>

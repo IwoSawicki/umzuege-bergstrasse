@@ -13,21 +13,20 @@
   --cream:#FBF5EC; --accent:#E87B2E; --accent-dark:#D26A22;
   --espresso:#2A2019; --ink:#241D17; --muted:#756A61;
   --tint:#FBEEE0;
-  /* Akzent als Textfarbe auf hellem Grund (WCAG AA, >= 4.5:1) */
-  --accent-text:#A85210;
+  --accent-text:#E87B2E;
   --r-block:30px; --r-photo:22px;
 }
 .theme-green {
   --cream:#FFFFFF; --accent:#00E354; --accent-dark:#00C247;
   --espresso:#101418; --ink:#0E1214; --muted:#61695F;
   --tint:#E4FBEC;
-  --accent-text:#067A31;
+  --accent-text:#00E354;
 }
 .theme-pine {
   --cream:#F4F1E7; --accent:#E3B93F; --accent-dark:#C79A22;
   --espresso:#1D5240; --ink:#1C2B24; --muted:#69775F;
   --tint:#EAE3CC;
-  --accent-text:#7A5E00;
+  --accent-text:#E3B93F;
 }
 
 @theme inline {
@@ -80,11 +79,13 @@
   .btn-white:hover { color: var(--espresso); transform: translateY(-2px); }
   .btn-sm { padding: 11px 18px; font-size: 14.5px; }
 
-  /* Primärer CTA in Akzentfarbe. Dunkler Text, weil Weiß auf dem hellen
-     Akzent nur ~2,9:1 erreicht (WCAG AA verlangt 4,5:1). */
-  .btn-accent { background: var(--accent); color: var(--ink); padding: 12px 22px; font-size: 15.5px; box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent); }
-  .btn-accent:hover { background: var(--accent-dark); color: var(--ink); transform: translateY(-2px); }
-  .btn-accent .arr { color: var(--ink); }
+  /* Primärer CTA in Akzentfarbe. Textfarbe folgt der Farbwelt:
+     Orange → weiß; Knallgrün/Tannengelb (helle Akzente) → dunkler Text. */
+  .btn-accent { background: var(--accent); color: #fff; padding: 12px 22px; font-size: 15.5px; box-shadow: 0 6px 18px color-mix(in srgb, var(--accent) 30%, transparent); }
+  .btn-accent:hover { background: var(--accent-dark); color: #fff; transform: translateY(-2px); }
+  .theme-green .btn-accent, .theme-pine .btn-accent { color: var(--espresso); }
+  .theme-green .btn-accent:hover, .theme-pine .btn-accent:hover { color: var(--espresso); }
+  .theme-green .btn-accent .arr, .theme-pine .btn-accent .arr { color: var(--espresso); }
 
   /* Sekundärer CTA (z. B. Telefonnummer): neutral, mit Rahmen */
   .btn-outline { background: #fff; color: var(--ink); border: 1.5px solid color-mix(in srgb, var(--ink) 18%, transparent); padding: 11px 20px; font-size: 15.5px; }
@@ -109,7 +110,7 @@
     color: var(--ink); font-weight: 500; font-size: 15px; padding: 10px 18px;
     border-radius: 999px; transition: border-color .25s, color .25s, background .25s, transform .25s;
   }
-  .chip:hover { border-color: var(--accent); color: var(--accent-text); background: var(--tint); transform: translateY(-2px); }
+  .chip:hover { border-color: var(--accent); color: var(--accent-dark); background: var(--tint); transform: translateY(-2px); }
 
   /* Foto-/Karten-Platzhalter (bis echte Bilder vorliegen) */
   .photo-ph { position: relative; border-radius: var(--radius-photo); display: flex; align-items: flex-end; overflow: hidden; }
@@ -157,7 +158,7 @@ a:hover .arr, button:hover .arr { transform: translateX(5px); }
 .hover-lift { transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s cubic-bezier(.22,1,.36,1); }
 .hover-lift:hover { transform: translateY(-6px); box-shadow: 0 22px 48px rgba(42,32,25,.12); }
 .step-num { transition: transform .35s cubic-bezier(.34,1.56,.64,1), background .3s, color .3s; }
-.step-card:hover .step-num { background: var(--accent); color: var(--ink); transform: rotate(-8deg) scale(1.1); }
+.step-card:hover .step-num { background: var(--accent); color: #fff; transform: rotate(-8deg) scale(1.1); }
 .feat .ico { transition: transform .4s cubic-bezier(.34,1.56,.64,1); }
 .feat:hover .ico { transform: translateY(-5px) rotate(-6deg); }
 .nav-link { position: relative; }
@@ -172,7 +173,7 @@ a:hover .arr, button:hover .arr { transform: translateX(5px); }
 .soc { transition: background .25s; }
 .soc:hover { background: var(--accent); }
 .top-btn { transition: background .25s, transform .25s, border-color .25s; }
-.top-btn:hover { background: var(--accent); border-color: var(--accent); color: var(--ink); transform: translateY(-4px); }
+.top-btn:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-4px); }
 
 /* Leistungs-Tabs (2×2 auf Mobil, 4 nebeneinander ab 760px) */
 .svc-tab { min-width: 0; display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -234,26 +235,9 @@ a:hover .arr, button:hover .arr { transform: translateX(5px); }
   [data-reveal] { opacity: 1 !important; transform: none !important; }
 }
 
-/* =========================================================
-   Akzentfarbe als Textfarbe
-   Der helle Marken-Orange erreicht auf hellem Grund nur ~2,7:1.
-   Für Text wird deshalb die dunklere Variante genutzt; auf dunklen
-   Flächen (Footer, Espresso-Blöcke) bleibt der volle Orangeton, weil
-   er dort ohnehin stark kontrastiert.
-   Regel bewusst ungelayert – so gewinnt sie gegen Tailwinds Utilities.
-   ========================================================= */
+/* Akzentfarbe als Textfarbe – zentral über --accent-text steuerbar,
+   damit sich der Ton an einer Stelle nachschärfen lässt. */
 .text-accent { color: var(--accent-text); }
-.text-accent-dark { color: var(--accent-text); }
-.on-espresso, .site-footer, .bg-espresso, .on-dark { --accent-text: var(--accent); }
 
-/* =========================================================
-   Text auf der Akzentfläche
-   Weiß auf dem hellen Orange erreicht nur ~2,9:1. Auf allen
-   akzentgefüllten Flächen steht deshalb dunkler Text; die zweite
-   Ebene wird über Transparenz abgesetzt, bleibt aber über 4,5:1.
-   ========================================================= */
-.accent-fill { color: var(--ink); }
-.accent-fill .text-white,
-.accent-fill [class*="text-white/"] { color: var(--ink); }
-.accent-fill [class*="text-white/"] { color: color-mix(in srgb, var(--ink) 85%, transparent); }
-.accent-fill .badge { border-color: color-mix(in srgb, var(--ink) 35%, transparent); }
+/* Dekoratives Wasserzeichen im Footer (siehe Footer.astro) */
+.foot-watermark::after { content: "BERGSTRASSE"; }
