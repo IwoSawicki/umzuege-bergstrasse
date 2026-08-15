@@ -37,7 +37,7 @@ export const SITE = {
 
   /** Google-IDs – eintragen, sobald vorhanden. Solange leer, lädt nichts. */
   analytics: {
-    gaId: '', // z. B. 'G-XXXXXXXXXX' (Google Analytics 4)
+    gaId: 'G-6YQ8075QM0', // Google Analytics 4
     adsId: '', // z. B. 'AW-XXXXXXXXX' (Google Ads Conversion)
   },
 
