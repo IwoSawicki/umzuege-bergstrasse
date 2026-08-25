@@ -5,7 +5,12 @@ order: 4
 metaTitle: "Entsorgung Bergstraße – Sperrmüll & Möbel fachgerecht entsorgen"
 metaDescription: "Fachgerechte und umweltbewusste Entsorgung von Möbeln, Sperrmüll und Elektrogeräten an der Bergstraße. Verwertbares wird angerechnet. Jetzt Festpreis anfragen."
 excerpt: "Alte Möbel, Sperrmüll und Elektrogeräte entsorgen wir fachgerecht und umweltbewusst – Verwertbares rechnen wir Ihnen an."
-photoLabel: "Foto: Entsorgung / Transporter"
+includes:
+  - "Abholung direkt vor Ort – kein Schleppen für Sie"
+  - "Sperrmüll, Altmöbel und Elektrogeräte"
+  - "Trennung nach Materialien und Wertstoffen"
+  - "Entsorgung über zertifizierte Betriebe"
+  - "Verwertbares wird angerechnet und senkt den Preis"
 faqs:
   - q: "Welche Gegenstände entsorgen Sie?"
     a: "Von Altmöbeln und Sperrmüll über Elektrogeräte bis zu ganzen Kellerräumen – wir entsorgen fachgerecht und umweltbewusst nach den geltenden Vorschriften."

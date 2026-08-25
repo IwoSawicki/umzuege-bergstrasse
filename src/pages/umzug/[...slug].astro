@@ -6,6 +6,7 @@ import Footer from '../../components/Footer.astro';
 import MobileCta from '../../components/MobileCta.astro';
 import Faq from '../../components/Faq.astro';
 import { localBusiness, breadcrumb, faqPage, service } from '../../lib/schema';
+import RegionMap from '../../components/RegionMap.astro';
 import { SITE } from '../../config/site';
 
 export async function getStaticPaths() {
@@ -50,7 +51,6 @@ const jsonLd = [
   <main id="inhalt" class="page-root">
     <section
       class="pt-[70px] max-[560px]:pt-10"
-      style="background-image:linear-gradient(rgba(42,32,25,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(42,32,25,.045) 1px,transparent 1px);background-size:64px 64px;background-position:center"
     >
       <div class="wrap">
         <nav aria-label="Brotkrümel" class="mb-5 text-sm text-muted">
@@ -72,9 +72,13 @@ const jsonLd = [
               </a>
             </div>
           </div>
-          <div data-reveal class="photo-ph h-[clamp(300px,38vw,440px)] items-end p-[22px]">
-            <div data-parallax class="photo-fill"></div>
-            <span class="photo-label">{data.photoLabel}</span>
+          <div data-reveal>
+            <div class="aspect-[420/224] overflow-hidden rounded-[var(--radius-photo)] bg-tint">
+              <RegionMap highlight={data.name} />
+            </div>
+            <p class="m-0 mt-3 text-[13.5px] text-muted">
+              Unser Einsatzgebiet an der Bergstraße – {data.name} und Umgebung.
+            </p>
           </div>
         </div>
       </div>

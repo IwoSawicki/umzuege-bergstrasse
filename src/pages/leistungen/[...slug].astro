@@ -6,6 +6,7 @@ import Footer from '../../components/Footer.astro';
 import MobileCta from '../../components/MobileCta.astro';
 import Faq from '../../components/Faq.astro';
 import { service, breadcrumb, faqPage, localBusiness } from '../../lib/schema';
+import IncludeCard from '../../components/IncludeCard.astro';
 import { SITE } from '../../config/site';
 
 export async function getStaticPaths() {
@@ -52,7 +53,6 @@ const jsonLd = [
     <!-- Hero -->
     <section
       class="pt-[70px] max-[560px]:pt-10"
-      style="background-image:linear-gradient(rgba(42,32,25,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(42,32,25,.045) 1px,transparent 1px);background-size:64px 64px;background-position:center"
     >
       <div class="wrap">
         <nav aria-label="Brotkrümel" class="mb-5 text-sm text-muted">
@@ -75,10 +75,12 @@ const jsonLd = [
               </a>
             </div>
           </div>
-          <div data-reveal class="photo-ph h-[clamp(300px,38vw,440px)] items-end p-[22px]">
-            <div data-parallax class="photo-fill"></div>
-            <span class="photo-label">{data.photoLabel}</span>
-          </div>
+          <IncludeCard
+            data-reveal
+            items={data.includes}
+            note="Verbindliches Festpreisangebot nach kostenloser Besichtigung – ohne versteckte Kosten."
+            class="min-h-[clamp(280px,34vw,400px)]"
+          />
         </div>
       </div>
     </section>

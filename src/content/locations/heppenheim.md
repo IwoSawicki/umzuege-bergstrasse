@@ -6,7 +6,6 @@ metaDescription: "Umzug in Heppenheim zum Festpreis: Privat- & Firmenumzüge, En
 intro: "In Heppenheim und rund um die historische Altstadt sind wir regelmäßig im Einsatz – vom engen Gässchen bis zum Neubaugebiet."
 postalCodes: ["64646"]
 neighbours: ["Bensheim", "Weinheim"]
-photoLabel: "Foto: Umzug in Heppenheim"
 faqs:
   - q: "Sind auch Umzüge in der Heppenheimer Altstadt möglich?"
     a: "Ja. Enge Gassen und schwierige Zufahrten sind für uns Routine – wir planen die Anfahrt und bei Bedarf Halteverbotszonen vorab."

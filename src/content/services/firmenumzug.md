@@ -5,7 +5,12 @@ order: 2
 metaTitle: "Firmenumzug Bergstraße – Büroumzug mit minimaler Ausfallzeit"
 metaDescription: "Büro- und Betriebsumzüge an der Bergstraße – geplant für minimale Ausfallzeit, abends oder am Wochenende. Kostenlose Besichtigung & Festpreis. Jetzt anfragen."
 excerpt: "Büro- und Betriebsumzüge planen wir so, dass Ihr Betrieb mit minimaler Ausfallzeit weiterläuft – ganz nach Ihrem Bedarf."
-photoLabel: "Foto: Büroumzug / Arbeitsplätze"
+includes:
+  - "Umzugsplan mit festem Zeitfenster – auch abends und am Wochenende"
+  - "Arbeitsplätze systematisch beschriftet und zugeordnet"
+  - "IT und Technik sicher verpackt und transportiert"
+  - "Aktenschränke und Archive geordnet übernommen"
+  - "Fester Ansprechpartner über den gesamten Umzug"
 faqs:
   - q: "Können Sie außerhalb der Geschäftszeiten umziehen?"
     a: "Ja. Auf Wunsch ziehen wir abends, am Wochenende oder etappenweise um, damit Ihr Betrieb möglichst ohne Unterbrechung weiterläuft."

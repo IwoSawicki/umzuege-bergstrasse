@@ -6,7 +6,6 @@ metaDescription: "Umzug in Weinheim zum Festpreis: Privat- und Firmenumzüge, En
 intro: "Weinheim an der Bergstraße gehört fest zu unserem Einsatzgebiet – von der Altstadt bis in die Wohnviertel am Hang."
 postalCodes: ["69469"]
 neighbours: ["Heppenheim", "Hemsbach"]
-photoLabel: "Foto: Umzug in Weinheim"
 faqs:
   - q: "Ziehen Sie auch von Weinheim in andere Städte um?"
     a: "Ja, wir übernehmen sowohl lokale Umzüge in Weinheim als auch Fernumzüge in andere Regionen – zum verbindlichen Festpreis."

@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import heroImg from '../assets/hero-transporter.webp';
 import { SITE } from '../config/site';
 
 interface Props {
@@ -16,7 +14,7 @@ const {
   subtitle = 'Persönlich, zuverlässig und aus einer Hand – vom sorgfältigen Privatumzug bis zur diskreten Haushaltsauflösung in Südhessen.',
 } = Astro.props;
 ---
-<section id="top" class="pt-[70px] max-[560px]:pt-10">
+<section id="top" class="pb-4 pt-[70px] max-[560px]:pt-10">
   <div class="wrap max-w-[920px] text-center">
     <h1
       data-reveal
@@ -38,18 +36,4 @@ const {
     </div>
   </div>
 
-  <div class="wrap mt-[54px]">
-    <div data-reveal class="photo-ph h-[min(58vh,520px)]">
-      <Image
-        src={heroImg}
-        alt="Transporter von Umzüge Bergstraße – beladebereit an der Straße"
-        data-parallax
-        class="photo-fill object-cover"
-        widths={[768, 1200, 1774]}
-        sizes="(max-width: 1180px) 100vw, 1180px"
-        loading="eager"
-        fetchpriority="high"
-      />
-    </div>
-  </div>
 </section>

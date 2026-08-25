@@ -6,7 +6,6 @@ metaDescription: "Umzugsunternehmen für Bensheim: Privat- & Firmenumzüge, Entr
 intro: "Als regionaler Betrieb sind wir in Bensheim zu Hause – wir kennen die Straßen, die Altbauten in der Innenstadt und die Wohngebiete rundherum."
 postalCodes: ["64625"]
 neighbours: ["Heppenheim", "Zwingenberg"]
-photoLabel: "Foto: Umzug in Bensheim"
 faqs:
   - q: "Ziehen Sie auch innerhalb von Bensheim um?"
     a: "Ja, gerade lokale Umzüge innerhalb von Bensheim sind unser Alltag – schnell, unkompliziert und zum Festpreis."

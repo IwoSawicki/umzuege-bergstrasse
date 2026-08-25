@@ -30,7 +30,8 @@ function initTabs() {
   const panel = document.querySelector<HTMLElement>('[data-tab-panel]');
   const elTitle = document.querySelector<HTMLElement>('[data-tab-title]');
   const elText = document.querySelector<HTMLElement>('[data-tab-text]');
-  const elImg = document.querySelector<HTMLElement>('[data-tab-img]');
+  const elList = document.querySelector<HTMLElement>('[data-include-list]');
+  const elWatermark = document.querySelector<SVGElement>('[data-include-icon]');
   const elLink = document.querySelector<HTMLAnchorElement>('[data-tab-link]');
   if (!tabs.length || !panel) return;
 
@@ -56,7 +57,23 @@ function initTabs() {
     });
     if (elTitle) elTitle.textContent = s.title;
     if (elText) elText.textContent = s.text;
-    if (elImg) elImg.textContent = s.imgLabel;
+    if (elList && Array.isArray(s.includes)) {
+      // Checkliste neu aufbauen – Markup entspricht IncludeCard.astro
+      elList.innerHTML = s.includes
+        .map(
+          (item: string) =>
+            '<li class="flex items-start gap-3">' +
+            '<span class="mt-[2px] flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-full bg-accent text-white">' +
+            '<svg width="13" height="13" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>' +
+            '</span><span class="text-[16.5px] leading-[1.45] text-white/[.88]"></span></li>',
+        )
+        .join('');
+      // Text separat setzen, damit nichts als HTML interpretiert wird
+      elList.querySelectorAll('li > span:last-child').forEach((el, idx) => {
+        el.textContent = s.includes[idx];
+      });
+    }
+    if (elWatermark && s.icon) elWatermark.innerHTML = s.icon;
     if (elLink && s.href) elLink.setAttribute('href', s.href);
 
     if (!reduceMotion) {

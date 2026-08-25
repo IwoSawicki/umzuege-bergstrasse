@@ -12,16 +12,20 @@
  */
 interface Props {
   class?: string;
+  /** Ort, der als Standort-Pin hervorgehoben wird (Standard: Bensheim) */
+  highlight?: string;
 }
-const { class: cls = '' } = Astro.props;
+const { class: cls = '', highlight = 'Bensheim' } = Astro.props;
 
 // Orte mit eigener Unterseite bekommen ein Label, der Rest kleine Punkte.
-const towns = [
+const allTowns = [
   { name: 'Zwingenberg', x: 197, y: 40, anchor: 'end', dx: -10, dy: 4 },
-  { name: 'Bensheim', x: 206, y: 76, anchor: 'start', dx: 12, dy: 4, home: true },
+  { name: 'Bensheim', x: 206, y: 76, anchor: 'start', dx: 12, dy: 4 },
   { name: 'Heppenheim', x: 223, y: 111, anchor: 'start', dx: 11, dy: 4 },
   { name: 'Weinheim', x: 248, y: 191, anchor: 'start', dx: 11, dy: 4 },
 ];
+// Der hervorgehobene Ort bekommt den pulsierenden Akzent-Pin
+const towns = allTowns.map((t) => ({ ...t, home: t.name === highlight }));
 const dots = [
   { name: 'Einhausen', x: 189, y: 93 },
   { name: 'Lorsch', x: 163, y: 102 },
@@ -39,7 +43,7 @@ const dots = [
   viewBox="0 0 420 224"
   class:list={['region-map', cls]}
   role="img"
-  aria-label="Karte des Einsatzgebiets: die Bergstraße zwischen Zwingenberg, Bensheim, Heppenheim und Weinheim, westlich der Rhein, östlich der Odenwald."
+  aria-label={`Karte des Einsatzgebiets an der Bergstraße mit ${highlight}, zwischen Rhein im Westen und Odenwald im Osten.`}
   preserveAspectRatio="xMidYMid meet"
 >
   <defs>

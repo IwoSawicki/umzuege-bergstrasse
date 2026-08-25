@@ -1,31 +1,60 @@
 ---
-import { Image } from 'astro:assets';
-import aboutImg from '../assets/ueber-uns-treppe.jpg';
 import { SITE } from '../config/site';
+
+/**
+ * Statt eines Stockfotos steht hier ein persönliches Statement des Inhabers.
+ * Für einen jungen Betrieb ohne Referenzen ist das das stärkste
+ * Vertrauenssignal, das ohne Bildmaterial auskommt.
+ */
+const signals = [
+  'Kostenlose Besichtigung vor Ort',
+  'Verbindlicher Festpreis, schriftlich',
+  'Fester Ansprechpartner von Anfang bis Ende',
+];
 ---
 <section id="warum" class="pb-20 pt-10">
   <div class="wrap grid grid-cols-2 items-center gap-16 max-[900px]:grid-cols-1 max-[900px]:gap-9">
-    <div data-reveal class="photo-ph h-[clamp(340px,42vw,480px)]">
-      <Image
-        src={aboutImg}
-        alt="Umzugshelfer trägt sorgfältig Umzugskartons durchs Treppenhaus"
-        data-parallax
-        class="photo-fill object-cover"
-        widths={[560, 900, 1200]}
-        sizes="(max-width: 900px) 100vw, 560px"
-        loading="lazy"
-      />
+    <div data-reveal class="owner-card relative overflow-hidden rounded-[var(--radius-photo)] bg-espresso p-9 text-white max-[560px]:p-7">
+      <span
+        aria-hidden="true"
+        class="pointer-events-none absolute -top-8 right-4 select-none font-serif text-[190px] leading-none text-white/[.07]"
+      >&rdquo;</span>
+
+      <div class="relative">
+        <p class="m-0 mb-7 text-[clamp(20px,2.4vw,26px)] font-semibold leading-[1.4] [text-wrap:pretty]">
+          Ich mache jeden Auftrag so, wie ich ihn für meine eigene Familie machen würde.
+          Wer bei uns anruft, spricht mit mir – und ich bin auch am Umzugstag dabei.
+        </p>
+
+        <div class="mb-7 flex items-center gap-3.5">
+          <span class="flex h-[46px] w-[46px] flex-shrink-0 items-center justify-center rounded-full bg-accent text-[16px] font-extrabold text-white" aria-hidden="true">IS</span>
+          <div>
+            <div class="font-bold leading-tight">{SITE.legal.owner}</div>
+            <div class="text-[14px] text-white/60">Inhaber, {SITE.name}</div>
+          </div>
+        </div>
+
+        <ul class="m-0 flex list-none flex-col gap-3 border-t border-white/15 p-0 pt-6">
+          {signals.map((s) => (
+            <li class="flex items-start gap-2.5 text-[15.5px] text-white/[.82]">
+              <svg width="18" height="18" viewBox="0 0 24 24" stroke="var(--accent)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mt-[3px] flex-shrink-0" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>
+              {s}
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
+
     <div data-reveal>
       <span class="badge mb-[22px]">Warum Umzüge Bergstraße?</span>
       <h2 class="m-0 mb-5 text-[clamp(30px,4vw,46px)] font-extrabold leading-[1.1] tracking-[-.02em] [text-wrap:balance]">
-        Ihr erfahrener Umzugs- und Entrümpelungspartner in der <span class="text-accent">Region</span>
+        Ihr Umzugs- und Entrümpelungspartner in der <span class="text-accent">Region</span>
       </h2>
       <p class="m-0 mb-[30px] text-[18px] text-muted">
         Wir sind ein regionaler Umzugs- und Entrümpelungsbetrieb an der Bergstraße – mit vollem Einsatz,
         modernem Equipment und einem persönlichen Anspruch. Als Menschen von hier kennen wir die Wege, die
-        Häuser und die Nachbarschaft. Ein eingespieltes Team, ein fairer Festpreis und ein respektvoller
-        Umgang mit Ihrem Eigentum stehen bei uns an erster Stelle.
+        Häuser und die Nachbarschaft. Ein fairer Festpreis und ein respektvoller Umgang mit Ihrem Eigentum
+        stehen bei uns an erster Stelle.
       </p>
       <div class="flex flex-wrap items-center gap-3">
         <a href="/#kontakt" class="btn btn-accent">Angebot anfordern <span class="arr text-[19px]">→</span></a>

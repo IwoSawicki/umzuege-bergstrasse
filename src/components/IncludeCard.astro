@@ -1,0 +1,85 @@
+---
+/**
+ * Inhaltskarte als Ersatz für Foto-Platzhalter.
+ *
+ * Statt eines leeren Bildrahmens steht dort etwas, das die Anfrage
+ * tatsächlich voranbringt: was im Festpreis enthalten ist. Funktioniert
+ * ohne Bildmaterial und lässt sich später problemlos durch ein echtes
+ * Foto ersetzen.
+ */
+interface Props {
+  /** Überschrift der Karte */
+  title?: string;
+  /** Punkte der Checkliste */
+  items: string[];
+  /** Optionale Fußzeile unter der Liste */
+  note?: string;
+  /** Dunkle Variante für Espresso-Flächen */
+  dark?: boolean;
+  /** SVG-Pfade für das dekorative Wasserzeichen (24×24-Koordinaten) */
+  icon?: string;
+  class?: string;
+}
+const {
+  title = 'Im Festpreis enthalten',
+  items,
+  note,
+  dark = false,
+  icon,
+  class: cls = '',
+} = Astro.props;
+---
+<div
+  class:list={[
+    'include-card relative flex flex-col justify-center overflow-hidden rounded-[22px] p-7 max-[560px]:p-6',
+    dark ? 'is-dark text-white' : 'bg-tint',
+    cls,
+  ]}
+>
+  {icon && (
+    <svg
+      data-include-icon
+      class="pointer-events-none absolute -bottom-6 -right-5 h-[168px] w-[168px] opacity-[.07]"
+      viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.1" fill="none"
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icon}
+    />
+  )}
+
+  <div class="relative">
+    <div
+      class:list={[
+        'mb-5 text-[12px] font-bold uppercase tracking-[.14em]',
+        dark ? 'text-white/60' : 'text-muted',
+      ]}
+    >{title}</div>
+
+    <ul class="m-0 flex list-none flex-col gap-[14px] p-0" data-include-list>
+      {items.map((item) => (
+        <li class="flex items-start gap-3">
+          <span
+            class:list={[
+              'mt-[2px] flex h-[22px] w-[22px] flex-shrink-0 items-center justify-center rounded-full',
+              dark ? 'bg-accent text-white' : 'bg-accent text-white',
+            ]}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>
+          </span>
+          <span class:list={['text-[16.5px] leading-[1.45]', dark ? 'text-white/[.88]' : 'text-ink']}>{item}</span>
+        </li>
+      ))}
+    </ul>
+
+    {note && (
+      <p
+        class:list={[
+          'm-0 mt-6 border-t pt-5 text-[14px] leading-[1.5]',
+          dark ? 'border-white/15 text-white/60' : 'border-[color-mix(in_srgb,var(--ink)_12%,transparent)] text-muted',
+        ]}
+      >{note}</p>
+    )}
+  </div>
+</div>
+
+<style>
+  .include-card.is-dark { background: rgba(255, 255, 255, .06); }
+</style>

@@ -6,7 +6,6 @@ metaDescription: "Umzug in Zwingenberg zum Festpreis: Privat- & Firmenumzüge, E
 intro: "Zwingenberg, die älteste Stadt an der Bergstraße, liegt direkt in unserem Einsatzgebiet – vom malerischen Altstadtkern bis zu den Wohnlagen am Melibokus."
 postalCodes: ["64673"]
 neighbours: ["Bensheim", "Lorsch"]
-photoLabel: "Foto: Umzug in Zwingenberg"
 faqs:
   - q: "Sind Umzüge in der Zwingenberger Altstadt möglich?"
     a: "Ja. Enge Zufahrten und Kopfsteinpflaster kennen wir – wir planen Anfahrt und Halteverbot vorab, damit alles reibungslos läuft."

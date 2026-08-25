@@ -19,7 +19,8 @@ const services = defineCollection({
     metaTitle: z.string().optional(),
     metaDescription: z.string(),
     excerpt: z.string(),
-    photoLabel: z.string().default('Foto: Leistung'),
+    /** Checkliste, die auf der Seite statt eines Fotos steht */
+    includes: z.array(z.string()).default([]),
     faqs: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
     draft: z.boolean().default(false),
   }),
@@ -35,7 +36,7 @@ const locations = defineCollection({
     intro: z.string(),
     postalCodes: z.array(z.string()).optional(),
     neighbours: z.array(z.string()).optional(), // Nachbarorte für interne Verlinkung
-    photoLabel: z.string().default('Foto: Umzug vor Ort'),
+
     faqs: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
     draft: z.boolean().default(false),
   }),

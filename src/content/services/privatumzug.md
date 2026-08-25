@@ -5,7 +5,12 @@ order: 1
 metaTitle: "Privatumzug Bergstraße – Umzugsunternehmen mit Festpreis"
 metaDescription: "Ihr Privatumzug an der Bergstraße: sorgfältig verpackt, sicher transportiert, pünktlich aufgebaut. Kostenlose Besichtigung & Festpreisgarantie. Jetzt Angebot anfordern."
 excerpt: "Wir gestalten Ihren Privatumzug reibungslos und angenehm – vom Verpacken über den Transport bis zum Aufbau am neuen Ort."
-photoLabel: "Foto: Privatumzug / Kartons tragen"
+includes:
+  - "Kostenlose Besichtigung und verbindlicher Festpreis"
+  - "Umzugskartons und Packmaterial werden gestellt"
+  - "Möbel demontieren, transportieren und wieder aufbauen"
+  - "Sorgfältiger Schutz von Böden, Türen und Treppenhaus"
+  - "Auf Wunsch komplettes Ein- und Auspacken"
 faqs:
   - q: "Übernehmen Sie auch das Ein- und Auspacken?"
     a: "Ja. Auf Wunsch verpacken wir Ihren kompletten Hausrat fachgerecht und packen am Zielort wieder aus – Sie können sich zurücklehnen."

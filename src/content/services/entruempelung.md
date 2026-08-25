@@ -5,7 +5,12 @@ order: 3
 metaTitle: "Entrümpelung Bergstraße – Haushaltsauflösung besenrein & diskret"
 metaDescription: "Entrümpelung & Haushaltsauflösung an der Bergstraße: diskret, zügig und besenrein übergeben. Wertanrechnung senkt Ihre Kosten. Kostenlose Besichtigung – jetzt anfragen."
 excerpt: "Wohnungen, Keller, Dachböden oder komplette Haushaltsauflösungen – wir arbeiten diskret, zügig und übergeben besenrein."
-photoLabel: "Foto: Entrümpelung / Kellerraum"
+includes:
+  - "Kostenlose Besichtigung und verbindlicher Festpreis"
+  - "Komplette Räumung von Wohnung, Keller oder Dachboden"
+  - "Wertanrechnung für verwertbare Gegenstände"
+  - "Fachgerechte Entsorgung inklusive Nachweis"
+  - "Besenreine Übergabe an Eigentümer oder Verwaltung"
 faqs:
   - q: "Wird Wertvolles auf die Kosten angerechnet?"
     a: "Ja. Verwertbare Gegenstände und Wertanrechnung reduzieren Ihre Gesamtkosten spürbar. Das berücksichtigen wir bereits im Festpreisangebot."
