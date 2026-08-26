@@ -36,7 +36,7 @@ const contactRows = [
           <h2 class="m-0 mb-2 text-[clamp(28px,3.6vw,42px)] font-extrabold leading-[1.1] tracking-[-.02em]">
             Fordern Sie Ihr Angebot an
           </h2>
-          <p class="m-0 mb-3 text-muted">In unter einer Minute – Schritt für Schritt, ganz ohne Verpflichtung.</p>
+          <p class="m-0 mb-3 text-muted">Zwei Schritte, keine 30 Sekunden – und ganz ohne Verpflichtung.</p>
           <p class="m-0 mb-7 flex items-center gap-2 text-[15px] font-semibold text-accent-dark">
             <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
             Nur begrenzte Termine pro Woche – sichern Sie sich Ihren Wunschtermin.
@@ -73,11 +73,11 @@ const contactRows = [
             <!-- Fortschritt (nur mit JS sichtbar) -->
             <div data-progress hidden class="mb-1">
               <div class="mb-2 flex items-center justify-between text-[13px] font-semibold text-muted">
-                <span data-step-label>Schritt 1 von 5</span>
-                <span data-step-percent>20 %</span>
+                <span data-step-label>Schritt 1 von 2</span>
+                <span data-step-percent>50 %</span>
               </div>
               <div class="h-[6px] w-full overflow-hidden rounded-full bg-black/10">
-                <div data-progress-bar class="h-full rounded-full bg-accent transition-[width] duration-300" style="width:20%"></div>
+                <div data-progress-bar class="h-full rounded-full bg-accent transition-[width] duration-300" style="width:50%"></div>
               </div>
             </div>
 
@@ -102,55 +102,25 @@ const contactRows = [
               </div>
             </fieldset>
 
-            <!-- Schritt 2: Strecke -->
-            <fieldset data-step class="m-0 border-0 p-0">
-              <legend class="mb-3 block text-[19px] font-bold">Von wo, nach wo?</legend>
-              <div class="grid grid-cols-2 gap-4 max-[560px]:grid-cols-1">
-                <input name="von_plz" inputmode="numeric" placeholder="Von PLZ / Ort" class="field" />
-                <input name="nach_plz" inputmode="numeric" placeholder="Nach PLZ / Ort" class="field" />
-              </div>
-              <p class="mt-2 text-sm text-muted">Bei einer Entrümpelung genügt die Adresse des Objekts.</p>
-            </fieldset>
-
-            <!-- Schritt 3: Termin & Umfang -->
-            <fieldset data-step class="m-0 border-0 p-0">
-              <legend class="mb-3 block text-[19px] font-bold">Wann & wie groß?</legend>
-              <label class="mb-1 block text-sm font-medium text-muted" for="wunschtermin">Wunschtermin (optional)</label>
-              <input id="wunschtermin" type="date" name="wunschtermin" class="field mb-4 text-muted" />
-              <select name="umfang" class="field" aria-label="Umfang">
-                <option value="">Umfang wählen …</option>
-                <option>1–2 Zimmer</option>
-                <option>3–4 Zimmer</option>
-                <option>5+ Zimmer / Haus</option>
-                <option>Gewerbe / Büro</option>
-                <option>Noch unklar</option>
-              </select>
-            </fieldset>
-
-            <!-- Schritt 4: Kontaktdaten -->
+            <!-- Schritt 2: Kontaktdaten (inkl. Einwilligung – kein eigener Schritt mehr) -->
             <fieldset data-step class="m-0 border-0 p-0">
               <legend class="mb-3 block text-[19px] font-bold">Wie erreichen wir Sie?</legend>
               <div class="grid gap-4">
                 <input name="name" autocomplete="name" placeholder="Name" required class="field" />
-                <div class="grid grid-cols-2 gap-4 max-[560px]:grid-cols-1">
-                  <input name="telefon" type="tel" autocomplete="tel" placeholder="Telefon" required class="field" />
-                  <input name="email" type="email" autocomplete="email" placeholder="E-Mail" required class="field" />
-                </div>
-                <textarea name="nachricht" rows="3" placeholder="Ihre Nachricht (optional)" class="field resize-y"></textarea>
+                <input name="telefon" type="tel" autocomplete="tel" placeholder="Telefonnummer" required class="field" />
+                <input name="email" type="email" autocomplete="email" placeholder="E-Mail (optional)" class="field" />
+                <textarea name="nachricht" rows="3" placeholder="Worum geht es genau? Gerne Größe, Termin und Adressen (optional)" class="field resize-y"></textarea>
               </div>
-            </fieldset>
-
-            <!-- Schritt 5: Bestätigung -->
-            <fieldset data-step class="m-0 border-0 p-0">
-              <legend class="mb-3 block text-[19px] font-bold">Fast geschafft</legend>
-              <label class="flex items-start gap-2.5 text-sm text-muted">
+              <label class="mt-4 flex items-start gap-2.5 text-sm text-muted">
                 <input type="checkbox" name="datenschutz" required class="mt-[3px]" />
                 <span>Ich habe die <a href="/datenschutz">Datenschutzerklärung</a> gelesen und stimme der Verarbeitung meiner Daten zu.</span>
               </label>
             </fieldset>
 
-            <!-- Navigation -->
-            <div class="mt-2 flex items-center gap-3">
+            <!-- Navigation. Auf schmalen Displays gestapelt: der Haupt-Button
+                 bekommt die volle Breite, "Zurück" rutscht darunter. Nebeneinander
+                 wurde "Angebot anfordern" sonst rechts abgeschnitten. -->
+            <div class="mt-2 flex items-center gap-3 max-[560px]:flex-col-reverse max-[560px]:items-stretch">
               <button type="button" data-prev hidden class="btn !bg-white !px-5 !py-3 !text-ink">← Zurück</button>
               <button type="button" data-next class="btn btn-accent flex-1 max-[560px]:flex-none">
                 Weiter <span class="arr text-[19px]">→</span>
