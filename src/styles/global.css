@@ -10,7 +10,7 @@
    die automatisch der aktiven Farbwelt folgen.
    ========================================================= */
 :root {
-  --cream:#FBF5EC; --accent:#E87B2E; --accent-dark:#D26A22;
+  --cream:#FFFFFF; --accent:#E87B2E; --accent-dark:#D26A22;
   --espresso:#2A2019; --ink:#241D17; --muted:#756A61;
   --tint:#FBEEE0;
   --accent-text:#E87B2E;
