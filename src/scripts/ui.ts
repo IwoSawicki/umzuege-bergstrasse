@@ -4,6 +4,8 @@
  * jeweiligen Elemente im DOM vorhanden sind).
  */
 
+import { trackCall } from './track';
+
 const reduceMotion =
   typeof window !== 'undefined' &&
   window.matchMedia &&
@@ -252,7 +254,27 @@ function initRevealAndParallax() {
   setTimeout(() => revealEls.forEach(show), 1800); // Sicherheitsnetz
 }
 
+/**
+ * Klicks auf Telefonnummern messen. Bei Umzugsanfragen wird deutlich
+ * häufiger angerufen als das Formular ausgefüllt – ohne diese Messung
+ * fehlt in Google Ads der grösste Teil der Conversions.
+ */
+function initCallTracking() {
+  document.addEventListener('click', (e) => {
+    const link = (e.target as HTMLElement | null)?.closest?.('a[href^="tel:"]');
+    if (!link) return;
+    const ort =
+      link.closest('nav') ? 'navigation'
+      : link.closest('footer') ? 'footer'
+      : link.closest('[data-mobile-cta]') ? 'mobile-leiste'
+      : link.closest('#kontakt') ? 'kontakt'
+      : 'seite';
+    trackCall(ort);
+  });
+}
+
 function init() {
+  initCallTracking();
   initMenu();
   initTabs();
   initFaq();

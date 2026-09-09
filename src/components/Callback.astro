@@ -76,6 +76,7 @@ import { SITE } from '../config/site';
 </section>
 
 <script>
+  import { trackLead } from '../scripts/track';
   function initCallback() {
     document.querySelectorAll<HTMLFormElement>('[data-cb-form]').forEach((form) => {
       const wrap = form.parentElement;
@@ -99,6 +100,7 @@ import { SITE } from '../config/site';
             headers: { Accept: 'application/json' },
           });
           if (!res.ok) throw new Error('HTTP ' + res.status);
+          trackLead('rueckruf');
           form.style.display = 'none';
           if (success) success.hidden = false;
         } catch {

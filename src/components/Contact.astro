@@ -213,6 +213,7 @@ const contactRows = [
 </style>
 
 <script>
+  import { trackLead } from '../scripts/track';
   function initQuoteForm() {
     document.querySelectorAll<HTMLFormElement>('[data-quote-form]').forEach((form) => {
       const steps = Array.from(form.querySelectorAll<HTMLElement>('[data-step]'));
@@ -310,6 +311,7 @@ const contactRows = [
             headers: { Accept: 'application/json' },
           });
           if (!res.ok) throw new Error('HTTP ' + res.status);
+          trackLead('anfrageformular');
           form.style.display = 'none';
           if (progress) progress.hidden = true;
           if (success) success.hidden = false;
