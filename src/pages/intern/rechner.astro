@@ -47,11 +47,26 @@ const objekte = [
     />
   </head>
   <body class="rechner">
-    <div class="wrap-r">
+    <!-- Sperre. Der Inhalt startet mit hidden und wird erst per JavaScript
+         freigegeben – ohne JavaScript bleibt die Seite leer. -->
+    <div class="gate" id="gate">
+      <form class="gate-card" id="gate-form">
+        <div class="gate-mark" aria-hidden="true">UB</div>
+        <label class="gate-label" for="pin">Vier Zahlen eingeben</label>
+        <input
+          id="pin" type="password" inputmode="numeric" pattern="[0-9]*"
+          maxlength="4" autocomplete="off" autofocus
+          aria-describedby="gate-msg"
+        />
+        <p class="gate-msg" id="gate-msg" role="status">Der Code bleibt auf diesem Gerät gespeichert.</p>
+      </form>
+    </div>
+
+    <div class="wrap-r" id="inhalt" hidden>
       <header class="head-r">
-        <p class="eyebrow-r">Umzüge Bergstraße · nur intern</p>
+        <p class="eyebrow-r" id="eyebrow">Umzüge Bergstraße · nur intern</p>
         <h1>Festpreis in 60&nbsp;Sekunden</h1>
-        <p class="sub-r">
+        <p class="sub-r" id="sub">
           Angaben aus der Besichtigung eintragen, Preis ablesen. Unten steht, was nach Löhnen,
           Fahrzeug und Entsorgung übrig bleibt.
         </p>
@@ -128,13 +143,19 @@ const objekte = [
         <div class="lbl-r">Angebotspreis, brutto</div>
         <div class="price-r" id="preis">1.780 €</div>
         <div class="note-r" id="preis-note">19 Mannstunden · 1 Einsatztag · inkl. 19 % MwSt.</div>
-        <p class="say-r">
+        <p class="say-r" id="say">
           Am Telefon: <strong id="satz">„Für Ihre 3-Zimmer-Wohnung liegen wir bei 1.780 € –
           als Festpreis, nach der Besichtigung schriftlich."</strong>{' '}Keine Spanne nennen,
           keine Stundensätze.
         </p>
       </div>
 
+      <button class="toggle-r" id="toggle" type="button" aria-expanded="true" aria-controls="intern-bereich">
+        <span id="toggle-text">Interne Zahlen ausblenden</span>
+        <span class="toggle-ico" aria-hidden="true">▾</span>
+      </button>
+
+      <div id="intern-bereich">
       <section class="intern-r" aria-label="Interne Kontrolle">
         <div class="intern-head">
           <span>Intern · nicht zeigen</span>
@@ -182,7 +203,13 @@ const objekte = [
         <button class="reset-r" id="reset" type="button">Auf Startwerte zurücksetzen</button>
       </details>
 
-      <footer class="foot-r">
+      </div>
+
+      <div class="lock-row">
+        <button class="reset-r" id="sperren" type="button">Sperren</button>
+      </div>
+
+      <footer class="foot-r" id="foot">
         Interne Seite · nicht verlinkt, nicht indexiert · Preis erst nach Besichtigung verbindlich
       </footer>
     </div>
@@ -214,6 +241,55 @@ const objekte = [
         padding: 0 16px calc(40px + env(safe-area-inset-bottom));
       }
       .wrap-r { max-width: 720px; margin-inline: auto; }
+
+      /* Sperrbildschirm */
+      .gate {
+        position: fixed; inset: 0; z-index: 50;
+        display: flex; align-items: center; justify-content: center; padding: 24px;
+        background: var(--r-bg);
+      }
+      .gate[hidden] { display: none; }
+      .gate-card {
+        width: 100%; max-width: 300px; text-align: center;
+        display: flex; flex-direction: column; align-items: center; gap: 14px;
+      }
+      .gate-mark {
+        width: 54px; height: 54px; border-radius: 14px;
+        background: var(--r-accent); color: var(--r-bg);
+        display: grid; place-items: center;
+        font-weight: 800; font-size: 19px; letter-spacing: .04em;
+      }
+      .gate-label { font-weight: 700; font-size: 16px; color: var(--r-text); }
+      #pin {
+        width: 100%; font: inherit; font-size: 30px; font-weight: 700;
+        letter-spacing: .5em; text-indent: .5em; text-align: center;
+        background: var(--r-surface); color: var(--r-text);
+        border: 1.5px solid var(--r-rule); border-radius: 12px; padding: 14px 10px;
+      }
+      #pin:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 2px; border-color: var(--r-accent); }
+      .gate-msg { margin: 0; font-size: 13.5px; color: var(--r-muted); min-height: 2.6em; }
+      .gate-msg.fehler { color: var(--r-bad); }
+      .gate-card.schuettel { animation: schuettel .3s; }
+      @keyframes schuettel {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-7px); }
+        75% { transform: translateX(7px); }
+      }
+
+      /* Aufklappen der internen Zahlen */
+      .toggle-r {
+        display: flex; align-items: center; justify-content: space-between; gap: 12px;
+        width: 100%; margin-top: 22px; cursor: pointer;
+        font: inherit; font-size: 14.5px; font-weight: 700; color: var(--r-muted);
+        background: var(--r-surface); border: 1px solid var(--r-rule);
+        border-radius: 12px; padding: 13px 16px;
+      }
+      .toggle-r:hover { color: var(--r-text); border-color: var(--r-muted); }
+      .toggle-r:focus-visible { outline: 2px solid var(--r-accent); outline-offset: 2px; }
+      .toggle-ico { transition: transform .2s; }
+      .toggle-r[aria-expanded='false'] .toggle-ico { transform: rotate(-90deg); }
+      #intern-bereich[hidden] { display: none; }
+      .lock-row { margin-top: 22px; }
 
       .head-r { padding: 30px 0 18px; }
       .eyebrow-r {
@@ -287,7 +363,7 @@ const objekte = [
 
       /* Interne Kontrolle */
       .intern-r {
-        margin-top: 22px; border: 1px solid var(--r-rule);
+        margin-top: 10px; border: 1px solid var(--r-rule);
         border-radius: 14px; overflow: hidden; background: var(--r-surface);
       }
       .intern-head {
@@ -345,7 +421,17 @@ const objekte = [
 
     <script is:inline>
       (function () {
+        // ---------------------------------------------------------------
+        // Zugangscode. Hier aendern, wenn ein anderer Code gewuenscht ist.
+        // Wichtig: Das ist ein Sichtschutz, kein Schutz gegen jemanden, der
+        // sich auskennt – die Seite wird als statische Datei ausgeliefert.
+        // Echten Schutz gaebe es nur serverseitig (Basic Auth im nginx).
+        // ---------------------------------------------------------------
+        var CODE = '4444';
+
         var KEY = 'ub-rechner-annahmen';
+        var KEY_AUF = 'ub-rechner-offen';
+        var KEY_ZUGANG = 'ub-rechner-zugang';
         var DEF = { vk: 60, lohn: 16, fzg: 120, ents: 42, aufschlag: 35, dbtag: 600, min: 450 };
         var mode = 'umzug';
         var flags = { pack: false, hvz: false, kueche: false, messie: false, besen: true, hvz2: false };
@@ -508,6 +594,93 @@ const objekte = [
           speichern();
           rechnen();
         });
+
+        // ---------- Sperre ----------
+        var gate = $('gate'), pin = $('pin'), msg = $('gate-msg'), inhalt = $('inhalt');
+
+        function freigeben() {
+          gate.hidden = true;
+          inhalt.hidden = false;
+        }
+        function sperren() {
+          try { localStorage.removeItem(KEY_ZUGANG); } catch (e) {}
+          inhalt.hidden = true;
+          gate.hidden = false;
+          pin.value = '';
+          msg.className = 'gate-msg';
+          msg.textContent = 'Der Code bleibt auf diesem Gerät gespeichert.';
+          pin.focus();
+        }
+        function pruefen() {
+          if (pin.value === CODE) {
+            try { localStorage.setItem(KEY_ZUGANG, CODE); } catch (e) {}
+            freigeben();
+            return;
+          }
+          msg.className = 'gate-msg fehler';
+          msg.textContent = 'Falscher Code. Nochmal versuchen.';
+          pin.value = '';
+          var card = document.getElementById('gate-form');
+          card.classList.remove('schuettel');
+          void card.offsetWidth;
+          card.classList.add('schuettel');
+          pin.focus();
+        }
+
+        pin.addEventListener('input', function () {
+          pin.value = pin.value.replace(/\D/g, '').slice(0, 4);
+          if (msg.className.indexOf('fehler') > -1 && pin.value.length) {
+            msg.className = 'gate-msg';
+            msg.textContent = 'Der Code bleibt auf diesem Gerät gespeichert.';
+          }
+          if (pin.value.length === 4) pruefen();
+        });
+        $('gate-form').addEventListener('submit', function (e) { e.preventDefault(); pruefen(); });
+        $('sperren').addEventListener('click', sperren);
+
+        var frei = false;
+        try { frei = localStorage.getItem(KEY_ZUGANG) === CODE; } catch (e) {}
+        if (frei) freigeben(); else pin.focus();
+
+        // ---------- Interne Zahlen auf-/zuklappen ----------
+        var toggle = $('toggle'), bereich = $('intern-bereich'), tText = $('toggle-text');
+        var annBlock = document.querySelector('.ann-r');
+
+        // Zugeklappt heisst: das Handy kann dem Kunden gezeigt werden.
+        // Deshalb verschwinden auch der erklaerende Untertitel und der
+        // Gespraechsleitfaden – beide verraten die interne Sicht.
+        var eyebrow = $('eyebrow'), sub = $('sub'), say = $('say'), foot = $('foot');
+        var TXT = {
+          intern: {
+            eyebrow: 'Umzüge Bergstraße · nur intern',
+            sub: 'Angaben aus der Besichtigung eintragen, Preis ablesen. Unten steht, was nach Löhnen, Fahrzeug und Entsorgung übrig bleibt.',
+            foot: 'Interne Seite · nicht verlinkt, nicht indexiert · Preis erst nach Besichtigung verbindlich',
+          },
+          kunde: {
+            eyebrow: 'Umzüge Bergstraße',
+            sub: 'Ihr unverbindliches Festpreisangebot auf Basis der Besichtigung.',
+            foot: 'Umzüge Bergstraße · Festpreis nach kostenloser Besichtigung · keine versteckten Kosten',
+          },
+        };
+
+        function setOffen(offen) {
+          var t = offen ? TXT.intern : TXT.kunde;
+          toggle.setAttribute('aria-expanded', String(offen));
+          bereich.hidden = !offen;
+          if (annBlock) annBlock.hidden = !offen;
+          if (say) say.hidden = !offen;
+          eyebrow.textContent = t.eyebrow;
+          sub.textContent = t.sub;
+          if (foot) foot.textContent = t.foot;
+          tText.textContent = offen ? 'Interne Zahlen ausblenden' : 'Interne Zahlen anzeigen';
+          try { localStorage.setItem(KEY_AUF, offen ? '1' : '0'); } catch (e) {}
+        }
+        toggle.addEventListener('click', function () {
+          setOffen(toggle.getAttribute('aria-expanded') !== 'true');
+        });
+        var offen = true;
+        try { offen = localStorage.getItem(KEY_AUF) !== '0'; } catch (e) {}
+        setOffen(offen);
 
         laden();
         rechnen();
