@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
 
+# Interne Werkzeuge – nicht crawlen
+Disallow: /intern/
+
 # Sitemap (Domain in astro.config.mjs / SITE_URL pflegen)
 Sitemap: https://umzuege-bergstrasse.de/sitemap-index.xml

@@ -16,8 +16,8 @@ export default defineConfig({
     sitemap({
       changefreq: 'weekly',
       priority: 0.7,
-      // Rechtsseiten (noindex) aus der Sitemap ausschließen
-      filter: (page) => !/\/(impressum|datenschutz)\/?$/.test(page),
+      // Rechtsseiten und interne Seiten (beide noindex) ausschließen
+      filter: (page) => !/\/(impressum|datenschutz)\/?$/.test(page) && !/\/intern\//.test(page),
     }),
   ],
   vite: {
