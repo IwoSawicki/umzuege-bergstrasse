@@ -32,8 +32,10 @@ export const SITE = {
   },
 
   /** Zieladresse für Formular-Anfragen (FormSubmit.co-Endpunkt).
-      Erste Anfrage löst eine Aktivierungs-Mail aus – einmal bestätigen! */
-  leadEmail: 'iwo@stolz-marketing.de',
+      Nach jeder Änderung dieser Adresse verlangt FormSubmit eine neue
+      Aktivierung: erste Testanfrage über JEDES Formular abschicken und
+      die Bestätigungsmail anklicken. Vorher kommt nichts an. */
+  leadEmail: 'kontakt@umzuege-bergstrasse.de',
 
   /** Google-IDs – eintragen, sobald vorhanden. Solange leer, lädt nichts. */
   analytics: {
