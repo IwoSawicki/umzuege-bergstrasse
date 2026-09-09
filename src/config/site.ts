@@ -85,8 +85,8 @@ export const SITE = {
     brandOf: 'Stolz Marketing, Inh. Iwo Sawicki',
     owner: 'Iwo Sawicki',
     vatId: 'DE350093785',
-    /** Hosting-Anbieter für die Datenschutzerklärung – [TODO] eintragen */
-    host: '[HOSTING-ANBIETER, z. B. Hetzner Online GmbH, Industriestr. 25, 91710 Gunzenhausen]',
+    /** Hosting-Anbieter für die Datenschutzerklärung (Auftragsverarbeiter) */
+    host: 'Hetzner Online GmbH, Industriestr. 25, 91710 Gunzenhausen, Deutschland',
   },
 } as const;
 
