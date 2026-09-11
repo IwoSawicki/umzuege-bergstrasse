@@ -56,7 +56,7 @@ Fragen beantworten wir bei der kostenlosen Besichtigung – danach steht Ihr Pre
 ## Der südlichste Punkt – und trotzdem vor der Haustür
 
 Wald-Michelbach ist der am weitesten entfernte Ort in unserem Gebiet, und wir sagen das
-offen. Von unserem Sitz in Reichelsheim geht es über die Höhen des Odenwalds hierher,
+offen. Von unserem Standort in Reichelsheim geht es über die Höhen des Odenwalds hierher,
 von der Bergstraße das Weschnitztal herauf.
 
 Dass wir trotzdem hier anbieten, hat einen einfachen Grund: Der Überwald gehört zum

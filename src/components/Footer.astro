@@ -61,6 +61,12 @@ const year = new Date().getFullYear();
           <a href={`tel:${SITE.contact.phoneHref}`} class="foot-link text-white/75" data-contact="phone">{SITE.contact.phone}</a>
           <a href={`mailto:${SITE.contact.email}`} class="foot-link text-white/75" data-contact="email">{SITE.contact.email}</a>
           {SITE.showAddress && <span data-contact="address">{address}</span>}
+          {/* Nur Orte, keine Strasse – die vollstaendige Anschrift steht im Impressum. */}
+          {SITE.standorte.length > 0 && (
+            <span class="text-white/60">
+              Standorte: {SITE.standorte.join(' & ')}
+            </span>
+          )}
           {/* Erscheinen automatisch, sobald in site.ts eine URL hinterlegt ist.
               Leere Buttons mit href="#" schaden mehr als sie nutzen. */}
           {(SITE.social.instagram || SITE.social.facebook) && (

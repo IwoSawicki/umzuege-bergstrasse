@@ -46,7 +46,7 @@ fahren wir die Strecke ohnehin jeden Tag.
 ## Aus beiden Richtungen kurze Wege
 
 Rimbach erreichen wir von zwei Seiten, und das ist für die Terminplanung mehr wert, als
-es klingt. Von unserem Sitz in Reichelsheim geht es über Fürth das Weschnitztal
+es klingt. Von unserem Standort in Reichelsheim geht es über Fürth das Weschnitztal
 hinunter; von der Bergstraße kommt man über Birkenau und Mörlenbach herauf.
 
 Praktisch heißt das: Wir sind hier ohnehin unterwegs. Ein Besichtigungstermin in Rimbach

@@ -57,6 +57,14 @@ export const SITE = {
     country: 'DE',
   },
 
+  /** Standorte für die Anzeige auf der Seite – bewusst OHNE Strasse.
+      Die vollstaendige Anschrift steht nur im Impressum (dort Pflicht) und
+      absichtlich nicht im JSON-LD. Wer sie sucht, findet sie dort.
+      Ein Ort darf hier nur stehen, wenn es ihn wirklich gibt: eine erfundene
+      Niederlassung ist nach § 5 UWG abmahnbar und kostet bei Google das
+      Unternehmensprofil. */
+  standorte: ['Reichelsheim', 'Bensheim'],
+
   /** Kein Ladenlokal → keine Geo-Koordinaten (Adresse soll nicht sichtbar sein). */
   geo: null as { latitude: number; longitude: number } | null,
 

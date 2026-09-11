@@ -51,8 +51,8 @@ wird, nützt niemandem – Ihnen am wenigsten.
 ## Lindenfels liegt genau in der Mitte
 
 Für uns ist Lindenfels kein Randgebiet, sondern der Ort zwischen unseren beiden Seiten.
-Unser Sitz liegt in Reichelsheim, und dessen Gemarkung grenzt im Westen direkt an
-Lindenfels. Nach Bensheim hinunter an die Bergstraße sind es von hier keine zwanzig
+Einer unserer beiden Standorte liegt in Reichelsheim, und dessen Gemarkung grenzt im
+Westen direkt an Lindenfels. Nach Bensheim hinunter an die Bergstraße sind es von hier keine zwanzig
 Kilometer über die Höhe.
 
 Wer von Lindenfels aus umzieht, zieht meistens in genau eine dieser beiden Richtungen:
