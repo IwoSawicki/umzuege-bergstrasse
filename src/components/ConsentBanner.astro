@@ -12,6 +12,7 @@
 import { SITE } from '../config/site';
 const gaId = SITE.analytics.gaId;
 const adsId = SITE.analytics.adsId;
+const clarityId = SITE.analytics.clarityId;
 ---
 <div
   id="consent-banner"
@@ -24,9 +25,8 @@ const adsId = SITE.analytics.adsId;
   <div class="rounded-[18px] border border-[rgba(42,32,25,.1)] bg-white p-4 shadow-[0_14px_44px_rgba(42,32,25,.22)] sm:p-5">
     <h2 class="m-0 mb-1 text-[15.5px] font-bold">🍪 Hat jemand Cookies gesagt?</h2>
     <p class="m-0 mb-3 text-[13px] leading-[1.5] text-muted">
-      Leider nur die digitalen: Wir nutzen Cookies – mit Ihrer Einwilligung – für Statistik
-      (Google Analytics) und Werbung (Google Ads). Details in der{' '}
-      <a href="/datenschutz">Datenschutzerklärung</a>.
+      Wir verwenden Cookies, um auszuwerten, wie unsere Website genutzt wird{adsId ? ' und um unsere Werbung zu messen' : ''}.
+      Details in der{' '}<a href="/datenschutz">Datenschutzerklärung</a>.
     </p>
     <div class="flex flex-wrap items-center gap-2">
       <button type="button" data-consent-accept class="btn btn-accent !px-4 !py-2 !text-[13.5px]">Alle akzeptieren</button>
@@ -35,7 +35,7 @@ const adsId = SITE.analytics.adsId;
   </div>
 </div>
 
-<script is:inline define:vars={{ gaId, adsId }}>
+<script is:inline define:vars={{ gaId, adsId, clarityId }}>
   (function () {
     var KEY = 'ub-consent';
     var banner = document.getElementById('consent-banner');
@@ -61,6 +61,18 @@ const adsId = SITE.analytics.adsId;
     }
 
     var scriptsLoaded = false;
+
+    // Microsoft Clarity: Heatmaps und Sitzungsaufzeichnung. Setzt Cookies und
+    // ist damit einwilligungspflichtig – wird deshalb erst hier geladen.
+    function loadClarity() {
+      if (!clarityId || window.clarity) return;
+      (function (c, l, a, r, i, t, y) {
+        c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+        t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+        y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+      })(window, document, 'clarity', 'script', clarityId);
+    }
+
     function loadGoogleScripts() {
       if (scriptsLoaded) return;
       var primaryId = gaId || adsId;
@@ -76,15 +88,18 @@ const adsId = SITE.analytics.adsId;
     }
 
     function applyConsent(granted) {
-      if (granted) {
-        gtag('consent', 'update', {
-          ad_storage: 'granted',
-          ad_user_data: 'granted',
-          ad_personalization: 'granted',
-          analytics_storage: 'granted',
-        });
-        loadGoogleScripts();
-      }
+      if (!granted) return;
+      // Werbe-Einwilligung nur erteilen, wenn tatsächlich geworben wird –
+      // sonst deckt der Bannertext sie nicht ab.
+      var werbung = adsId ? 'granted' : 'denied';
+      gtag('consent', 'update', {
+        ad_storage: werbung,
+        ad_user_data: werbung,
+        ad_personalization: werbung,
+        analytics_storage: 'granted',
+      });
+      loadGoogleScripts();
+      loadClarity();
     }
 
     function show() { banner.hidden = false; }

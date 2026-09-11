@@ -37,10 +37,13 @@ export const SITE = {
       die Bestätigungsmail anklicken. Vorher kommt nichts an. */
   leadEmail: 'kontakt@umzuege-bergstrasse.de',
 
-  /** Google-IDs – eintragen, sobald vorhanden. Solange leer, lädt nichts. */
+  /** Mess- und Werbe-IDs. Alles lädt erst nach Einwilligung im Banner;
+      leere Felder laden gar nicht. Sobald adsId gesetzt ist, nennt der
+      Banner zusätzlich die Werbung und erteilt auch die Werbe-Einwilligung. */
   analytics: {
     gaId: 'G-6YQ8075QM0', // Google Analytics 4
     adsId: '', // z. B. 'AW-XXXXXXXXX' (Google Ads Conversion)
+    clarityId: 'ygkxbjirrq', // Microsoft Clarity (Heatmaps, Sitzungsaufzeichnung)
   },
 
   /** Adresse wird auf der Seite NICHT angezeigt (showAddress:false) – nur im
