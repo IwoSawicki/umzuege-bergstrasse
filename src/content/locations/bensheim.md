@@ -19,15 +19,23 @@ Ob Umzug innerhalb von Bensheim, in die Region oder darüber hinaus – als regi
 Betrieb kennen wir die Stadt wie kaum ein überregionaler Anbieter. Vom Altbau in der
 Innenstadt bis zum Einfamilienhaus in den Stadtteilen: Wir planen Ihren Umzug passgenau.
 
-## Unsere Leistungen in Bensheim
+## Alle neun Stadtteile
 
-- **Privatumzüge** innerhalb von Bensheim und in die ganze Region
-- **Firmen- und Büroumzüge** mit minimaler Ausfallzeit
-- **Entrümpelung & Haushaltsauflösung** – diskret und besenrein
-- **Fachgerechte Entsorgung** mit Wertanrechnung
+Zu Bensheim gehören Auerbach, Fehlheim, Gronau, Hochstädten, Langwaden, Schönberg,
+Schwanheim, Wilmshausen und Zell. Sie unterscheiden sich für einen Umzug deutlich: Zell,
+Schönberg und Hochstädten liegen am Hang zum Odenwald mit teils schmalen Zufahrten,
+während Fehlheim, Schwanheim und Langwaden in der Rheinebene liegen und fast überall
+direkt anfahrbar sind.
 
-## Warum Kunden aus Bensheim uns wählen
+Alle neun gehören zu unserem normalen Einsatzgebiet – eine Anfahrtspauschale für den
+eigenen Stadtteil gibt es bei uns nicht.
 
-Kurze Wege, feste Ansprechpartner und ein verbindlicher Festpreis nach kostenloser
-Besichtigung. Wir behandeln Ihr Eigentum mit dem Respekt, den es verdient – dafür geben
-wir als regionaler Betrieb jeden Tag unser Bestes.
+## Halteverbot in der Innenstadt rechtzeitig planen
+
+In der Bensheimer Innenstadt ist der Parkraum knapp. Ohne eingerichtete Halteverbotszone
+steht der Umzugswagen im Zweifel 60 Meter entfernt – und lange Tragewege kosten Zeit und
+damit Geld.
+
+Die Zone muss bei der Stadt beantragt werden, und zwar nicht erst in der Umzugswoche.
+Wir sprechen das bei der kostenlosen Besichtigung an und kümmern uns auf Wunsch darum,
+damit am Umzugstag der Platz vor Ihrer Tür frei ist.

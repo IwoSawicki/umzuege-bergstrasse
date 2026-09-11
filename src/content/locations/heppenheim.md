@@ -19,14 +19,19 @@ Heppenheim mit seiner historischen Altstadt stellt bei Umzügen besondere Anford
 enge Gassen, schwierige Zufahrten, wenig Parkraum. Als regionaler Betrieb sind wir darauf
 eingestellt und sorgen dafür, dass Ihr Umzug reibungslos abläuft.
 
-## Unsere Leistungen in Heppenheim
+## Altstadt: Was wir vorher klären
 
-- **Privatumzüge** in Heppenheim und Umgebung
-- **Firmen- und Büroumzüge** termintreu geplant
-- **Entrümpelung & Haushaltsauflösung** mit Fingerspitzengefühl
-- **Fachgerechte Entsorgung** inklusive Wertanrechnung
+Rund um den Marktplatz und in den Gassen der Altstadt kommt ein großer Umzugswagen nicht
+überall bis vor die Haustür. Dazu kommen alte Treppenhäuser, die eng und gewendelt sind –
+ein Kleiderschrank, der oben ankommen soll, muss mitunter zerlegt oder über den Balkon
+gehoben werden.
 
-## Fairer Festpreis
+Genau deshalb besichtigen wir vorher kostenlos. Wir sehen uns Treppenhaus, Zufahrt und
+Parksituation an und sagen Ihnen, wie wir es lösen – bevor ein Preis auf dem Papier
+steht, nicht danach.
 
-Nach einer kostenlosen Besichtigung erhalten Sie Ihr verbindliches Festpreisangebot –
-ohne versteckte Kosten. Ihr Hab und Gut behandeln wir mit größter Sorgfalt.
+## Halteverbotszone rechtzeitig beantragen
+
+Für Umzüge in der Heppenheimer Innenstadt lohnt sich fast immer eine Halteverbotszone.
+Sie muss bei der Stadt beantragt und rechtzeitig aufgestellt werden – planen Sie dafür
+einige Wochen Vorlauf ein. Auf Wunsch übernehmen wir das für Sie.

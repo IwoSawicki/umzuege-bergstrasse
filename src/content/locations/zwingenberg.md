@@ -19,14 +19,18 @@ Als älteste Stadt an der Bergstraße hat Zwingenberg einen charmanten, aber auc
 anspruchsvollen Altstadtkern. Als regionaler Betrieb sind wir hier regelmäßig unterwegs
 und wissen, worauf es beim Umzug in engen Lagen ankommt.
 
-## Unsere Leistungen in Zwingenberg
+## Die Altstadt am Hang
 
-- **Privatumzüge** in Zwingenberg und der ganzen Region
-- **Firmen- und Büroumzüge** mit minimaler Ausfallzeit
-- **Entrümpelung & Haushaltsauflösung** – einfühlsam und diskret
-- **Fachgerechte Entsorgung** mit Wertanrechnung
+Zwingenbergs historischer Kern liegt am Fuß des Melibokus, und das merkt man: Die Gassen
+sind eng, steigen teils spürbar an und bieten wenig Platz zum Halten. Ein 7,5-Tonner kommt
+dort nicht überall hin.
 
-## Fairer Festpreis
+Wir klären das bei der kostenlosen Besichtigung. Wenn nötig, laden wir mit einem kleineren
+Fahrzeug im Pendelverkehr – das planen wir vorher ein, und es ändert nichts an Ihrem
+Festpreis.
 
-Nach der kostenlosen Besichtigung steht Ihr verbindliches Festpreisangebot – ohne
-versteckte Kosten. Ihr Hab und Gut behandeln wir mit größter Sorgfalt.
+## Kurze Wege nach Bensheim und Auerbach
+
+Zwingenberg liegt nur wenige Kilometer nördlich von Bensheim. Umzüge innerhalb dieses
+Abschnitts der Bergstraße sind für uns Alltag – kurze Anfahrt, kein Aufschlag, und bei
+kleineren Umzügen lässt sich oft alles an einem Vormittag erledigen.

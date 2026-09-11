@@ -19,14 +19,18 @@ Weinheim, die „Zwei-Burgen-Stadt“ an der Bergstraße, ist fester Teil unsere
 Einsatzgebiets. Ob Wohnung in der Altstadt oder Haus am Hang – wir planen Ihren Umzug
 sorgfältig und führen ihn zuverlässig durch.
 
-## Unsere Leistungen in Weinheim
+## Altstadt und Hanglage – zwei sehr verschiedene Umzüge
 
-- **Privatumzüge** – lokal in Weinheim und überregional
-- **Firmen- und Büroumzüge** mit klarer Zeitplanung
-- **Entrümpelung & Haushaltsauflösung** – diskret und besenrein
-- **Fachgerechte Entsorgung** mit Wertanrechnung
+Weinheim zerfällt für uns in zwei Welten. In der Altstadt zwischen Marktplatz und
+Gerberbachviertel sind die Gassen eng, der Parkraum knapp und die Treppenhäuser alt –
+hier entscheidet die Vorbereitung über den Umzugstag.
 
-## Alles aus einer Hand
+An den Hängen unterhalb von Windeck und Wachenburg ist das Gegenteil das Problem: breite
+Straßen, aber steile Grundstückszufahrten, Außentreppen und Garagen, die zu tief für
+einen Umzugswagen sind. Auch das ist lösbar – man muss es nur vorher wissen.
 
-Von der kostenlosen Besichtigung über den Festpreis bis zur besenreinen Übergabe
-kümmern wir uns um alles – zuverlässig, fair und mit größter Sorgfalt.
+## Umzug von oder nach Mannheim und Heidelberg
+
+Viele Umzüge in Weinheim gehen nicht innerhalb der Stadt, sondern ins Rhein-Neckar-Gebiet.
+Mannheim und Heidelberg liegen beide in unserem normalen Einsatzgebiet – für diese
+Strecken berechnen wir keine Fernumzugspauschale.

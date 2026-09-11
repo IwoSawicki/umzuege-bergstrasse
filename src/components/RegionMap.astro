@@ -23,6 +23,14 @@ const allTowns = [
   { name: 'Bensheim', x: 206, y: 76, anchor: 'start', dx: 12, dy: 4 },
   { name: 'Heppenheim', x: 223, y: 111, anchor: 'start', dx: 11, dy: 4 },
   { name: 'Weinheim', x: 248, y: 191, anchor: 'start', dx: 11, dy: 4 },
+  /* Die Odenwald-Orte liegen weit östlich und haben lange Namen. Alle
+     gleichzeitig zu beschriften überfüllt die Karte und schiebt "Lindenfels"
+     über den rechten Rand. Sie bleiben deshalb Punkte und bekommen ihr Label
+     nur, wenn sie der hervorgehobene Ort sind (minor). Labels nach links,
+     damit sie in der viewBox (Breite 420) bleiben. */
+  { name: 'Lindenfels', x: 341, y: 71, anchor: 'middle', dx: 0, dy: -12, minor: true },
+  { name: 'Rimbach', x: 324, y: 127, anchor: 'middle', dx: 0, dy: 18, minor: true },
+  { name: 'Wald-Michelbach', x: 368, y: 170, anchor: 'end', dx: -11, dy: 4, minor: true },
 ];
 // Der hervorgehobene Ort bekommt den pulsierenden Akzent-Pin
 const towns = allTowns.map((t) => ({ ...t, home: t.name === highlight }));
@@ -35,7 +43,6 @@ const dots = [
   { name: 'Viernheim', x: 172, y: 200 },
   { name: 'Lautertal', x: 273, y: 58 },
   { name: 'Fürth', x: 358, y: 102 },
-  { name: 'Rimbach', x: 324, y: 129 },
   { name: 'Birkenau', x: 282, y: 182 },
 ];
 ---
@@ -63,9 +70,9 @@ const dots = [
   <rect width="420" height="224" fill="var(--tint)" />
 
   <!-- Einsatzgebiet -->
-  <ellipse cx="200" cy="120" rx="170" ry="95" fill="url(#rm-gebiet)" />
+  <ellipse cx="205" cy="120" rx="190" ry="102" fill="url(#rm-gebiet)" />
   <ellipse
-    cx="200" cy="120" rx="170" ry="95"
+    cx="205" cy="120" rx="190" ry="102"
     fill="none" stroke="var(--accent)" stroke-opacity=".38"
     stroke-width="1.6" stroke-dasharray="7 7"
   />
@@ -131,14 +138,17 @@ const dots = [
           <circle cx={t.x} cy={t.y} r="6.5" fill="var(--accent)" stroke="#fff" stroke-width="2.4" />
         </>
       ) : (
-        <circle cx={t.x} cy={t.y} r="5" fill="var(--espresso)" stroke="#fff" stroke-width="2.2" />
+        <circle cx={t.x} cy={t.y} r={t.minor ? 3.6 : 5} fill="var(--espresso)" stroke="#fff" stroke-width={t.minor ? 1.8 : 2.2} />
       )}
-      <text
-        x={t.x + t.dx}
-        y={t.y + t.dy}
-        text-anchor={t.anchor}
-        fill={t.home ? 'var(--accent-dark)' : 'var(--ink)'}
-      >{t.name}</text>
+      {(!t.minor || t.home) && (
+        <text
+          x={t.x + t.dx}
+          y={t.y + t.dy}
+          text-anchor={t.anchor}
+          fill={t.home ? 'var(--accent-dark)' : 'var(--ink)'}
+        >{t.name}</text>
+      )}
+      {t.minor && !t.home && <title>{t.name}</title>}
     </g>
   ))}
 </svg>
