@@ -52,3 +52,18 @@ zur Tür oder sind es 40 Meter Tragestrecke? Geht es über eine Außentreppe? Is
 Anliegerstraße so schmal, dass wir mit einem kleineren Fahrzeug pendeln müssen? Diese
 Fragen beantworten wir bei der kostenlosen Besichtigung – danach steht Ihr Preis, und er
 ändert sich nicht mehr.
+
+## Der südlichste Punkt – und trotzdem vor der Haustür
+
+Wald-Michelbach ist der am weitesten entfernte Ort in unserem Gebiet, und wir sagen das
+offen. Von unserem Sitz in Reichelsheim geht es über die Höhen des Odenwalds hierher,
+von der Bergstraße das Weschnitztal herauf.
+
+Dass wir trotzdem hier anbieten, hat einen einfachen Grund: Der Überwald gehört zum
+Kreis Bergstraße. Die Leute hier ziehen nach Weinheim, nach Bensheim, nach Mannheim –
+also genau dorthin, wo wir sowieso jeden Tag sind. Und wer aus dem Rhein-Neckar-Gebiet
+hier heraufzieht, bekommt bei uns dieselbe Strecke ohne Fernumzugszuschlag.
+
+Was wir nicht behaupten: dass wir in zehn Minuten da sind. Wir planen die Anfahrt
+realistisch ein – lieber ein ehrlicher Zeitrahmen als ein Umzugswagen, der zwei Stunden
+zu spät kommt.

@@ -41,6 +41,7 @@ export const AREAS = [
   { name: 'Fürth', slug: null },
   { name: 'Rimbach', slug: 'rimbach' },
   { name: 'Lindenfels', slug: 'lindenfels' },
+  { name: 'Reichelsheim', slug: 'reichelsheim' },
   { name: 'Wald-Michelbach', slug: 'wald-michelbach' },
   { name: 'Birkenau', slug: null },
   { name: 'Hemsbach', slug: null },

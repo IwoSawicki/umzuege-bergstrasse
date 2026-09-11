@@ -42,3 +42,16 @@ Fernumzugspauschale für 30 Kilometer.
 
 Umgekehrt gilt das genauso – wenn Sie aus Bensheim oder Heppenheim nach Rimbach ziehen,
 fahren wir die Strecke ohnehin jeden Tag.
+
+## Aus beiden Richtungen kurze Wege
+
+Rimbach erreichen wir von zwei Seiten, und das ist für die Terminplanung mehr wert, als
+es klingt. Von unserem Sitz in Reichelsheim geht es über Fürth das Weschnitztal
+hinunter; von der Bergstraße kommt man über Birkenau und Mörlenbach herauf.
+
+Praktisch heißt das: Wir sind hier ohnehin unterwegs. Ein Besichtigungstermin in Rimbach
+ist für uns kein Extraweg, für den sich erst ein großer Auftrag lohnen muss – auch eine
+Kellerentrümpelung ist es uns wert, vorbeizukommen.
+
+Auch Rimbach gehört übrigens zum Kreis Bergstraße, obwohl es mitten im Odenwald liegt.
+Der Kreis reicht vom Rhein bis hier herauf ins Weschnitztal.

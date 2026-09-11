@@ -47,3 +47,17 @@ geregnet hat.
 Wir sagen Ihnen offen, wenn ein Termin aus unserer Sicht riskant ist, und schlagen eine
 Alternative vor. Ein Umzugstag, der wegen einer vereisten Hangstraße zur halben Sache
 wird, nützt niemandem – Ihnen am wenigsten.
+
+## Lindenfels liegt genau in der Mitte
+
+Für uns ist Lindenfels kein Randgebiet, sondern der Ort zwischen unseren beiden Seiten.
+Unser Sitz liegt in Reichelsheim, und dessen Gemarkung grenzt im Westen direkt an
+Lindenfels. Nach Bensheim hinunter an die Bergstraße sind es von hier keine zwanzig
+Kilometer über die Höhe.
+
+Wer von Lindenfels aus umzieht, zieht meistens in genau eine dieser beiden Richtungen:
+hinunter an die Bergstraße oder tiefer in den Odenwald. Beides fahren wir ohnehin
+regelmäßig – ein Anfahrtszuschlag kommt bei uns in keine Richtung aufs Angebot.
+
+Nebenbei: Lindenfels gehört trotz seiner Lage mitten im Odenwald zum Kreis Bergstraße.
+Unser Name passt hier also genauer, als er auf den ersten Blick klingt.
