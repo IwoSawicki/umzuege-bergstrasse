@@ -2,6 +2,23 @@
 import { SITE, isFilled } from '../config/site';
 import RegionMap from './RegionMap.astro';
 
+interface Props {
+  /** Ist eine Leistung gesetzt, entfaellt der Schritt "Worum geht es?" –
+      die Landingpage hat die Frage durch ihre URL schon beantwortet.
+      Der Wert geht als verstecktes Feld mit, damit die Mail gleich aussieht. */
+  leistung?: 'Umzug' | 'Entrümpelung' | 'Beides';
+  heading?: string;
+  sub?: string;
+  /** Betreff der Benachrichtigungsmail – so ist die Quelle sofort erkennbar. */
+  subject?: string;
+}
+const {
+  leistung,
+  heading = 'Fordern Sie Ihr Angebot an',
+  sub = 'Zwei Schritte, keine 30 Sekunden – und ganz ohne Verpflichtung.',
+  subject = 'Neue Anfrage über umzuege-bergstrasse.de',
+} = Astro.props;
+
 const phone = SITE.contact.phone;
 const email = SITE.contact.email;
 const address = isFilled(SITE.address.street)
@@ -34,9 +51,9 @@ const contactRows = [
             Kostenloses Angebot
           </span>
           <h2 class="m-0 mb-2 text-[clamp(28px,3.6vw,42px)] font-extrabold leading-[1.1] tracking-[-.02em]">
-            Fordern Sie Ihr Angebot an
+            {heading}
           </h2>
-          <p class="m-0 mb-3 text-muted">Zwei Schritte, keine 30 Sekunden – und ganz ohne Verpflichtung.</p>
+          <p class="m-0 mb-3 text-muted">{sub}</p>
           <p class="m-0 mb-7 flex items-center gap-2 text-[15px] font-semibold text-accent-dark">
             <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
             Nur begrenzte Termine pro Woche – sichern Sie sich Ihren Wunschtermin.
@@ -65,7 +82,7 @@ const contactRows = [
             method="post"
           >
             <!-- FormSubmit-Konfiguration -->
-            <input type="hidden" name="_subject" value="Neue Anfrage über umzuege-bergstrasse.de" />
+            <input type="hidden" name="_subject" value={subject} />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="false" />
             <!-- Honeypot gegen Spam-Bots -->
@@ -81,7 +98,10 @@ const contactRows = [
               </div>
             </div>
 
-            <!-- Schritt 1: Leistung -->
+            <!-- Schritt 1: Leistung – entfaellt, wenn die Seite sie schon kennt -->
+            {leistung ? (
+              <input type="hidden" name="leistung" value={leistung} />
+            ) : (
             <fieldset data-step class="m-0 border-0 p-0">
               <legend class="mb-3 block text-[19px] font-bold">Worum geht es?</legend>
               <div class="grid gap-3">
@@ -101,6 +121,7 @@ const contactRows = [
                 ))}
               </div>
             </fieldset>
+            )}
 
             <!-- Schritt 2: Kontaktdaten (inkl. Einwilligung – kein eigener Schritt mehr) -->
             <fieldset data-step class="m-0 border-0 p-0">
@@ -217,7 +238,12 @@ const contactRows = [
   function initQuoteForm() {
     document.querySelectorAll<HTMLFormElement>('[data-quote-form]').forEach((form) => {
       const steps = Array.from(form.querySelectorAll<HTMLElement>('[data-step]'));
-      if (steps.length < 2) return;
+      if (steps.length === 0) return;
+      /* Auf den Landingpages ist die Leistung durch die Seite schon beantwortet,
+         das Formular hat dann nur einen Schritt. Der Stepper entfaellt – aber
+         AJAX-Versand, Inline-Bestaetigung und das Conversion-Event duerfen
+         NICHT entfallen, sonst misst Google Ads auf genau diesen Seiten nichts. */
+      const mitStepper = steps.length > 1;
 
       const progress = form.querySelector<HTMLElement>('[data-progress]');
       const bar = form.querySelector<HTMLElement>('[data-progress-bar]');
@@ -229,7 +255,7 @@ const contactRows = [
       const success = form.parentElement?.querySelector<HTMLElement>('[data-form-success]');
 
       form.classList.add('is-enhanced');
-      if (progress) progress.hidden = false;
+      if (progress) progress.hidden = !mitStepper;
 
       let idx = 0;
       const total = steps.length;
@@ -272,24 +298,26 @@ const contactRows = [
         render();
       };
 
-      nextBtn?.addEventListener('click', () => go(1));
-      prevBtn?.addEventListener('click', () => go(-1));
+      if (mitStepper) {
+        nextBtn?.addEventListener('click', () => go(1));
+        prevBtn?.addEventListener('click', () => go(-1));
 
-      // Auswahl-Karten (Schritt 1) → automatisch weiter (auch bei Klick auf die
-      // bereits vorausgewählte Karte)
-      steps[0].querySelectorAll<HTMLElement>('.choice-card').forEach((card) =>
-        card.addEventListener('click', () => setTimeout(() => { if (idx === 0) go(1); }, 180)),
-      );
+        // Auswahl-Karten (Schritt 1) → automatisch weiter (auch bei Klick auf die
+        // bereits vorausgewählte Karte)
+        steps[0].querySelectorAll<HTMLElement>('.choice-card').forEach((card) =>
+          card.addEventListener('click', () => setTimeout(() => { if (idx === 0) go(1); }, 180)),
+        );
 
-      // Enter = weiter (außer in Textarea)
-      form.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement)) {
-          if (idx < total - 1) {
-            e.preventDefault();
-            go(1);
+        // Enter = weiter (außer in Textarea)
+        form.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !(e.target instanceof HTMLTextAreaElement)) {
+            if (idx < total - 1) {
+              e.preventDefault();
+              go(1);
+            }
           }
-        }
-      });
+        });
+      }
 
       const errorBox = form.parentElement?.querySelector<HTMLElement>('[data-form-error]');
       form.addEventListener('submit', async (e) => {

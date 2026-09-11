@@ -23,6 +23,30 @@ const services = defineCollection({
     includes: z.array(z.string()).default([]),
     faqs: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
     draft: z.boolean().default(false),
+
+    /* ---- Landingpage-Felder (optional) ----------------------------------
+       Sind sie gesetzt, rendert die Leistungsseite im Startseiten-Layout mit
+       Bild, Kacheln und beiden Formularen. Fehlen sie, bleibt die Seite
+       schlank – so muessen nicht alle Leistungen gleich ausgebaut sein. */
+
+    /** H1 der Landingpage. Der Teil in `headlineAccent` wird orange gesetzt. */
+    headline: z.string().optional(),
+    headlineAccent: z.string().optional(),
+    /** Fliesstext unter der H1 – der wichtigste Satz der Seite. */
+    heroText: z.string().optional(),
+    /** Wert, den das Kontaktformular vorausgewaehlt mitschickt. Dadurch
+        entfaellt der Schritt "Worum geht es?" – eine Frage weniger. */
+    formLeistung: z.enum(['Umzug', 'Entrümpelung', 'Beides']).optional(),
+
+    /** Ueberschrift der orangenen Vorteils-Kachel. */
+    vorteileTitel: z.string().optional(),
+    /** Typische Faelle – die braunen Kacheln. */
+    faelle: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
+    /** Ablauf in Schritten – ersetzt den generischen Prozess der Startseite. */
+    ablauf: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
+    /** Was den Preis bestimmt. Bewusst ohne Betraege: der Festpreis entsteht
+        erst bei der Besichtigung, erfundene "ab"-Preise wuerden ihm widersprechen. */
+    preisfaktoren: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
   }),
 });
 

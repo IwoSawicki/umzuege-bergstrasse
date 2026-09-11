@@ -21,6 +21,13 @@ const benefits = [
     icon: '<path d="M12 3l9 4.5v9L12 21l-9-4.5v-9z"></path><path d="M3 7.5L12 12l9-4.5M12 12v9"></path>',
   },
 ];
+
+interface Props {
+  /** Ueberschrift der orangenen Kachel. Auf der Entruempelungs-Landingpage
+      waere "Ihr Weg zum sorgenfreien Umzug" schlicht das falsche Wort. */
+  heading?: string;
+}
+const { heading = 'Ihr Weg zum sorgenfreien Umzug' } = Astro.props;
 ---
 <section class="py-20">
   <div class="wrap">
@@ -28,7 +35,7 @@ const benefits = [
       <div class="mx-auto mb-14 max-w-[720px] text-center">
         <span class="badge mb-[22px] border-white/50 text-white">Ihre Vorteile</span>
         <h2 class="m-0 mb-4 text-[clamp(30px,4.5vw,52px)] font-extrabold leading-[1.08] tracking-[-.02em] text-white">
-          Ihr Weg zum sorgenfreien Umzug
+          {heading}
         </h2>
         <p class="m-0 text-[18px] text-white/85">
           Von der ersten Besichtigung bis zur besenreinen Übergabe – alles aus einer Hand, transparent und

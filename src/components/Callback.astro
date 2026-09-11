@@ -5,6 +5,12 @@
  * Kontaktaufnahme. Versand wie beim Hauptformular über FormSubmit.
  */
 import { SITE } from '../config/site';
+
+interface Props {
+  /** Betreff der Mail – macht in der Inbox sofort sichtbar, welche Seite den Lead gebracht hat. */
+  subject?: string;
+}
+const { subject = 'Rückruf-Wunsch über umzuege-bergstrasse.de' } = Astro.props;
 ---
 <section id="rueckruf" class="pt-12 max-[560px]:pt-8">
   <div class="wrap">
@@ -52,7 +58,7 @@ import { SITE } from '../config/site';
             novalidate
             class="flex flex-col gap-3"
           >
-            <input type="hidden" name="_subject" value="Rückruf-Wunsch über umzuege-bergstrasse.de" />
+            <input type="hidden" name="_subject" value={subject} />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="anfrage" value="Rückruf-Service" />

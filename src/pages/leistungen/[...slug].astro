@@ -5,6 +5,12 @@ import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import MobileCta from '../../components/MobileCta.astro';
 import Faq from '../../components/Faq.astro';
+import Hero from '../../components/Hero.astro';
+import Callback from '../../components/Callback.astro';
+import Stats from '../../components/Stats.astro';
+import Contact from '../../components/Contact.astro';
+import Versprechen from '../../components/Versprechen.astro';
+import Benefits from '../../components/Benefits.astro';
 import { service, breadcrumb, faqPage, localBusiness } from '../../lib/schema';
 import IncludeCard from '../../components/IncludeCard.astro';
 import { SITE } from '../../config/site';
@@ -21,6 +27,12 @@ const { entry } = Astro.props;
 const { data } = entry;
 const { Content } = await render(entry);
 const path = `/leistungen/${entry.id}`;
+
+/* Ist `headline` gesetzt, ist die Seite als Landingpage ausgebaut und
+   bekommt das Startseiten-Layout mit Bild, Kacheln und beiden Formularen.
+   Ohne die Felder bleibt die alte, schlanke Darstellung – so muss nicht
+   jede Leistung sofort ausgebaut sein. */
+const istLandingpage = Boolean(data.headline);
 
 // Weitere Leistungen für interne Verlinkung
 const others = (await getCollection('services'))
@@ -50,47 +62,185 @@ const jsonLd = [
 >
   <Nav />
   <main id="inhalt" class="page-root">
-    <!-- Hero -->
-    <section
-      class="pt-[70px] max-[560px]:pt-10"
-    >
-      <div class="wrap">
-        <nav aria-label="Brotkrümel" class="mb-5 text-sm text-muted">
-          <a href="/" class="hover:text-accent">Start</a> ›
-          <a href="/#leistungen" class="hover:text-accent">Leistungen</a> ›
-          <span class="text-ink">{data.tab || data.title}</span>
-        </nav>
-        <div class="grid grid-cols-2 items-center gap-16 max-[900px]:grid-cols-1 max-[900px]:gap-9">
-          <div data-reveal>
-            <span class="badge mb-[22px]">Leistung</span>
-            <h1 class="m-0 mb-5 text-[clamp(32px,5vw,58px)] font-extrabold leading-[1.05] tracking-[-.02em]">
-              {data.title}
-            </h1>
-            <p class="m-0 mb-7 text-[19px] text-muted">{data.excerpt}</p>
-            <div class="flex flex-wrap items-center gap-3">
-              <a href="/#kontakt" class="btn btn-accent">Angebot anfordern <span class="arr text-[19px]">→</span></a>
-              <a href={`tel:${SITE.contact.phoneHref}`} class="btn btn-outline">
-                <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none"><path d="M4 5c0 8 7 15 15 15l0-3-4-2-2 2c-2-1-5-4-6-6l2-2-2-4z"></path></svg>
-                {SITE.contact.phone}
-              </a>
+    {istLandingpage ? (
+      <>
+        <Hero
+          titleLead=""
+          titleRest={data.headline}
+          highlight={data.headlineAccent ?? 'Bergstraße'}
+          subtitle={data.heroText ?? data.excerpt}
+          imageAlt={`${data.tab ?? data.title} an der Bergstraße – Team von ${SITE.name} im Einsatz`}
+        />
+
+        {/* Formular 1: niedrigste Huerde – nur Name und Telefonnummer. */}
+        <Callback subject={`Rückruf-Wunsch: ${data.tab ?? data.title}`} />
+
+        <Stats />
+
+        {/* Braune Kachel: typische Faelle. Holt den Besucher dort ab, wo er
+            gerade steht – "das ist genau mein Fall" ist der halbe Lead. */}
+        {data.faelle.length > 0 && (
+          <section class="pb-20 pt-10">
+            <div class="wrap">
+              <div data-reveal class="on-espresso rounded-[var(--radius-block)] bg-espresso p-[clamp(26px,6vw,80px)] text-white">
+                <div class="mx-auto mb-11 max-w-[760px] text-center">
+                  <span class="badge badge-onDark mb-[22px]">Typische Fälle</span>
+                  <h2 class="m-0 mb-4 text-[clamp(30px,4.5vw,52px)] font-extrabold leading-[1.08] tracking-[-.02em]">
+                    Kommt Ihnen das bekannt vor?
+                  </h2>
+                  <p class="m-0 text-[18px] text-white/70">
+                    Für jeden dieser Fälle machen wir Ihnen nach einer kostenlosen Besichtigung ein
+                    verbindliches Festpreisangebot.
+                  </p>
+                </div>
+                <div class="grid grid-cols-2 gap-6 max-[900px]:grid-cols-1" data-stagger>
+                  {data.faelle.map((f) => (
+                    <div class="rounded-[20px] bg-white/[.06] p-8">
+                      <h3 class="m-0 mb-2 text-xl font-bold">{f.title}</h3>
+                      <p class="m-0 text-[17px] leading-[1.55] text-white/[.72]">{f.text}</p>
+                    </div>
+                  ))}
+                </div>
+                <div class="mt-10 text-center">
+                  <a href="#kontakt" class="btn btn-accent">Kostenlose Besichtigung anfragen <span class="arr text-[19px]">→</span></a>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Leistungsumfang + Ablauf nebeneinander */}
+        <section class="pb-20 pt-5">
+          <div class="wrap">
+            <div class="grid grid-cols-2 items-start gap-14 max-[900px]:grid-cols-1 max-[900px]:gap-9">
+              <div data-reveal>
+                <span class="badge mb-[22px]">Im Festpreis enthalten</span>
+                <h2 class="m-0 mb-4 text-[clamp(26px,3.5vw,40px)] font-extrabold leading-[1.1] tracking-[-.02em]">
+                  Das ist alles dabei
+                </h2>
+                <p class="m-0 mb-7 text-[18px] text-muted">
+                  Kein Kleingedrucktes, keine Position, die am Umzugstag plötzlich dazukommt.
+                </p>
+                <IncludeCard
+                  items={data.includes}
+                  note="Verbindliches Festpreisangebot nach kostenloser Besichtigung – ohne versteckte Kosten."
+                />
+              </div>
+
+              {data.ablauf.length > 0 && (
+                <div data-reveal>
+                  <span class="badge mb-[22px]">So läuft es ab</span>
+                  <h2 class="m-0 mb-7 text-[clamp(26px,3.5vw,40px)] font-extrabold leading-[1.1] tracking-[-.02em]">
+                    Von der Anfrage bis zur Übergabe
+                  </h2>
+                  <ol class="m-0 list-none space-y-5 p-0">
+                    {data.ablauf.map((st, i) => (
+                      <li class="flex gap-5">
+                        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-tint text-[17px] font-extrabold text-accent">
+                          {i + 1}
+                        </span>
+                        <span>
+                          <span class="block text-lg font-bold">{st.title}</span>
+                          <span class="mt-1 block text-base text-muted">{st.text}</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
             </div>
           </div>
-          <IncludeCard
-            data-reveal
-            items={data.includes}
-            note="Verbindliches Festpreisangebot nach kostenloser Besichtigung – ohne versteckte Kosten."
-            class="min-h-[clamp(280px,34vw,400px)]"
-          />
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <!-- Inhalt -->
-    <section class="py-16">
-      <div class="wrap max-w-[820px]">
-        <article class="prose"><Content /></article>
-      </div>
-    </section>
+        {/* Orange Kachel */}
+        <Benefits heading={data.vorteileTitel ?? 'Ihr Weg zum sorgenfreien Umzug'} />
+
+        {/* Was den Preis bestimmt – qualifiziert die Anfrage vor und nimmt
+            die haeufigste Sorge ("was kostet mich das am Ende wirklich"). */}
+        {data.preisfaktoren.length > 0 && (
+          <section class="pb-20 pt-5">
+            <div class="wrap">
+              <div data-reveal class="mx-auto mb-12 max-w-[720px] text-center">
+                <span class="badge mb-[22px]">Transparenz</span>
+                <h2 class="m-0 mb-4 text-[clamp(30px,4vw,46px)] font-extrabold leading-[1.1] tracking-[-.02em]">
+                  Was den Preis bestimmt
+                </h2>
+                <p class="m-0 text-[18px] text-muted">
+                  Wir nennen keine Pauschale ins Blaue. Diese Punkte sehen wir uns bei der kostenlosen
+                  Besichtigung an – danach steht Ihr Festpreis.
+                </p>
+              </div>
+              <div class="grid grid-cols-3 gap-6 max-[900px]:grid-cols-1" data-stagger>
+                {data.preisfaktoren.map((f) => (
+                  <div class="hover-lift card h-full p-8">
+                    <h3 class="m-0 mb-2 text-lg font-bold">{f.title}</h3>
+                    <p class="m-0 text-base leading-[1.55] text-muted">{f.text}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Fliesstext */}
+        <section class="pb-16 pt-5">
+          <div class="wrap max-w-[820px]">
+            <article class="prose"><Content /></article>
+          </div>
+        </section>
+
+        <Versprechen />
+
+        {/* Formular 2: vollstaendige Anfrage – ohne die Frage "Worum geht es?",
+            die diese Seite bereits beantwortet. */}
+        <Contact
+          leistung={data.formLeistung}
+          heading={`${data.tab ?? data.title}: Angebot anfordern`}
+          sub="Ein Schritt, keine 30 Sekunden – und ganz ohne Verpflichtung."
+          subject={`Anfrage ${data.tab ?? data.title} über umzuege-bergstrasse.de`}
+        />
+      </>
+    ) : (
+      <>
+        <section class="pt-[70px] max-[560px]:pt-10">
+          <div class="wrap">
+            <nav aria-label="Brotkrümel" class="mb-5 text-sm text-muted">
+              <a href="/" class="hover:text-accent">Start</a> ›
+              <a href="/#leistungen" class="hover:text-accent">Leistungen</a> ›
+              <span class="text-ink">{data.tab || data.title}</span>
+            </nav>
+            <div class="grid grid-cols-2 items-center gap-16 max-[900px]:grid-cols-1 max-[900px]:gap-9">
+              <div data-reveal>
+                <span class="badge mb-[22px]">Leistung</span>
+                <h1 class="m-0 mb-5 text-[clamp(32px,5vw,58px)] font-extrabold leading-[1.05] tracking-[-.02em]">
+                  {data.title}
+                </h1>
+                <p class="m-0 mb-7 text-[19px] text-muted">{data.excerpt}</p>
+                <div class="flex flex-wrap items-center gap-3">
+                  <a href="/#kontakt" class="btn btn-accent">Angebot anfordern <span class="arr text-[19px]">→</span></a>
+                  <a href={`tel:${SITE.contact.phoneHref}`} class="btn btn-outline">
+                    <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none"><path d="M4 5c0 8 7 15 15 15l0-3-4-2-2 2c-2-1-5-4-6-6l2-2-2-4z"></path></svg>
+                    {SITE.contact.phone}
+                  </a>
+                </div>
+              </div>
+              <IncludeCard
+                data-reveal
+                items={data.includes}
+                note="Verbindliches Festpreisangebot nach kostenloser Besichtigung – ohne versteckte Kosten."
+                class="min-h-[clamp(280px,34vw,400px)]"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section class="py-16">
+          <div class="wrap max-w-[820px]">
+            <article class="prose"><Content /></article>
+          </div>
+        </section>
+      </>
+    )}
 
     {data.faqs?.length ? <Faq items={data.faqs} /> : null}
 

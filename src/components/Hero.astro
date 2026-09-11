@@ -4,12 +4,15 @@ import heroImg from '../assets/hero-v3.jpeg';
 import { SITE } from '../config/site';
 
 interface Props {
+  /** Bildbeschreibung – auf Landingpages passend zur Leistung. */
+  imageAlt?: string;
   titleLead?: string;
   titleRest?: string;
   highlight?: string;
   subtitle?: string;
 }
 const {
+  imageAlt = 'Zwei Mitarbeiter von Umzüge Bergstraße beladen den Transporter mit Umzugskartons',
   titleLead = 'Stressfrei umziehen &',
   titleRest = 'entrümpeln an der',
   highlight = 'Bergstraße',
@@ -22,7 +25,7 @@ const {
       data-reveal
       class="m-0 mb-[22px] text-[clamp(38px,6vw,72px)] font-extrabold leading-[1.04] tracking-[-.02em]"
     >
-      <span class="block">{titleLead}</span>{titleRest}{' '}<span class="text-accent" set:html={highlight}></span>
+      {titleLead && <span class="block">{titleLead}</span>}{titleRest}{' '}<span class="text-accent" set:html={highlight}></span>
     </h1>
     <p data-reveal class="mx-auto mb-[30px] max-w-[640px] text-[19px] text-muted [text-wrap:pretty]">
       {subtitle}
@@ -42,7 +45,7 @@ const {
     <div data-reveal class="photo-ph h-[min(58vh,520px)] max-[560px]:h-[76vw]">
       <Image
         src={heroImg}
-        alt="Zwei Mitarbeiter von Umzüge Bergstraße beladen den Transporter mit Umzugskartons"
+        alt={imageAlt}
         data-parallax
         class="photo-fill object-cover"
         widths={[768, 1200, 1774, 2200]}
