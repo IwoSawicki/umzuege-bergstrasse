@@ -97,7 +97,7 @@ const jsonLd = [
         <h2 class="mb-6 text-[clamp(24px,3vw,34px)] font-extrabold tracking-[-.02em]">Unsere Leistungen in {data.name}</h2>
         <div class="grid grid-cols-2 gap-5 max-[900px]:grid-cols-1 lg:grid-cols-4">
           {services.map((s) => (
-            <a href={`/leistungen/${s.id}`} class="hover-lift card block p-6">
+            <a href={`/leistungen/${s.id}/`} class="hover-lift card block p-6">
               <h3 class="m-0 mb-2 text-lg font-bold">{s.data.tab || s.data.title}</h3>
               <span class="inline-flex items-center gap-2 text-sm font-semibold text-accent">Mehr <span class="arr">→</span></span>
             </a>
@@ -109,7 +109,7 @@ const jsonLd = [
             <h2 class="mb-6 mt-14 text-[clamp(24px,3vw,34px)] font-extrabold tracking-[-.02em]">Auch in Ihrer Nähe</h2>
             <div class="flex flex-wrap gap-[10px]">
               {others.map((l) => (
-                <a href={`/umzug/${l.id}`} class="chip">{l.data.name}</a>
+                <a href={`/umzug/${l.id}/`} class="chip">{l.data.name}</a>
               ))}
             </div>
           </>

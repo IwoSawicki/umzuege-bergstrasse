@@ -1,6 +1,17 @@
 ---
+import { getCollection } from 'astro:content';
 import { NAV, SITE, isFilled } from '../config/site';
 import Logo from './Logo.astro';
+
+/* Echte Links auf die Leistungsseiten. Auf der Startseite steckt der
+   "Mehr erfahren"-Button im Tab-Panel und wird per JS umgehängt – im
+   HTML steht dadurch nur die erste Leistung. Ohne diese Footer-Spalte
+   hätten Entrümpelung, Entsorgung und Firmenumzug von der Startseite
+   aus keinen einzigen crawlbaren Link. */
+const services = (await getCollection('services', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
 const address = isFilled(SITE.address.street)
   ? `${SITE.address.street}, ${SITE.address.postalCode} ${SITE.address.city}`
   : '[ADRESSE]';
@@ -15,7 +26,7 @@ const year = new Date().getFullYear();
       </a>
     </div>
 
-    <div class="foot-grid grid grid-cols-[1.6fr_1fr_1fr_auto] gap-10 border-b border-white/[.12] py-12 max-[900px]:grid-cols-2 max-[560px]:grid-cols-1 max-[560px]:gap-7">
+    <div class="foot-grid grid grid-cols-[1.5fr_1fr_1fr_1fr_auto] gap-10 border-b border-white/[.12] py-12 max-[1100px]:grid-cols-[1.5fr_1fr_1fr_1fr] max-[900px]:grid-cols-2 max-[560px]:grid-cols-1 max-[560px]:gap-7">
       <div>
         <div class="mb-5">
           <Logo size="h-[46px]" class="text-white" truckClass="text-accent" />
@@ -31,6 +42,15 @@ const year = new Date().getFullYear();
         <div class="flex flex-col gap-2.5">
           {NAV.map((item) => (
             <a href={item.href} class="foot-link text-white/75">{item.label}</a>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div class="mb-[18px] text-xs font-semibold uppercase tracking-[.16em] text-white/60">Leistungen</div>
+        <div class="flex flex-col gap-2.5">
+          {services.map((s) => (
+            <a href={`/leistungen/${s.id}/`} class="foot-link text-white/75">{s.data.tab ?? s.data.title}</a>
           ))}
         </div>
       </div>

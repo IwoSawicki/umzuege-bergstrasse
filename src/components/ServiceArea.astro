@@ -14,7 +14,7 @@ import { AREAS } from '../data/home';
       <div class="flex flex-wrap justify-center gap-[10px]" data-stagger>
         {AREAS.map((ort) =>
           ort.slug ? (
-            <a href={`/umzug/${ort.slug}`} class="chip">{ort.name}</a>
+            <a href={`/umzug/${ort.slug}/`} class="chip">{ort.name}</a>
           ) : (
             <span class="chip">{ort.name}</span>
           )
