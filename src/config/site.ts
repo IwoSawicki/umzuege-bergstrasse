@@ -42,8 +42,26 @@ export const SITE = {
       Banner zusätzlich die Werbung und erteilt auch die Werbe-Einwilligung. */
   analytics: {
     gaId: 'G-6YQ8075QM0', // Google Analytics 4
-    adsId: '', // z. B. 'AW-XXXXXXXXX' (Google Ads Conversion)
+    adsId: 'AW-18465515654', // Google Ads Conversion
     clarityId: 'ygkxbjirrq', // Microsoft Clarity (Heatmaps, Sitzungsaufzeichnung)
+
+    /** Wie der Google-Tag mit der Einwilligung umgeht (Consent Mode v2):
+     *
+     *  'advanced' – gtag.js laedt sofort, aber mit consent default = denied.
+     *               Es werden KEINE Cookies gesetzt und keine IDs gespeichert,
+     *               bis jemand zustimmt; Google erhaelt vorher nur einen
+     *               cookielosen Ping (enthaelt die IP). Dafuer findet Googles
+     *               Tag-Pruefung das Tag, und Google kann die Conversions der
+     *               Ablehner modellieren. Googles eigene Empfehlung.
+     *
+     *  'basic'    – gtag.js laedt ueberhaupt erst nach Zustimmung. Datenschutz-
+     *               seitig die strengere Variante, aber Googles Tag-Test meldet
+     *               "kein Tag gefunden", und Ablehner sind vollstaendig unsichtbar.
+     *
+     *  Microsoft Clarity bleibt in beiden Faellen gesperrt: Clarity kennt keinen
+     *  Consent Mode und setzt seine Cookies sofort.
+     */
+    consentMode: 'advanced' as 'advanced' | 'basic',
   },
 
   /** Adresse wird auf der Seite NICHT angezeigt (showAddress:false) – nur im

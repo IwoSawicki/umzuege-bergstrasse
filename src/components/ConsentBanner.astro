@@ -2,7 +2,11 @@
 /**
  * Cookie-Consent-Banner (DSGVO/TDDDG) mit Google Consent Mode v2.
  *
- * - Statistik-/Marketing-Skripte (GA4, Google Ads) laden ERST nach Einwilligung.
+ * - Google-Tag: Verhalten ueber SITE.analytics.consentMode steuerbar.
+ *   'advanced' laedt gtag.js sofort mit consent default = denied (keine Cookies,
+ *   nur ein cookieloser Ping) – so findet Googles Tag-Pruefung das Tag.
+ *   'basic' laedt es erst nach Klick auf "Alle akzeptieren".
+ * - Microsoft Clarity laedt IMMER erst nach Einwilligung (kein Consent Mode).
  * - IDs werden zentral in src/config/site.ts (analytics.gaId / analytics.adsId)
  *   gepflegt. Solange sie leer sind, wird gar nichts geladen – der Banner
  *   speichert die Einwilligung aber schon, sodass sie beim Nachrüsten greift.
@@ -13,6 +17,7 @@ import { SITE } from '../config/site';
 const gaId = SITE.analytics.gaId;
 const adsId = SITE.analytics.adsId;
 const clarityId = SITE.analytics.clarityId;
+const consentMode = SITE.analytics.consentMode;
 ---
 <div
   id="consent-banner"
@@ -35,7 +40,7 @@ const clarityId = SITE.analytics.clarityId;
   </div>
 </div>
 
-<script is:inline define:vars={{ gaId, adsId, clarityId }}>
+<script is:inline define:vars={{ gaId, adsId, clarityId, consentMode }}>
   (function () {
     var KEY = 'ub-consent';
     var banner = document.getElementById('consent-banner');
@@ -104,6 +109,12 @@ const clarityId = SITE.analytics.clarityId;
 
     function show() { banner.hidden = false; }
     function hide() { banner.hidden = true; }
+
+    /* Im Advanced-Modus laedt das Tag sofort – aber erst NACH dem
+       consent-default oben, damit ohne Zustimmung nichts gespeichert wird.
+       Das ist der Unterschied zwischen "Tag ist da, darf aber nichts" und
+       "Tag ist gar nicht da". Nur Ersteres besteht Googles Pruefung. */
+    if (consentMode === 'advanced') loadGoogleScripts();
 
     var choice = readChoice();
     if (choice === null) {
