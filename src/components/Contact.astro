@@ -234,7 +234,7 @@ const contactRows = [
 </style>
 
 <script>
-  import { trackLead } from '../scripts/track';
+  import { trackLead, trackAdsConversion } from '../scripts/track';
   function initQuoteForm() {
     document.querySelectorAll<HTMLFormElement>('[data-quote-form]').forEach((form) => {
       const steps = Array.from(form.querySelectorAll<HTMLElement>('[data-step]'));
@@ -340,6 +340,9 @@ const contactRows = [
           });
           if (!res.ok) throw new Error('HTTP ' + res.status);
           trackLead('anfrageformular');
+          // Ads-Conversion erst hier – die Anfrage ist nachweislich angekommen,
+          // nicht schon beim Klick auf den Absenden-Knopf.
+          trackAdsConversion('formular');
           form.style.display = 'none';
           if (progress) progress.hidden = true;
           if (success) success.hidden = false;

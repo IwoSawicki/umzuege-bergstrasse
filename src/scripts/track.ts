@@ -25,3 +25,16 @@ export function trackLead(quelle: string) {
 export function trackCall(ort: string) {
   track('contact', { method: 'phone', link_location: ort });
 }
+
+/* ---- Google Ads -------------------------------------------------------
+   trackConv und die Labels setzt das Inline-Script im ConsentBanner.
+   Von dort holen wir sie, weil dieses Modul gebuendelt wird und deshalb
+   kein define:vars bekommen kann. Fehlt eins von beidem, passiert nichts. */
+type ConvFn = (label: string, value?: number) => void;
+
+export function trackAdsConversion(art: 'formular' | 'anruf', wert?: number) {
+  const w = window as unknown as { trackConv?: ConvFn; __ubAdsLabels?: Record<string, string> };
+  const label = w.__ubAdsLabels?.[art];
+  if (typeof w.trackConv !== 'function' || !label) return;
+  w.trackConv(label, wert);
+}

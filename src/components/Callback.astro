@@ -82,7 +82,7 @@ const { subject = 'Rückruf-Wunsch über umzuege-bergstrasse.de' } = Astro.props
 </section>
 
 <script>
-  import { trackLead } from '../scripts/track';
+  import { trackLead, trackAdsConversion } from '../scripts/track';
   function initCallback() {
     document.querySelectorAll<HTMLFormElement>('[data-cb-form]').forEach((form) => {
       const wrap = form.parentElement;
@@ -107,6 +107,9 @@ const { subject = 'Rückruf-Wunsch über umzuege-bergstrasse.de' } = Astro.props
           });
           if (!res.ok) throw new Error('HTTP ' + res.status);
           trackLead('rueckruf');
+          // Ads-Conversion erst hier – die Anfrage ist nachweislich angekommen,
+          // nicht schon beim Klick auf den Absenden-Knopf.
+          trackAdsConversion('formular');
           form.style.display = 'none';
           if (success) success.hidden = false;
         } catch {

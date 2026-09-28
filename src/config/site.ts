@@ -28,7 +28,7 @@ export const SITE = {
     phone: '0178 4444 156',
     phoneHref: '+491784444156',
     email: 'kontakt@umzuege-bergstrasse.de',
-    whatsapp: '', // optional
+    whatsapp: '491784444156', // ohne + und ohne Leerzeichen (wa.me-Format)
   },
 
   /** Zieladresse für Formular-Anfragen (FormSubmit.co-Endpunkt).
@@ -62,6 +62,18 @@ export const SITE = {
      *  Consent Mode und setzt seine Cookies sofort.
      */
     consentMode: 'advanced' as 'advanced' | 'basic',
+
+    /** Conversion-Labels aus Google Ads (Tools → Conversions → Tag einrichten).
+     *  Sie gehoeren zur adsId oben: send_to = adsId + '/' + label.
+     *  Leeres Label = diese Conversion wird nicht gesendet. */
+    adsLabels: {
+      formular: 'S9Q8CJaOtIkdEIbRheVE', // abgeschicktes Formular
+      anruf: 'ctC2CJyOtIkdEIbRheVE',    // Klick auf eine Telefonnummer
+    },
+    /** Rechenwert einer Anfrage in Euro. Kein Umsatz, sondern eine Annahme:
+     *  So gewichtet Google Ads die Gebote. Nach den ersten Auftraegen
+     *  anpassen (durchschnittlicher Auftragswert x Abschlussquote). */
+    leadWert: 40,
   },
 
   /** Adresse wird auf der Seite NICHT angezeigt (showAddress:false) – nur im

@@ -6,7 +6,9 @@ metaTitle: "Entrümpelung Bergstraße – Haushaltsauflösung besenrein & diskre
 metaDescription: "Entrümpelung & Haushaltsauflösung an der Bergstraße: diskret, zügig und besenrein übergeben. Wertanrechnung senkt Ihre Kosten. Kostenlose Besichtigung – jetzt anfragen."
 excerpt: "Wohnungen, Keller, Dachböden oder komplette Haushaltsauflösungen – wir arbeiten diskret, zügig und übergeben besenrein."
 
-headline: "Entrümpelung & Haushaltsauflösung an der"
+# &shy; = weiches Trennzeichen. Nur dort sichtbar, wo die Zeile sonst
+# umbrechen muesste – auf schmalen Handys wird daraus "Haushalts-/auflösung".
+headline: "Entrümpelung & Haushalts&shy;auflösung an der"
 headlineAccent: "Bergstraße"
 heroText: "Diskret, zügig und besenrein übergeben – mit verbindlichem Festpreis nach kostenloser Besichtigung. Verwertbares rechnen wir Ihnen an."
 vorteileTitel: "Ihr Weg zur besenreinen Übergabe"
