@@ -30,12 +30,20 @@ export interface SendeErgebnis {
   text: string;
 }
 
+/** Nach so vielen Millisekunden wird abgebrochen. Ein haengender Request
+    ist fuer den Besucher schlimmer als eine Fehlermeldung: Der Knopf bleibt
+    auf "Wird gesendet", und er weiss nicht, ob die Anfrage raus ist. */
+const ZEITLIMIT_MS = 15000;
+
 export async function sendeFormular(form: HTMLFormElement, endpoint: string): Promise<SendeErgebnis> {
+  const abbruch = new AbortController();
+  const uhr = setTimeout(() => abbruch.abort(), ZEITLIMIT_MS);
   try {
     const res = await fetch(endpoint, {
       method: 'POST',
       body: new FormData(form),
       headers: { Accept: 'application/json' },
+      signal: abbruch.signal,
     });
     const text = await res.text();
 
@@ -53,8 +61,16 @@ export async function sendeFormular(form: HTMLFormElement, endpoint: string): Pr
     }
     return { ok: erfolg, status: res.status, text };
   } catch (fehler) {
-    // Netzwerkfehler oder von CORS blockiert – hier gibt es keinen Status
-    console.error('[Formular] Anfrage kam nicht durch:', fehler);
-    return { ok: false, status: 0, text: String(fehler) };
+    // Zeitueberschreitung, Netzwerkfehler oder von CORS blockiert
+    const abgebrochen = fehler instanceof DOMException && fehler.name === 'AbortError';
+    console.error(
+      abgebrochen
+        ? `[Formular] Keine Antwort innerhalb von ${ZEITLIMIT_MS / 1000} Sekunden – abgebrochen.`
+        : '[Formular] Anfrage kam nicht durch:',
+      abgebrochen ? '' : fehler,
+    );
+    return { ok: false, status: 0, text: abgebrochen ? 'Zeitüberschreitung' : String(fehler) };
+  } finally {
+    clearTimeout(uhr);
   }
 }

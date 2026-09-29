@@ -1,10 +1,16 @@
 ---
+import { Image } from 'astro:assets';
+import portrait from '../assets/iwo-portrait.jpg';
 import { SITE } from '../config/site';
 
 /**
- * Statt eines Stockfotos steht hier ein persönliches Statement des Inhabers.
- * Für einen jungen Betrieb ohne Referenzen ist das das stärkste
- * Vertrauenssignal, das ohne Bildmaterial auskommt.
+ * Persönliches Statement des Inhabers – für einen jungen Betrieb ohne
+ * Referenzen das stärkste Vertrauenssignal. Seit dem Portrait mit echtem
+ * Gesicht statt Initialen.
+ *
+ * Verwendet wird iwo-portrait.jpg – ein quadratischer Kopfausschnitt aus dem
+ * hochkanten Original. Das Original zentriert zu beschneiden hätte den Kopf
+ * im runden Rahmen winzig gemacht.
  */
 const signals = [
   'Kostenlose Besichtigung vor Ort',
@@ -27,7 +33,14 @@ const signals = [
         </p>
 
         <div class="mb-7 flex items-center gap-3.5">
-          <span class="flex h-[46px] w-[46px] flex-shrink-0 items-center justify-center rounded-full bg-accent text-[16px] font-extrabold text-white" aria-hidden="true">IS</span>
+          <Image
+            src={portrait}
+            alt={`${SITE.legal.owner}, Inhaber von ${SITE.name}`}
+            widths={[104, 156]}
+            sizes="52px"
+            class="h-[52px] w-[52px] flex-shrink-0 rounded-full object-cover ring-2 ring-accent"
+            loading="lazy"
+          />
           <div>
             <div class="font-bold leading-tight">{SITE.legal.owner}</div>
             <div class="text-[14px] text-white/60">Inhaber, {SITE.name}</div>

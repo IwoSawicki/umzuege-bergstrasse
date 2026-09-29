@@ -30,10 +30,12 @@ const zeigeWa = whatsapp && Boolean(waNummer);
   <div class="wrap max-w-[920px] text-center">
     <h1
       data-reveal
-      /* hyphens greift ueber lang="de" am <html>. Ohne das laeuft
-         "Haushaltsauflösung" bei 390px um 70px aus dem Bild und wird von
-         body{overflow-x:hidden} lautlos abgeschnitten. */
-      class="m-0 mb-[22px] text-[clamp(38px,6vw,72px)] font-extrabold leading-[1.04] tracking-[-.02em] [hyphens:auto] [overflow-wrap:break-word]"
+      /* Bewusst KEIN hyphens:auto. Das trennt sonst auch den Markennamen
+         ("Berg-/straße"). Lange Woerter bekommen stattdessen ein weiches
+         Trennzeichen (&shy;) direkt im Text – siehe entruempelung.md.
+         overflow-wrap bleibt als letzte Reissleine: lieber ein haesslicher
+         Umbruch als ein Wort, das body{overflow-x:hidden} abschneidet. */
+      class="m-0 mb-[22px] text-[clamp(38px,6vw,72px)] font-extrabold leading-[1.04] tracking-[-.02em] [overflow-wrap:break-word]"
     >
       {titleLead && <span class="block">{titleLead}</span>}<span set:html={titleRest}></span>{' '}<span class="text-accent" set:html={highlight}></span>
     </h1>

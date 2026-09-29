@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import portrait from '../assets/iwo-portrait.jpg';
 import { SITE, isFilled } from '../config/site';
 import RegionMap from './RegionMap.astro';
 
@@ -159,9 +161,22 @@ const contactRows = [
 
         <!-- ======== Info-Karte ======== -->
         <div class="flex flex-col gap-6 rounded-[22px] bg-white p-9 max-[900px]:p-6">
-          <div>
-            <h3 class="m-0 mb-1.5 text-[22px] font-bold">Persönliche Beratung</h3>
-            <p class="m-0 text-base text-muted">Antwort meist innerhalb von 24 Stunden.</p>
+          {/* Gesicht zum Namen: Wer weiss, mit wem er spricht, fragt eher an. */}
+          <div class="flex items-center gap-4">
+            <Image
+              src={portrait}
+              alt={`${SITE.legal.owner}, Inhaber von ${SITE.name}`}
+              widths={[128, 192]}
+              sizes="64px"
+              class="h-16 w-16 flex-shrink-0 rounded-full object-cover ring-2 ring-accent"
+              loading="lazy"
+            />
+            <div>
+              <h3 class="m-0 mb-1 text-[22px] font-bold">Persönliche Beratung</h3>
+              <p class="m-0 text-[15px] text-muted">
+                {SITE.legal.owner} · Antwort meist innerhalb von 24 Stunden.
+              </p>
+            </div>
           </div>
           <div class="flex flex-col gap-[18px]">
             {contactRows.map((r) => (
