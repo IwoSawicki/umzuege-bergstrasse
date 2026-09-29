@@ -83,6 +83,7 @@ const { subject = 'Rückruf-Wunsch über umzuege-bergstrasse.de' } = Astro.props
 
 <script>
   import { trackLead, trackAdsConversion } from '../scripts/track';
+  import { sendeFormular } from '../scripts/formsubmit';
   function initCallback() {
     document.querySelectorAll<HTMLFormElement>('[data-cb-form]').forEach((form) => {
       const wrap = form.parentElement;
@@ -100,12 +101,8 @@ const { subject = 'Rückruf-Wunsch über umzuege-bergstrasse.de' } = Astro.props
         const label = btn?.innerHTML || '';
         if (btn) { btn.disabled = true; btn.textContent = 'Wird gesendet …'; }
         try {
-          const res = await fetch(endpoint, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: { Accept: 'application/json' },
-          });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const ergebnis = await sendeFormular(form, endpoint);
+          if (!ergebnis.ok) throw new Error('HTTP ' + ergebnis.status);
           trackLead('rueckruf');
           // Ads-Conversion erst hier – die Anfrage ist nachweislich angekommen,
           // nicht schon beim Klick auf den Absenden-Knopf.

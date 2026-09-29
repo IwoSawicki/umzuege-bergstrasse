@@ -235,6 +235,7 @@ const contactRows = [
 
 <script>
   import { trackLead, trackAdsConversion } from '../scripts/track';
+  import { sendeFormular } from '../scripts/formsubmit';
   function initQuoteForm() {
     document.querySelectorAll<HTMLFormElement>('[data-quote-form]').forEach((form) => {
       const steps = Array.from(form.querySelectorAll<HTMLElement>('[data-step]'));
@@ -333,12 +334,8 @@ const contactRows = [
           submitBtn.textContent = 'Wird gesendet …';
         }
         try {
-          const res = await fetch(endpoint, {
-            method: 'POST',
-            body: new FormData(form),
-            headers: { Accept: 'application/json' },
-          });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
+          const ergebnis = await sendeFormular(form, endpoint);
+          if (!ergebnis.ok) throw new Error('HTTP ' + ergebnis.status);
           trackLead('anfrageformular');
           // Ads-Conversion erst hier – die Anfrage ist nachweislich angekommen,
           // nicht schon beim Klick auf den Absenden-Knopf.
