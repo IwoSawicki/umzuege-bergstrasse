@@ -2,16 +2,24 @@
  * Versand der Anfrageformulare über FormSubmit.co.
  *
  * Warum eine eigene Datei: Kontakt- und Rückrufformular brauchen exakt
- * dieselbe Logik. Vorher stand sie zweimal da und lief damit auseinander.
+ * dieselbe Logik. Vorher stand sie zweimal da und lief auseinander.
  *
- * Wichtig zum Format: Der /ajax/-Endpunkt von FormSubmit erwartet JSON.
- * Ein FormData-Body (multipart/form-data) wird dort abgewiesen – das war
- * der Stand vorher. Dafuer loest application/json einen CORS-Preflight
- * aus; FormSubmit beantwortet den laut Doku korrekt.
+ * Format: FormData (multipart/form-data). Das lief nachweislich, solange
+ * die Empfaengeradresse bei FormSubmit bestaetigt war. JSON waere laut
+ * Doku ebenfalls moeglich, loest aber einen CORS-Preflight aus – gegen
+ * einen Dienst, den wir nicht testen koennen, bleiben wir beim Bewaehrten.
  *
- * FormSubmit antwortet auch bei Problemen gelegentlich mit HTTP 200 und
- * success:"false" im Body (z. B. solange die Empfaengeradresse noch nicht
- * bestaetigt ist). Deshalb reicht res.ok als Erfolgspruefung nicht.
+ * Zwei Faellen, die frueher als Erfolg durchgingen:
+ *
+ * 1. FormSubmit antwortet mit HTTP 200 und success:"false", solange die
+ *    Empfaengeradresse nicht bestaetigt ist. res.ok allein genuegt also
+ *    nicht – sonst sieht der Besucher "Danke", die Ads-Conversion feuert,
+ *    und die Anfrage kommt nirgends an.
+ *
+ * 2. Ohne Protokollierung liess sich von aussen nicht unterscheiden, ob
+ *    die Adresse unbestaetigt ist, der Request abgewiesen wurde oder das
+ *    Netz schuld war. Jede Fehlermeldung landet deshalb als "[Formular]"
+ *    in der Browser-Konsole.
  */
 
 export interface SendeErgebnis {
@@ -23,19 +31,11 @@ export interface SendeErgebnis {
 }
 
 export async function sendeFormular(form: HTMLFormElement, endpoint: string): Promise<SendeErgebnis> {
-  // FormData -> einfaches Objekt. Mehrfachfelder werden zusammengefasst,
-  // Dateien gibt es in diesen Formularen nicht.
-  const daten: Record<string, string> = {};
-  new FormData(form).forEach((wert, schluessel) => {
-    if (typeof wert !== 'string') return;
-    daten[schluessel] = schluessel in daten ? `${daten[schluessel]}, ${wert}` : wert;
-  });
-
   try {
     const res = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify(daten),
+      body: new FormData(form),
+      headers: { Accept: 'application/json' },
     });
     const text = await res.text();
 
