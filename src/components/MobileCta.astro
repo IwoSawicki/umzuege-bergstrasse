@@ -3,17 +3,22 @@
  * Mobile Aktionsleiste am unteren Rand.
  *
  * Links WhatsApp als Haupt-CTA: Wer entrümpeln oder umziehen lässt, schickt
- * lieber drei Fotos vom Keller als ein Formular auszufüllen. Rechts ein
- * Menü-Sheet mit Navigation und allen Kontaktwegen.
+ * lieber drei Fotos vom Keller als ein Formular auszufüllen. Rechts öffnet
+ * "Menü" ein Sheet.
  *
- * WhatsApp behält sein eigenes Grün statt der Markenfarbe – der Knopf wird
- * dadurch sofort erkannt, und der Nutzer weiß, was ihn nach dem Tippen
- * erwartet. Das ist mehr wert als Farbtreue an dieser einen Stelle.
+ * Das Sheet hatte vorher neun gleich gewichtete Einträge – vier Sprungmarken
+ * plus fünf konkurrierende Kontaktwege, beige auf beige. Wer fünf Wege
+ * angeboten bekommt, wählt keinen. Jetzt: vier echte Seiten und genau zwei
+ * Kontaktwege, auf dunklem Markenhintergrund mit Logo und Begrüßung.
+ *
+ * WhatsApp behält sein eigenes Grün. Der Knopf wird dadurch sofort erkannt,
+ * und man weiß vorher, was nach dem Tippen passiert.
  *
  * Die Leiste erscheint erst nach etwas Scrollen (siehe ui.ts), damit sie
  * nicht die Knöpfe in der Hero überdeckt.
  */
-import { NAV, SITE, isFilled } from '../config/site';
+import { SITE, isFilled } from '../config/site';
+import Logo from './Logo.astro';
 
 const telHref = isFilled(SITE.contact.phoneHref) ? `tel:${SITE.contact.phoneHref}` : '/#kontakt';
 const waNummer = SITE.contact.whatsapp;
@@ -26,20 +31,19 @@ const icons = {
   whatsapp:
     '<path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.25 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24zm-2.5 4.1c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28s-1.44-.71-1.66-.79c-.22-.08-.39-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.45-1.35-1.69-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.31-.74-1.79-.19-.46-.39-.4-.54-.41h-.47z"></path>',
   phone: '<path d="M4 5c0 8 7 15 15 15l0-3-4-2-2 2c-2-1-5-4-6-6l2-2-2-4z"></path>',
-  mail: '<rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path>',
-  form: '<path d="M4 4h16v16H4z"></path><path d="M8 9h8M8 13h8M8 17h5"></path>',
-  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path>',
+  haus: '<path d="M20.6 8.4l-8-5.4a1 1 0 0 0-1.2 0l-8 5.4A1 1 0 0 0 3 9.2V20a1 1 0 0 0 1 1h5v-6h6v6h5a1 1 0 0 0 1-1V9.2a1 1 0 0 0-.4-.8z"></path>',
+  karton: '<path d="M4 8l8-4 8 4v8l-8 4-8-4z"></path><path d="M4 8l8 4 8-4M12 12v8"></path>',
+  lkw: '<path d="M3 7h11v9H3z"></path><path d="M14 10h4l3 3v3h-7"></path><circle cx="7" cy="18" r="2"></circle><circle cx="17" cy="18" r="2"></circle>',
+  brief: '<rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path>',
 };
 
-/** Kontaktwege im Sheet – nach Aufwand für den Besucher sortiert. */
-const kontakte = [
-  ...(waHref
-    ? [{ href: waHref, label: 'Per WhatsApp schreiben', icon: icons.whatsapp, extern: true, wa: true }]
-    : []),
-  { href: telHref, label: 'Jetzt anrufen', icon: icons.phone, tel: true },
-  { href: '/#rueckruf', label: 'Rückruf vereinbaren', icon: icons.calendar },
-  { href: '/#kontakt', label: 'Angebot anfordern', icon: icons.form },
-  { href: `mailto:${SITE.contact.email}`, label: 'E-Mail schreiben', icon: icons.mail },
+/* Vier echte Seiten statt Sprungmarken. Entrümpelung und Privatumzug sind
+   die beiden Seiten, auf die auch die Anzeigen laufen. */
+const seiten = [
+  { href: '/', label: 'Startseite', icon: icons.haus },
+  { href: '/leistungen/entruempelung/', label: 'Entrümpelung', icon: icons.karton },
+  { href: '/leistungen/privatumzug/', label: 'Umzüge', icon: icons.lkw },
+  { href: '/#kontakt', label: 'Kontakt', icon: icons.brief },
 ];
 ---
 <!-- Sheet: liegt über der Leiste und wird von ihr aus geöffnet -->
@@ -51,42 +55,62 @@ const kontakte = [
   aria-label="Menü und Kontakt"
   class="fixed inset-0 z-[70] max-[900px]:block min-[901px]:hidden"
 >
-  <div data-cta-backdrop class="absolute inset-0 bg-espresso/45 backdrop-blur-[2px]"></div>
+  <div data-cta-backdrop class="absolute inset-0 bg-espresso/55 backdrop-blur-[3px]"></div>
 
   <div
     data-cta-panel
-    class="absolute inset-x-3 bottom-[86px] overflow-hidden rounded-[26px] bg-[rgba(247,243,237,.97)] shadow-[0_18px_60px_rgba(42,32,25,.35)] backdrop-blur-[14px]"
+    class="absolute inset-x-3 bottom-[86px] overflow-hidden rounded-[26px] bg-espresso text-white shadow-[0_18px_60px_rgba(42,32,25,.5)]"
   >
-    <nav class="flex flex-col px-5 pt-4" aria-label="Seitenbereiche">
-      {NAV.map((item) => (
-        <a href={item.href} data-cta-close class="cta-zeile justify-center text-[19px] font-semibold text-ink">
-          {item.label}
+    <!-- Kopf: Marke und Begrüßung, damit das Menü nicht wie ein Systemdialog wirkt -->
+    <div class="px-5 pb-5 pt-5">
+      <div>
+        <Logo size="h-9" class="text-white" truckClass="text-accent" />
+        <p class="m-0 mt-3.5 text-[17px] font-semibold">
+          Schön, dass Sie hier sind <span aria-hidden="true">👋</span>
+        </p>
+        <p class="m-0 mt-1 text-[14px] text-white/60">
+          Umzug oder Entrümpelung? Schreiben Sie uns einfach.
+        </p>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="px-3 pb-2" aria-label="Seiten">
+      {seiten.map((s) => (
+        <a href={s.href} data-cta-close class="menue-zeile">
+          <span class="menue-icon" aria-hidden="true">
+            <svg width="19" height="19" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round" set:html={s.icon} />
+          </span>
+          {s.label}
+          <svg class="ml-auto text-white/35" width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
         </a>
       ))}
     </nav>
 
-    <div class="mx-5 border-t border-[rgba(42,32,25,.16)]"></div>
-
-    <div class="flex flex-col px-5 pb-4 pt-2">
-      {kontakte.map((k) => (
+    <!-- Genau zwei Kontaktwege, nicht fünf -->
+    <div class="flex gap-2.5 border-t border-white/10 p-4">
+      {waHref && (
         <a
-          href={k.href}
+          href={waHref}
+          target="_blank"
+          rel="noopener"
           data-cta-close
-          data-contact={k.tel ? 'phone' : undefined}
-          target={k.extern ? '_blank' : undefined}
-          rel={k.extern ? 'noopener' : undefined}
-          class:list={['cta-zeile gap-3 text-[17px] font-semibold', k.wa ? 'text-[#1F8F4E]' : 'text-ink']}
+          data-contact="whatsapp"
+          class="flex flex-1 items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-3.5 text-[15.5px] font-bold text-white"
         >
-          <svg
-            width="21" height="21" viewBox="0 0 24 24" aria-hidden="true"
-            fill={k.wa ? 'currentColor' : 'none'}
-            stroke={k.wa ? 'none' : 'currentColor'}
-            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-            set:html={k.icon}
-          />
-          {k.label}
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={icons.whatsapp} />
+          WhatsApp
         </a>
-      ))}
+      )}
+      <a
+        href={telHref}
+        data-cta-close
+        data-contact="phone"
+        class="accent-fill flex flex-1 items-center justify-center gap-2 rounded-full bg-accent px-4 py-3.5 text-[15.5px] font-bold text-white"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.9" fill="none" aria-hidden="true" set:html={icons.phone} />
+        Anrufen
+      </a>
     </div>
   </div>
 </div>
@@ -121,7 +145,7 @@ const kontakte = [
     class="flex flex-1 items-center justify-center gap-2.5 rounded-full border border-[rgba(42,32,25,.14)] bg-white p-3.5 text-[16px] font-semibold text-ink"
   >
     Menü
-    <span data-cta-punkte class="cta-punkte" aria-hidden="true">
+    <span class="cta-punkte" aria-hidden="true">
       <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
     </span>
   </button>
@@ -140,16 +164,22 @@ const kontakte = [
   .wa-knopf { background: #25D366; box-shadow: 0 6px 18px rgba(37, 211, 102, .34); }
   .wa-knopf:active { background: #1EB558; }
 
-  /* 3x3-Punkteraster wie im Vorbild */
+  /* 3x3-Punkteraster */
   .cta-punkte { display: grid; grid-template-columns: repeat(3, 3px); gap: 3px; }
   .cta-punkte i { width: 3px; height: 3px; border-radius: 50%; background: currentColor; }
 
-  .cta-zeile {
-    display: flex; align-items: center;
-    padding: 13px 4px; border-radius: 12px;
+  .menue-zeile {
+    display: flex; align-items: center; gap: 14px;
+    padding: 13px 14px; border-radius: 14px;
+    font-size: 17px; font-weight: 600; color: #fff;
     transition: background .15s;
   }
-  .cta-zeile:active { background: rgba(42, 32, 25, .07); }
+  .menue-zeile:active { background: rgba(255, 255, 255, .09); }
+  .menue-icon {
+    display: flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px; border-radius: 11px; flex-shrink: 0;
+    background: rgba(232, 123, 46, .18); color: var(--accent);
+  }
 
   [data-cta-sheet][hidden] { display: none !important; }
   [data-cta-panel] { animation: sheetHoch .3s cubic-bezier(.22, 1, .36, 1); }
