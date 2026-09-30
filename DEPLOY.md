@@ -55,6 +55,12 @@ lehnen einen abweichenden Absender ab, und bei SPF/DKIM landet die Mail sonst
 im Spam. Antworten gehen trotzdem an den Interessenten: Das Skript setzt
 `Reply-To` auf die im Formular angegebene Mailadresse.
 
+> **Falls der Build-Type auf „Nixpacks" steht:** Dann laeuft nicht das
+> Dockerfile, sondern `npm start`. Auch das funktioniert – der Mail-Dienst
+> liefert in dem Fall die statischen Seiten gleich mit aus (`SERVE_STATIC`).
+> Empfohlen bleibt „Dockerfile": nginx liefert schneller aus und setzt die
+> Cache- und Security-Header.
+
 **Prüfen, ob alles sitzt:** Nach dem Deployment
 `https://umzuege-bergstrasse.de/api/health` aufrufen. Dort muss
 `"smtp":"konfiguriert"` und `"ziel":"gesetzt"` stehen. Im Container-Log steht

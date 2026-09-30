@@ -13,6 +13,8 @@
  * Konfiguration ueber Umgebungsvariablen – siehe DEPLOY.md.
  */
 import { createServer } from 'node:http';
+import { createReadStream, statSync } from 'node:fs';
+import { join, normalize, extname } from 'node:path';
 import nodemailer from 'nodemailer';
 
 const PORT = Number(process.env.MAIL_PORT || 8081);
@@ -35,6 +37,14 @@ const ERLAUBTE_HERKUNFT = (process.env.ALLOWED_ORIGINS || 'https://umzuege-bergs
   .filter(Boolean);
 /** 'json' schreibt die Mail nur ins Log, statt sie zu versenden – für Tests. */
 const TRANSPORT = process.env.MAIL_TRANSPORT || 'smtp';
+
+/** Optional: statische Dateien mitausliefern.
+    Im Docker-Betrieb macht das nginx, dann bleibt die Variable leer. Wird die
+    App dagegen ohne nginx gestartet (z. B. Build-Type "Nixpacks" in Dokploy),
+    gaebe es sonst zwar die Seite, aber kein /api/ – und die Formulare liefen
+    wieder still ins Leere. Genau dieser Zustand hat hier schon einmal
+    wochenlang niemandem auffallen koennen. */
+const STATIC_DIR = process.env.SERVE_STATIC || '';
 
 const MAX_BODY = 32 * 1024; // 32 KB reichen für jedes dieser Formulare
 const FELDER = ['name', 'telefon', 'email', 'nachricht', 'leistung', 'quelle'];
@@ -112,6 +122,43 @@ function antwort(res, status, daten, herkunft) {
   res.end(JSON.stringify(daten));
 }
 
+const TYPEN = {
+  '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8', '.xml': 'application/xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8', '.svg': 'image/svg+xml', '.webp': 'image/webp',
+  '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.ico': 'image/x-icon',
+  '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json',
+};
+
+/** Liefert eine Datei aus STATIC_DIR aus. Gibt false zurueck, wenn es sie nicht
+    gibt – der Status wird uebergeben, damit die 404-Seite auch als 404 geht.
+    Wichtig: writeHead darf erst hier passieren, nicht schon beim Aufrufer. */
+function dateiAusliefern(pfad, res, status = 200) {
+  const sicher = normalize(pfad).replace(/^(\.\.[/\\])+/, ''); // kein Ausbruch aus dem Verzeichnis
+  let datei = join(STATIC_DIR, sicher);
+  try {
+    if (statSync(datei).isDirectory()) datei = join(datei, 'index.html');
+  } catch {
+    // Astro baut mit format:'directory' – /impressum liegt als /impressum/index.html
+    try {
+      statSync(join(STATIC_DIR, sicher, 'index.html'));
+      datei = join(STATIC_DIR, sicher, 'index.html');
+    } catch {
+      return false;
+    }
+  }
+  try {
+    statSync(datei);
+  } catch {
+    return false;
+  }
+  const typ = TYPEN[extname(datei).toLowerCase()] || 'application/octet-stream';
+  res.writeHead(status, { 'Content-Type': typ });
+  createReadStream(datei).pipe(res);
+  return true;
+}
+
 const server = createServer(async (req, res) => {
   const url = new URL(req.url || '/', 'http://localhost');
 
@@ -125,6 +172,12 @@ const server = createServer(async (req, res) => {
     });
   }
   if (url.pathname !== '/api/anfrage') {
+    if (STATIC_DIR && req.method === 'GET') {
+      if (dateiAusliefern(decodeURIComponent(url.pathname), res)) return;
+      if (dateiAusliefern('/404.html', res, 404)) return;
+      res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+      return res.end('Nicht gefunden');
+    }
     return antwort(res, 404, { ok: false, fehler: 'Unbekannter Pfad' });
   }
 
@@ -204,6 +257,7 @@ const server = createServer(async (req, res) => {
 
 server.listen(PORT, HOST, () => {
   console.log(`[Mail] bereit auf http://${HOST}:${PORT} – Transport: ${TRANSPORT}, Ziel: ${MAIL_TO || '(nicht gesetzt)'}`);
+  if (STATIC_DIR) console.log(`[Mail] liefert zusaetzlich statische Dateien aus ${STATIC_DIR} aus.`);
   if (TRANSPORT === 'smtp' && !SMTP.host) {
     console.warn('[Mail] WARNUNG: SMTP_HOST ist nicht gesetzt – der Versand wird scheitern.');
   } else if (TRANSPORT === 'smtp') {

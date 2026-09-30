@@ -294,7 +294,9 @@ function initMobileCta() {
 
   const oeffnen = (auf: boolean) => {
     sheet.hidden = !auf;
+    leiste.classList.toggle('ist-offen', auf);
     knopf?.setAttribute('aria-expanded', String(auf));
+    knopf?.setAttribute('aria-label', auf ? 'Menü schließen' : 'Menü öffnen');
     // Hintergrund festhalten, solange das Sheet offen ist
     document.documentElement.style.overflow = auf ? 'hidden' : '';
     if (auf) panel?.querySelector<HTMLElement>('a')?.focus({ preventScroll: true });

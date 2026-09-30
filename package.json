@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "start": "astro preview --host --port ${PORT:-3000}",
+    "start": "SERVE_STATIC=dist MAIL_HOST_BIND=0.0.0.0 MAIL_PORT=${PORT:-3000} node server/mail.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
