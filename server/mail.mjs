@@ -79,6 +79,36 @@ const transporter =
         auth: SMTP.user ? { user: SMTP.user, pass: SMTP.pass } : undefined,
       });
 
+/* ---- Zustand der SMTP-Anmeldung -------------------------------------------
+   Ob Host und Passwort gesetzt sind, sagt noch nicht, ob der Mailserver sie
+   akzeptiert. Genau das war hier die offene Frage, und im Log nachzusehen ist
+   umstaendlich. Also merken wir uns das Ergebnis und geben es unter
+   /api/health mit aus. */
+let anmeldung = TRANSPORT === 'json' ? 'testmodus' : 'noch nicht geprueft';
+
+/** Entfernt Benutzername und Passwort aus einer Fehlermeldung. Manche Server
+    zitieren die Anmeldedaten in ihrer Antwort, und /api/health ist oeffentlich. */
+function ohneGeheimnisse(text) {
+  let t = String(text || '');
+  for (const geheim of [SMTP.pass, SMTP.user].filter((g) => g && g.length > 3)) {
+    t = t.split(geheim).join('***');
+  }
+  return t.slice(0, 300);
+}
+
+async function anmeldungPruefen() {
+  if (TRANSPORT === 'json') return (anmeldung = 'testmodus');
+  if (!SMTP.host) return (anmeldung = 'FEHLER: SMTP_HOST fehlt');
+  try {
+    await transporter.verify();
+    anmeldung = 'in Ordnung';
+  } catch (fehler) {
+    anmeldung = `FEHLER: ${ohneGeheimnisse(fehler?.message || fehler)}`;
+    console.error('[Mail] SMTP-Zugang FEHLERHAFT:', anmeldung);
+  }
+  return anmeldung;
+}
+
 /* ---- einfache Ratenbegrenzung je IP ---------------------------------------
    Haelt Massenversand ab, ohne einen Dienst von aussen einzubinden. Bewusst
    im Arbeitsspeicher: bei einem Neustart ist die Liste leer, das ist hier
@@ -184,12 +214,16 @@ const server = createServer(async (req, res) => {
 
   if (url.pathname === '/api/health') {
     // Bewusst ohne Hostnamen oder Zugangsdaten – nur, ob eingerichtet ist.
+    // /api/health?pruefen=1 fragt den Mailserver frisch, statt den beim Start
+    // gemerkten Zustand zu zeigen.
+    if (url.searchParams.has('pruefen')) await anmeldungPruefen();
     return antwort(res, 200, {
       ok: true,
       transport: TRANSPORT,
       smtp: TRANSPORT === 'json' ? 'testmodus' : SMTP.host ? 'konfiguriert' : 'FEHLT',
       passwort: TRANSPORT === 'json' ? 'testmodus' : SMTP.pass ? 'gesetzt' : 'FEHLT',
       ziel: MAIL_TO ? 'gesetzt' : 'FEHLT',
+      anmeldung,
     });
   }
   if (url.pathname !== '/api/anfrage') {
@@ -279,14 +313,29 @@ const server = createServer(async (req, res) => {
 server.listen(PORT, HOST, () => {
   console.log(`[Mail] bereit auf http://${HOST}:${PORT} – Transport: ${TRANSPORT}, Ziel: ${MAIL_TO || '(nicht gesetzt)'}`);
   if (STATIC_DIR) console.log(`[Mail] liefert zusaetzlich statische Dateien aus ${STATIC_DIR} aus.`);
+  /* Beim Start protokollieren, welche der erwarteten Variablen ueberhaupt
+     ankommen – nur die Namen, nie die Werte. Ohne das laesst sich "alles
+     FEHLT" nicht unterscheiden von "falsch geschrieben" oder "gar nicht
+     durchgereicht". */
+  const erwartet = ['MAIL_PRESET', 'SMTP_HOST', 'SMTP_PORT', 'SMTP_SECURE', 'SMTP_USER',
+                    'SMTP_PASS', 'MAIL_TO', 'MAIL_FROM', 'ALLOWED_ORIGINS'];
+  const da = erwartet.filter((n2) => process.env[n2]);
+  const fehlt = erwartet.filter((n2) => !process.env[n2]);
+  console.log('[Mail] Variablen vorhanden:', da.length ? da.join(', ') : '– KEINE –');
+  console.log('[Mail] Variablen fehlen   :', fehlt.join(', ') || '–');
+  if (!da.length) {
+    console.warn(
+      '[Mail] Es ist KEINE der erwarteten Variablen angekommen. Das deutet darauf hin,\n' +
+      '       dass sie in Dokploy zwar gespeichert, aber noch nicht neu deployt wurden,\n' +
+      '       oder dass sie unter "Build Arguments" statt unter "Environment" stehen.',
+    );
+  }
+
   if (TRANSPORT === 'smtp' && !SMTP.host) {
     console.warn('[Mail] WARNUNG: SMTP_HOST ist nicht gesetzt – der Versand wird scheitern.');
   } else if (TRANSPORT === 'smtp') {
     // Zugangsdaten sofort pruefen, nicht erst bei der ersten echten Anfrage
-    transporter
-      .verify()
-      .then(() => console.log('[Mail] SMTP-Zugang geprueft: in Ordnung.'))
-      .catch((f) => console.error('[Mail] SMTP-Zugang FEHLERHAFT:', f?.message || f));
+    anmeldungPruefen().then((zustand) => console.log('[Mail] SMTP-Zugang:', zustand));
   }
 });
 

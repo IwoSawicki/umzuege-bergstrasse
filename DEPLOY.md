@@ -97,10 +97,29 @@ Spam. Antworten gehen trotzdem an den Interessenten: Der Dienst setzt
 > Cache- und Security-Header.
 
 **Prüfen, ob alles sitzt:** Nach dem Deployment
-`https://umzuege-bergstrasse.de/api/health` aufrufen. Dort müssen
-`"smtp":"konfiguriert"`, `"passwort":"gesetzt"` und `"ziel":"gesetzt"` stehen.
-Im Container-Log steht beim Start ausserdem entweder
-`SMTP-Zugang geprueft: in Ordnung.` oder eine konkrete Fehlermeldung.
+`https://umzuege-bergstrasse.de/api/health` aufrufen. So sieht es aus, wenn
+alles steht:
+
+```json
+{"ok":true,"transport":"smtp","smtp":"konfiguriert","passwort":"gesetzt","ziel":"gesetzt","anmeldung":"in Ordnung"}
+```
+
+- `"anmeldung":"in Ordnung"` heisst: Der Mailserver hat die Zugangsdaten
+  tatsächlich akzeptiert. Nur das beweist, dass der Versand funktioniert –
+  `konfiguriert` und `gesetzt` sagen bloss, dass die Werte angekommen sind.
+- Steht dort `FEHLER: …`, ist der Grund gleich mitgenannt (z. B.
+  `Invalid login` bei falschem App-Passwort). Zugangsdaten werden aus der
+  Meldung entfernt, die Adresse ist also öffentlich unbedenklich.
+- Steht bei `smtp`, `passwort` oder `ziel` `FEHLT`, sind die Variablen nicht
+  im Container angekommen. Häufigste Ursachen: nach dem Speichern **kein
+  Redeploy** ausgelöst (Dokploy übernimmt Environment-Variablen erst beim
+  Neustart), oder sie stehen unter *Build Arguments* statt unter
+  *Environment*. Das Container-Log zeigt beim Start mit
+  `[Mail] Variablen vorhanden: …` / `[Mail] Variablen fehlen: …`, welche
+  Namen wirklich durchkommen – nie deren Werte.
+- `…/api/health?pruefen=1` fragt den Mailserver frisch, statt den beim Start
+  gemerkten Zustand zu zeigen – praktisch, wenn Sie gerade ein neues
+  App-Passwort eingetragen haben.
 
 ## Schritt für Schritt (Dokploy)
 
