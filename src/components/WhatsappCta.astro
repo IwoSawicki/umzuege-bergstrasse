@@ -1,0 +1,107 @@
+---
+/**
+ * WhatsApp als Haupt-Kontaktweg.
+ *
+ * Für Umzug und Entrümpelung ist das der ehrlichste Kanal: Statt ein
+ * Formular auszufüllen, schickt jemand drei Fotos vom Keller – und wir
+ * können die Menge viel besser einschätzen als aus jeder Beschreibung.
+ *
+ * WhatsApp behält sein eigenes Grün. Der Knopf wird dadurch sofort
+ * erkannt, und man weiß vorher, was nach dem Tippen passiert.
+ */
+import { SITE, isFilled } from '../config/site';
+
+const waNummer = SITE.contact.whatsapp;
+const waText = encodeURIComponent(
+  'Hallo, ich interessiere mich für einen Umzug bzw. eine Entrümpelung. Können Sie mir ein Angebot machen?',
+);
+const waHref = waNummer ? `https://wa.me/${waNummer}?text=${waText}` : '';
+const telHref = isFilled(SITE.contact.phoneHref) ? `tel:${SITE.contact.phoneHref}` : '/#kontakt';
+
+const punkte = [
+  'Fotos statt langer Beschreibungen – wir schätzen die Menge direkt ein',
+  'Rückfragen sofort geklärt, ohne Telefonat',
+  'Sie sehen, wann wir gelesen haben – kein Warten im Ungewissen',
+];
+
+const waIcon =
+  '<path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.25 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24zm-2.5 4.1c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28s-1.44-.71-1.66-.79c-.22-.08-.39-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.45-1.35-1.69-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.31-.74-1.79-.19-.46-.39-.4-.54-.41h-.47z"></path>';
+---
+{waHref && (
+  <section id="whatsapp" class="pb-20 pt-5">
+    <div class="wrap">
+      <div data-reveal class="wa-block relative overflow-hidden rounded-[var(--radius-block)] p-[clamp(28px,6vw,72px)] text-white">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          class="pointer-events-none absolute -right-10 -top-10 h-[260px] w-[260px] text-white/[.09]"
+          set:html={waIcon}
+        />
+        <div class="relative grid grid-cols-[1.25fr_1fr] items-center gap-12 max-[900px]:grid-cols-1 max-[900px]:gap-8">
+          <div>
+            <span class="mb-[22px] inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-[7px] text-[13px] font-semibold">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={waIcon} />
+              Schnellster Weg zum Angebot
+            </span>
+            <h2 class="m-0 mb-4 text-[clamp(28px,4.2vw,48px)] font-extrabold leading-[1.08] tracking-[-.02em]">
+              Schicken Sie uns einfach ein paar Fotos
+            </h2>
+            <p class="m-0 mb-7 text-[18px] text-white/85 [text-wrap:pretty]">
+              Keller, Dachboden oder die ganze Wohnung – ein paar Bilder über WhatsApp sagen uns mehr
+              als jedes Formular. Sie bekommen schnell eine erste Einschätzung, und die kostenlose
+              Besichtigung machen wir danach in Ruhe.
+            </p>
+            <ul class="m-0 mb-9 flex list-none flex-col gap-2.5 p-0">
+              {punkte.map((pkt) => (
+                <li class="flex items-start gap-2.5 text-[16px] text-white/90">
+                  <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" class="mt-[3px] flex-shrink-0" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>
+                  {pkt}
+                </li>
+              ))}
+            </ul>
+            <div class="flex flex-wrap items-center gap-3">
+              <a
+                href={waHref}
+                target="_blank"
+                rel="noopener"
+                data-contact="whatsapp"
+                class="inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-4 text-[17px] font-bold text-[#128C4A] shadow-[0_8px_24px_rgba(0,0,0,.18)]"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={waIcon} />
+                Auf WhatsApp schreiben
+              </a>
+              <a
+                href={telHref}
+                data-contact="phone"
+                class="inline-flex items-center gap-2.5 rounded-full border border-white/55 px-7 py-4 text-[17px] font-semibold text-white"
+              >
+                <svg width="19" height="19" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none" aria-hidden="true"><path d="M4 5c0 8 7 15 15 15l0-3-4-2-2 2c-2-1-5-4-6-6l2-2-2-4z" /></svg>
+                {SITE.contact.phone}
+              </a>
+            </div>
+          </div>
+
+          {/* Angedeuteter Chatverlauf – zeigt in zwei Sekunden, wie es abläuft */}
+          <div class="flex flex-col gap-3 max-[900px]:max-w-[420px]" aria-hidden="true">
+            <div class="self-end rounded-[18px] rounded-br-[6px] bg-white/95 px-4 py-3 text-[15px] text-ink shadow-sm">
+              Hallo, ich muss den Keller meiner Mutter räumen lassen. 📷
+            </div>
+            <div class="self-end rounded-[14px] bg-white/20 px-4 py-6 text-[13px] text-white/70">
+              3 Fotos gesendet
+            </div>
+            <div class="max-w-[85%] self-start rounded-[18px] rounded-bl-[6px] bg-espresso/45 px-4 py-3 text-[15px] text-white">
+              Alles klar – sieht nach rund 12 m³ aus. Wann passt Ihnen eine kostenlose Besichtigung?
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .wa-block {
+    background: linear-gradient(135deg, #1FAE5C 0%, #17A150 46%, #0E8C42 100%);
+  }
+</style>

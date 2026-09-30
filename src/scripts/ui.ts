@@ -273,8 +273,47 @@ function initCallTracking() {
   });
 }
 
+/**
+ * Mobile Aktionsleiste: erscheint nach etwas Scrollen, damit sie in der Hero
+ * nicht die dortigen Knöpfe verdeckt. Das Menü-Sheet lässt sich über den
+ * Knopf, den Hintergrund, Escape und jeden Link darin schliessen.
+ */
+function initMobileCta() {
+  const leiste = document.querySelector<HTMLElement>('[data-mobile-cta]');
+  const sheet = document.querySelector<HTMLElement>('[data-cta-sheet]');
+  if (!leiste) return;
+
+  const SCHWELLE = 420;
+  const pruefen = () => leiste.classList.toggle('is-sichtbar', window.scrollY > SCHWELLE);
+  pruefen();
+  window.addEventListener('scroll', pruefen, { passive: true });
+
+  if (!sheet) return;
+  const knopf = document.querySelector<HTMLButtonElement>('[data-cta-toggle]');
+  const panel = sheet.querySelector<HTMLElement>('[data-cta-panel]');
+
+  const oeffnen = (auf: boolean) => {
+    sheet.hidden = !auf;
+    knopf?.setAttribute('aria-expanded', String(auf));
+    // Hintergrund festhalten, solange das Sheet offen ist
+    document.documentElement.style.overflow = auf ? 'hidden' : '';
+    if (auf) panel?.querySelector<HTMLElement>('a')?.focus({ preventScroll: true });
+    else knopf?.focus({ preventScroll: true });
+  };
+
+  knopf?.addEventListener('click', () => oeffnen(sheet.hidden));
+  sheet.querySelector('[data-cta-backdrop]')?.addEventListener('click', () => oeffnen(false));
+  sheet.querySelectorAll('[data-cta-close]').forEach((el) =>
+    el.addEventListener('click', () => oeffnen(false)),
+  );
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !sheet.hidden) oeffnen(false);
+  });
+}
+
 function init() {
   initCallTracking();
+  initMobileCta();
   initMenu();
   initTabs();
   initFaq();

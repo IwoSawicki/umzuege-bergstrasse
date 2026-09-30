@@ -8,10 +8,11 @@ import { SITE } from '../config/site';
  * Referenzen das stärkste Vertrauenssignal. Seit dem Portrait mit echtem
  * Gesicht statt Initialen.
  *
- * Verwendet wird iwo-portrait.jpg – ein quadratischer Kopfausschnitt aus dem
- * hochkanten Original (Ausschnitt 1100/830, Kantenlänge 2400). Der Anschnitt
- * sitzt bewusst tief im Original, damit das Gesicht im Kreis nach oben rückt:
- * zentriert beschnitten säße der Kopf zu tief und hätte zu viel Luft oben.
+ * Verwendet wird iwo-portrait.jpg – ein 4:5-Ausschnitt aus dem Original
+ * (940/620, 2720x3400), der Kopf, Schultern und etwas Oberkörper zeigt.
+ * Runde Rahmen zwangen zum engen Gesichtsausschnitt; das Hochformat mit
+ * weichen Ecken lässt mehr von der Person sehen und wirkt weniger wie ein
+ * Profilbild aus einem sozialen Netzwerk.
  */
 const signals = [
   'Kostenlose Besichtigung vor Ort',
@@ -37,9 +38,9 @@ const signals = [
           <Image
             src={portrait}
             alt={`${SITE.legal.owner}, Inhaber von ${SITE.name}`}
-            widths={[104, 156]}
-            sizes="52px"
-            class="h-[52px] w-[52px] flex-shrink-0 rounded-full object-cover ring-2 ring-accent"
+            widths={[152, 228]}
+            sizes="76px"
+            class="aspect-[4/5] w-[76px] flex-shrink-0 rounded-[14px] object-cover"
             loading="lazy"
           />
           <div>

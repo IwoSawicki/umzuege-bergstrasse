@@ -10,6 +10,7 @@ import Callback from '../../components/Callback.astro';
 import Stats from '../../components/Stats.astro';
 import Contact from '../../components/Contact.astro';
 import Versprechen from '../../components/Versprechen.astro';
+import WhatsappCta from '../../components/WhatsappCta.astro';
 import Benefits from '../../components/Benefits.astro';
 import { service, breadcrumb, faqPage, localBusiness } from '../../lib/schema';
 import IncludeCard from '../../components/IncludeCard.astro';
@@ -189,6 +190,8 @@ const jsonLd = [
             <article class="prose"><Content /></article>
           </div>
         </section>
+
+        <WhatsappCta />
 
         <Versprechen />
 
