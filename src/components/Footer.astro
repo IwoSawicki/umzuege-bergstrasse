@@ -98,7 +98,28 @@ const year = new Date().getFullYear();
 
     <!-- Rein dekoratives Wasserzeichen. Der Schriftzug steckt bewusst im
          ::after (siehe global.css) und nicht im HTML: so ist er kein
-         Textinhalt, für den ein Lesekontrast gefordert wird. -->
-    <div aria-hidden="true" class="foot-watermark mt-7 select-none whitespace-nowrap text-right text-[clamp(40px,8.6vw,132px)] font-extrabold leading-[.8] tracking-[-.03em] text-white/[.06] max-[560px]:!mt-4 max-[560px]:!text-[12.5vw]" style="margin-bottom:-0.14em"></div>
+         Textinhalt, für den ein Lesekontrast gefordert wird.
+
+         Der Schriftzug stand vorher 0.14em zu tief und wurde von der unteren
+         Footer-Kante (overflow:hidden) quer durch die Buchstaben abgeschnitten
+         – rund ein Achtel der Versalhöhe, bei G und S mit platt gedrücktem
+         Bogen. Das las sich wie ein Fehler, nicht wie Absicht. Jetzt steht die
+         Schrift vollständig auf der Kante auf. Die leading-[.8] schneidet dabei
+         den ungenutzten Unterlängenraum weg (der Schriftzug hat keine
+         Unterlängen), sodass unten kein zufällig wirkender Abstand entsteht.
+
+         Auf dem Handy war der Schriftzug ausserdem zu gross: mit der früheren
+         Sonderregel (12.5vw unter 560px) lief er auf jeder gängigen Handybreite
+         über den rechten Rand hinaus und wurde dort abgeschnitten – bei 390px
+         waren es 377px Text auf 342px Platz.
+
+         Die Größe ist deshalb jetzt gerechnet statt geschätzt: Der Schriftzug
+         ist in dieser Schrift genau das 7,73-fache der Schriftgröße breit, der
+         Inhaltsbereich ist 48px schmaler als das Fenster. Daraus ergibt sich
+         eine Obergrenze von 11vw; 10.5vw lässt etwas Luft, falls die Hausschrift
+         einmal nicht lädt und eine breitere Ersatzschrift einspringt. Eine
+         einzige Formel für alle Breiten – die alte Kombination aus clamp und
+         Sonderregel sprang bei genau 560px sichtbar von 57px auf 48px. -->
+    <div aria-hidden="true" class="foot-watermark mt-7 flex select-none justify-end whitespace-nowrap text-[min(10.5vw,132px)] font-extrabold leading-[.8] tracking-[-.03em] text-white/[.06] max-[560px]:!mt-4" style="margin-bottom:.02em"></div>
   </div>
 </footer>

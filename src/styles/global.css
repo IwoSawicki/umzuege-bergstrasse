@@ -240,4 +240,9 @@ a:hover .arr, button:hover .arr { transform: translateX(5px); }
 .text-accent { color: var(--accent-text); }
 
 /* Dekoratives Wasserzeichen im Footer (siehe Footer.astro) */
+/* Der Schriftzug liegt im ::after und ist damit kein Textinhalt (siehe
+   Footer.astro). Der Elternblock ist ein Flex-Container mit justify-end:
+   Sollte die Schrift doch einmal breiter ausfallen als berechnet – andere
+   Ersatzschrift, anderer Browser –, laeuft sie dann nach links in die leere
+   Flaeche statt rechts aus dem Footer heraus und dort abgeschnitten zu werden. */
 .foot-watermark::after { content: "BERGSTRASSE"; }
