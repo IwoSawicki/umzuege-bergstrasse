@@ -1,14 +1,24 @@
 # Deployment mit Dokploy
 
-Die Website wird als **statischer Build** erzeugt und in einem schlanken **nginx**-Container
-ausgeliefert. Dokploy baut das mitgelieferte `Dockerfile` und startet den Container.
+Die Website wird als **statischer Build** erzeugt und über **nginx** ausgeliefert.
+Daneben läuft im selben Container ein kleiner **Node-Dienst für die
+Anfrageformulare** (`server/mail.mjs`), den nginx unter `/api/` weiterreicht.
+Dokploy baut das mitgelieferte `Dockerfile` und startet den Container.
+
+> Warum ein eigener Dienst: Vorher lief der Formularversand über FormSubmit.co.
+> Der Dienst hat Anfragen wiederholt mit HTTP 500 abgewiesen – sichtbar als
+> CORS-Fehler, weil seine Fehlerantworten keine `Access-Control-Allow-Origin`-
+> Header tragen. Da Formulare auf derselben Domain laufen, gibt es jetzt weder
+> CORS noch einen Drittanbieter, der den Versand blockieren kann.
 
 ## Enthaltene Dateien
 
 | Datei          | Zweck                                                        |
 |----------------|-------------------------------------------------------------|
 | `Dockerfile`   | Multi-Stage-Build: Node baut Astro → nginx liefert `dist/`  |
-| `nginx.conf`   | Saubere URLs, gzip, Cache-Header, Security-Header, 404       |
+| `nginx.conf`   | Saubere URLs, gzip, Cache-Header, Security-Header, 404, `/api/` |
+| `server/mail.mjs` | Nimmt die Formulare entgegen und verschickt die Mail per SMTP |
+| `docker-entrypoint.sh` | Startet Mail-Dienst und nginx; endet einer, stoppt der Container |
 | `.dockerignore`| hält das Build-Image schlank                                 |
 | `nixpacks.toml`| Fallback, falls Build-Type „Nixpacks" (pinnt Node 22)       |
 | `.nvmrc`       | Node-Version 22 (Astro 7 benötigt ≥ 22.12)                  |
@@ -23,6 +33,33 @@ Auslieferung über nginx).
 > Falls „Nixpacks" aktiv bleibt, funktioniert der Build trotzdem: `nixpacks.toml`
 > und `.nvmrc` erzwingen Node 22, und der Start-Befehl liefert den statischen Build
 > per `astro preview` aus. Der Dockerfile-/nginx-Weg ist aber performanter.
+
+## ⚠️ Pflicht: SMTP-Zugangsdaten setzen
+
+Ohne diese Variablen nimmt die Seite Anfragen entgegen, **verschickt aber keine
+Mail**. In Dokploy unter *Environment* eintragen:
+
+| Variable           | Beispiel                              | Zweck                                  |
+|--------------------|---------------------------------------|----------------------------------------|
+| `SMTP_HOST`        | `smtp.ionos.de`                       | Postausgangsserver des Mailanbieters   |
+| `SMTP_PORT`        | `587`                                 | 587 mit STARTTLS, 465 mit SMTPS        |
+| `SMTP_SECURE`      | `false`                               | bei Port 465 auf `true` setzen         |
+| `SMTP_USER`        | `kontakt@umzuege-bergstrasse.de`      | Postfach-Benutzername                  |
+| `SMTP_PASS`        | `…`                                   | Postfach-Passwort                      |
+| `MAIL_TO`          | `kontakt@umzuege-bergstrasse.de`      | wohin die Anfragen gehen               |
+| `MAIL_FROM`        | `kontakt@umzuege-bergstrasse.de`      | Absender; muss zum Postfach passen     |
+| `ALLOWED_ORIGINS`  | `https://umzuege-bergstrasse.de`      | nimmt nur Anfragen von der eigenen Seite an |
+
+`MAIL_FROM` muss dieselbe Adresse sein wie `SMTP_USER` – die meisten Anbieter
+lehnen einen abweichenden Absender ab, und bei SPF/DKIM landet die Mail sonst
+im Spam. Antworten gehen trotzdem an den Interessenten: Das Skript setzt
+`Reply-To` auf die im Formular angegebene Mailadresse.
+
+**Prüfen, ob alles sitzt:** Nach dem Deployment
+`https://umzuege-bergstrasse.de/api/health` aufrufen. Dort muss
+`"smtp":"konfiguriert"` und `"ziel":"gesetzt"` stehen. Im Container-Log steht
+beim Start ausserdem entweder `SMTP-Zugang geprueft: in Ordnung.` oder eine
+konkrete Fehlermeldung.
 
 ## Schritt für Schritt (Dokploy)
 

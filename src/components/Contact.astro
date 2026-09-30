@@ -77,18 +77,15 @@ const contactRows = [
 
           <form
             data-quote-form
-            data-endpoint={`https://formsubmit.co/ajax/${SITE.leadEmail}`}
+            data-endpoint="/api/anfrage"
             class="quote-form flex flex-col gap-4"
             novalidate
-            action={`https://formsubmit.co/${SITE.leadEmail}`}
+            action="/api/anfrage"
             method="post"
           >
             <!-- FormSubmit-Konfiguration -->
             <input type="hidden" name="_subject" value={subject} />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
             <!-- Honeypot gegen Spam-Bots -->
-            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;width:0;overflow:hidden" />
             <!-- Fortschritt (nur mit JS sichtbar) -->
             <div data-progress hidden class="mb-1">
               <div class="mb-2 flex items-center justify-between text-[13px] font-semibold text-muted">

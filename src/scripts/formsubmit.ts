@@ -1,67 +1,64 @@
 /**
- * Versand der Anfrageformulare über FormSubmit.co.
+ * Versand der Anfrageformulare an den eigenen Mail-Endpunkt.
  *
- * Warum eine eigene Datei: Kontakt- und Rückrufformular brauchen exakt
- * dieselbe Logik. Vorher stand sie zweimal da und lief auseinander.
+ * Vorher lief das über FormSubmit.co. Der Dienst hat den Rückruf wiederholt
+ * abgewiesen – zuletzt sichtbar als CORS-Fehler, weil seine Fehlerantworten
+ * keine Access-Control-Header tragen und der Browser deshalb den eigentlichen
+ * HTTP 500 gar nicht mehr zeigt. Die Ursache liess sich von aussen nicht
+ * feststellen, also läuft der Versand jetzt über /api/anfrage auf dem eigenen
+ * Server (siehe server/mail.mjs).
  *
- * Format: FormData (multipart/form-data). Das lief nachweislich, solange
- * die Empfaengeradresse bei FormSubmit bestaetigt war. JSON waere laut
- * Doku ebenfalls moeglich, loest aber einen CORS-Preflight aus – gegen
- * einen Dienst, den wir nicht testen koennen, bleiben wir beim Bewaehrten.
- *
- * Zwei Faellen, die frueher als Erfolg durchgingen:
- *
- * 1. FormSubmit antwortet mit HTTP 200 und success:"false", solange die
- *    Empfaengeradresse nicht bestaetigt ist. res.ok allein genuegt also
- *    nicht – sonst sieht der Besucher "Danke", die Ads-Conversion feuert,
- *    und die Anfrage kommt nirgends an.
- *
- * 2. Ohne Protokollierung liess sich von aussen nicht unterscheiden, ob
- *    die Adresse unbestaetigt ist, der Request abgewiesen wurde oder das
- *    Netz schuld war. Jede Fehlermeldung landet deshalb als "[Formular]"
- *    in der Browser-Konsole.
+ * Gleiche Domain wie die Seite: kein CORS, kein Preflight, kein Drittanbieter,
+ * keine Freischaltung und keine fremde Spam-Heuristik, die uns aussperrt.
  */
 
 export interface SendeErgebnis {
   ok: boolean;
-  /** HTTP-Status, 0 bei Netzwerk-/CORS-Fehler */
+  /** HTTP-Status, 0 bei Netzwerkfehler oder Zeitüberschreitung */
   status: number;
-  /** Antwort im Klartext – landet bei Fehlern in der Konsole */
+  /** Fehlertext für die Konsole – im Erfolgsfall leer */
   text: string;
 }
 
-/** Nach so vielen Millisekunden wird abgebrochen. Ein haengender Request
-    ist fuer den Besucher schlimmer als eine Fehlermeldung: Der Knopf bleibt
-    auf "Wird gesendet", und er weiss nicht, ob die Anfrage raus ist. */
+/** Nach so vielen Millisekunden wird abgebrochen. Ein hängender Request ist
+    für den Besucher schlimmer als eine Fehlermeldung: Der Knopf bleibt auf
+    "Wird gesendet", und er weiss nicht, ob die Anfrage raus ist. */
 const ZEITLIMIT_MS = 15000;
 
 export async function sendeFormular(form: HTMLFormElement, endpoint: string): Promise<SendeErgebnis> {
   const abbruch = new AbortController();
   const uhr = setTimeout(() => abbruch.abort(), ZEITLIMIT_MS);
+
+  const daten: Record<string, string> = {};
+  new FormData(form).forEach((wert, schluessel) => {
+    if (typeof wert !== 'string') return;
+    daten[schluessel] = schluessel in daten ? `${daten[schluessel]}, ${wert}` : wert;
+  });
+  // Damit in der Mail steht, welche Seite den Lead gebracht hat
+  daten.quelle = location.pathname;
+
   try {
     const res = await fetch(endpoint, {
       method: 'POST',
-      body: new FormData(form),
-      headers: { Accept: 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(daten),
       signal: abbruch.signal,
     });
     const text = await res.text();
 
     let erfolg = res.ok;
+    let meldung = text;
     try {
-      const json = JSON.parse(text) as { success?: boolean | string };
-      // FormSubmit liefert success mal als Boolean, mal als String
-      if (json && 'success' in json) erfolg = json.success === true || json.success === 'true';
+      const json = JSON.parse(text) as { ok?: boolean; fehler?: string };
+      if (typeof json.ok === 'boolean') erfolg = json.ok;
+      if (json.fehler) meldung = json.fehler;
     } catch {
-      /* kein JSON – dann zaehlt allein der HTTP-Status */
+      /* keine JSON-Antwort – dann zählt allein der HTTP-Status */
     }
 
-    if (!erfolg) {
-      console.error('[Formular] Versand fehlgeschlagen. HTTP', res.status, '–', text);
-    }
-    return { ok: erfolg, status: res.status, text };
+    if (!erfolg) console.error('[Formular] Versand fehlgeschlagen. HTTP', res.status, '–', meldung);
+    return { ok: erfolg, status: res.status, text: erfolg ? '' : meldung };
   } catch (fehler) {
-    // Zeitueberschreitung, Netzwerkfehler oder von CORS blockiert
     const abgebrochen = fehler instanceof DOMException && fehler.name === 'AbortError';
     console.error(
       abgebrochen
