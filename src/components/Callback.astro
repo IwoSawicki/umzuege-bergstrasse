@@ -58,10 +58,21 @@ const { subject = 'Rückruf-Wunsch über umzuege-bergstrasse.de' } = Astro.props
             novalidate
             class="flex flex-col gap-3"
           >
+            {/* Feldsatz bewusst identisch zum grossen Anfrageformular, das
+                zuverlaessig durchgeht. Unterschiede, die vorher bestanden:
+                  - kein email-Feld: FormSubmit setzt daraus die Reply-To-Adresse.
+                    Hier fragen wir keine Mail ab, deshalb _replyto fest auf
+                    unsere eigene – so ist das Feld belegt.
+                  - "anfrage" statt "leistung"/"nachricht": eigene Feldnamen,
+                    die es im funktionierenden Formular nicht gibt.
+                _template bleibt, weil das funktionierende Formular es
+                ebenfalls schickt. */}
             <input type="hidden" name="_subject" value={subject} />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="anfrage" value="Rückruf-Service" />
+            <input type="hidden" name="_replyto" value={SITE.leadEmail} />
+            <input type="hidden" name="leistung" value="Rückruf" />
+            <input type="hidden" name="nachricht" value="Rückruf gewünscht – bitte anrufen." />
             <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;width:0;overflow:hidden" />
 
             <div class="grid grid-cols-2 gap-3 max-[560px]:grid-cols-1">
