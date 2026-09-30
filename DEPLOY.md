@@ -34,38 +34,73 @@ Auslieferung über nginx).
 > und `.nvmrc` erzwingen Node 22, und der Start-Befehl liefert den statischen Build
 > per `astro preview` aus. Der Dockerfile-/nginx-Weg ist aber performanter.
 
-## ⚠️ Pflicht: SMTP-Zugangsdaten setzen
+## ⚠️ Pflicht: Mailversand einrichten
 
 Ohne diese Variablen nimmt die Seite Anfragen entgegen, **verschickt aber keine
-Mail**. In Dokploy unter *Environment* eintragen:
+Mail**. In Dokploy unter *Environment* eintragen.
 
-| Variable           | Beispiel                              | Zweck                                  |
-|--------------------|---------------------------------------|----------------------------------------|
-| `SMTP_HOST`        | `smtp.ionos.de`                       | Postausgangsserver des Mailanbieters   |
-| `SMTP_PORT`        | `587`                                 | 587 mit STARTTLS, 465 mit SMTPS        |
-| `SMTP_SECURE`      | `false`                               | bei Port 465 auf `true` setzen         |
-| `SMTP_USER`        | `kontakt@umzuege-bergstrasse.de`      | Postfach-Benutzername                  |
-| `SMTP_PASS`        | `…`                                   | Postfach-Passwort                      |
-| `MAIL_TO`          | `kontakt@umzuege-bergstrasse.de`      | wohin die Anfragen gehen               |
-| `MAIL_FROM`        | `kontakt@umzuege-bergstrasse.de`      | Absender; muss zum Postfach passen     |
-| `ALLOWED_ORIGINS`  | `https://umzuege-bergstrasse.de`      | nimmt nur Anfragen von der eigenen Seite an |
+### Der kurze Weg: Anbieter-Voreinstellung
 
-`MAIL_FROM` muss dieselbe Adresse sein wie `SMTP_USER` – die meisten Anbieter
-lehnen einen abweichenden Absender ab, und bei SPF/DKIM landet die Mail sonst
-im Spam. Antworten gehen trotzdem an den Interessenten: Das Skript setzt
+Für die gängigen Anbieter reichen **drei Zeilen**. `MAIL_PRESET` setzt Server,
+Port und Verschlüsselung automatisch richtig – das ist die häufigste
+Fehlerquelle (Port 587 braucht STARTTLS, Port 465 braucht SMTPS).
+
+```
+MAIL_PRESET=gmail
+SMTP_USER=deine-adresse@example.com
+SMTP_PASS=dein-app-passwort
+```
+
+Mögliche Werte für `MAIL_PRESET`: `gmail`, `ionos`, `strato`, `hetzner`,
+`mailbox`, `office365`.
+
+`MAIL_TO` und `MAIL_FROM` fallen automatisch auf `SMTP_USER` zurück,
+`ALLOWED_ORIGINS` auf `https://umzuege-bergstrasse.de`.
+
+### Google / Gmail: App-Passwort statt Kontopasswort
+
+**Niemals das Google-Kontopasswort eintragen.** Google akzeptiert es bei
+aktivierter Zwei-Faktor-Anmeldung ohnehin nicht. Stattdessen:
+
+1. [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords) öffnen
+2. Name vergeben (z. B. „Website Formular"), erstellen
+3. Den 16-stelligen Code kopieren und als `SMTP_PASS` eintragen
+
+Der Code taugt ausschließlich zum Mailversand, nicht zum Anmelden, und lässt
+sich jederzeit einzeln widerrufen. Leerzeichen im Code darf man
+mitkopieren – der Dienst entfernt sie selbst.
+
+### Alle Variablen im Einzelnen
+
+| Variable           | Pflicht | Zweck                                       |
+|--------------------|---------|---------------------------------------------|
+| `MAIL_PRESET`      | –       | setzt Host, Port und Verschlüsselung        |
+| `SMTP_USER`        | ✔       | Postfach-Benutzername                       |
+| `SMTP_PASS`        | ✔       | App-Passwort bzw. Postfach-Passwort         |
+| `SMTP_HOST`        | –       | nur nötig ohne Preset                       |
+| `SMTP_PORT`        | –       | nur nötig ohne Preset                       |
+| `SMTP_SECURE`      | –       | `true` bei Port 465, sonst `false`          |
+| `MAIL_TO`          | –       | Ziel der Anfragen (Standard: `SMTP_USER`)   |
+| `MAIL_FROM`        | –       | Absender (Standard: `SMTP_USER`)            |
+| `ALLOWED_ORIGINS`  | –       | erlaubte Herkunft der Formulare             |
+| `SERVE_STATIC`     | –       | nur im Betrieb ohne nginx (setzt `npm start`) |
+
+`MAIL_FROM` muss zur Adresse in `SMTP_USER` passen – die meisten Anbieter
+lehnen einen abweichenden Absender ab, und bei SPF landet die Mail sonst im
+Spam. Antworten gehen trotzdem an den Interessenten: Der Dienst setzt
 `Reply-To` auf die im Formular angegebene Mailadresse.
 
-> **Falls der Build-Type auf „Nixpacks" steht:** Dann laeuft nicht das
+> **Falls der Build-Type auf „Nixpacks" steht:** Dann läuft nicht das
 > Dockerfile, sondern `npm start`. Auch das funktioniert – der Mail-Dienst
 > liefert in dem Fall die statischen Seiten gleich mit aus (`SERVE_STATIC`).
 > Empfohlen bleibt „Dockerfile": nginx liefert schneller aus und setzt die
 > Cache- und Security-Header.
 
 **Prüfen, ob alles sitzt:** Nach dem Deployment
-`https://umzuege-bergstrasse.de/api/health` aufrufen. Dort muss
-`"smtp":"konfiguriert"` und `"ziel":"gesetzt"` stehen. Im Container-Log steht
-beim Start ausserdem entweder `SMTP-Zugang geprueft: in Ordnung.` oder eine
-konkrete Fehlermeldung.
+`https://umzuege-bergstrasse.de/api/health` aufrufen. Dort müssen
+`"smtp":"konfiguriert"`, `"passwort":"gesetzt"` und `"ziel":"gesetzt"` stehen.
+Im Container-Log steht beim Start ausserdem entweder
+`SMTP-Zugang geprueft: in Ordnung.` oder eine konkrete Fehlermeldung.
 
 ## Schritt für Schritt (Dokploy)
 

@@ -20,13 +20,33 @@ import nodemailer from 'nodemailer';
 const PORT = Number(process.env.MAIL_PORT || 8081);
 const HOST = process.env.MAIL_HOST_BIND || '127.0.0.1';
 
+/* Fertige Einstellungen der gaengigen Anbieter. Spart drei Variablen und
+   die haeufigste Fehlerquelle: Port 587 braucht secure=false (STARTTLS),
+   Port 465 braucht secure=true (SMTPS). Wer die Werte selbst setzt,
+   ueberschreibt den Voreinstellungssatz. */
+const ANBIETER = {
+  gmail:     { host: 'smtp.gmail.com',      port: 587, secure: false },
+  google:    { host: 'smtp.gmail.com',      port: 587, secure: false },
+  ionos:     { host: 'smtp.ionos.de',       port: 587, secure: false },
+  strato:    { host: 'smtp.strato.de',      port: 587, secure: false },
+  hetzner:   { host: 'mail.your-server.de', port: 587, secure: false },
+  mailbox:   { host: 'smtp.mailbox.org',    port: 465, secure: true },
+  office365: { host: 'smtp.office365.com',  port: 587, secure: false },
+};
+const voreinstellung = ANBIETER[String(process.env.MAIL_PRESET || '').toLowerCase()] || {};
+
 const SMTP = {
-  host: process.env.SMTP_HOST || '',
-  port: Number(process.env.SMTP_PORT || 587),
+  host: process.env.SMTP_HOST || voreinstellung.host || '',
+  port: Number(process.env.SMTP_PORT || voreinstellung.port || 587),
   user: process.env.SMTP_USER || '',
-  pass: process.env.SMTP_PASS || '',
+  // Google zeigt App-Passwoerter in Viererbloecken an ("abcd efgh ijkl mnop").
+  // Beim Kopieren wandern die Leerzeichen mit – Google erwartet sie ohne.
+  pass: (process.env.SMTP_PASS || '').replace(/\s+/g, ''),
   /** true = SMTPS auf Port 465, false = STARTTLS auf 587 */
-  secure: String(process.env.SMTP_SECURE || '').toLowerCase() === 'true',
+  secure:
+    process.env.SMTP_SECURE !== undefined
+      ? String(process.env.SMTP_SECURE).toLowerCase() === 'true'
+      : Boolean(voreinstellung.secure),
 };
 const MAIL_TO = process.env.MAIL_TO || process.env.SMTP_USER || '';
 const MAIL_FROM = process.env.MAIL_FROM || process.env.SMTP_USER || '';
@@ -168,6 +188,7 @@ const server = createServer(async (req, res) => {
       ok: true,
       transport: TRANSPORT,
       smtp: TRANSPORT === 'json' ? 'testmodus' : SMTP.host ? 'konfiguriert' : 'FEHLT',
+      passwort: TRANSPORT === 'json' ? 'testmodus' : SMTP.pass ? 'gesetzt' : 'FEHLT',
       ziel: MAIL_TO ? 'gesetzt' : 'FEHLT',
     });
   }
