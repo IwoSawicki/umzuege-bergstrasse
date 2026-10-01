@@ -67,13 +67,44 @@ export const SITE = {
      *  Sie gehoeren zur adsId oben: send_to = adsId + '/' + label.
      *  Leeres Label = diese Conversion wird nicht gesendet. */
     adsLabels: {
-      formular: 'S9Q8CJaOtIkdEIbRheVE', // abgeschicktes Formular
-      anruf: 'ctC2CJyOtIkdEIbRheVE',    // Klick auf eine Telefonnummer
+      formular: 'S9Q8CJaOtIkdEIbRheVE',  // abgeschicktes Formular
+      anruf: 'ctC2CJyOtIkdEIbRheVE',     // Klick auf eine Telefonnummer
+      whatsapp: 'WcFkCJakxIkdEIbRheVE',  // Klick auf einen WhatsApp-Link
     },
     /** Rechenwert einer Anfrage in Euro. Kein Umsatz, sondern eine Annahme:
      *  So gewichtet Google Ads die Gebote. Nach den ersten Auftraegen
      *  anpassen (durchschnittlicher Auftragswert x Abschlussquote). */
     leadWert: 40,
+
+    /** Ein Klick auf WhatsApp oder die Telefonnummer ist weniger wert als ein
+     *  abgeschicktes Formular: Beim Formular liegen Name und Nummer vor, beim
+     *  Klick ist nur die App bzw. der Waehler geoeffnet – ein Teil schreibt
+     *  oder telefoniert nie. Die Annahme hier sind rund zwei Drittel. Sobald
+     *  Sie wissen, wie viele Klicks tatsaechlich zu einem Gespraech fuehren,
+     *  gehoert dieser Wert angepasst; Google gewichtet die Gebote danach. */
+    klickWert: 25,
+  },
+
+  /** Umami – selbst gehostete, cookielose Reichweitenmessung auf eigener
+   *  Infrastruktur (analytics.stolz-marketing.de).
+   *
+   *  Laedt bewusst OHNE Einwilligung, anders als Google und Clarity. Umami
+   *  speichert nichts auf dem Geraet (kein Cookie, kein localStorage) und
+   *  liest auch nichts davon aus – damit greift § 25 TDDDG nicht, der genau
+   *  das regelt. Verarbeitet werden nur Seitenaufruf, Referrer, Sprache und
+   *  Bildschirmgroesse sowie ein taeglich wechselnder Hash aus IP und
+   *  Browserkennung; die IP selbst wird nicht gespeichert. Rechtsgrundlage
+   *  ist das berechtigte Interesse (Art. 6 Abs. 1 lit. f DSGVO), der Hinweis
+   *  steht in der Datenschutzerklaerung.
+   *
+   *  Genau das ist der Nutzen: Umami misst auch die Besucher, die den Banner
+   *  ablehnen – erfahrungsgemaess die Mehrheit. Ohne diese Zahlen sieht man
+   *  in Google Analytics nur einen Ausschnitt und haelt ihn fuer das Ganze.
+   *
+   *  Leeres src schaltet die Messung komplett ab. */
+  umami: {
+    src: 'https://analytics.stolz-marketing.de/script.js',
+    websiteId: '2477eeaf-e5e6-4cb8-93ba-f61e910c2010',
   },
 
   /** Adresse wird auf der Seite NICHT angezeigt (showAddress:false) – nur im

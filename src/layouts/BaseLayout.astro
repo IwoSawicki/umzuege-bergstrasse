@@ -30,6 +30,15 @@ const fullTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
 
 // WebSite-Schema auf allen Seiten
 const schemas = [website(), ...jsonLd];
+
+/* Umami: cookielose Reichweitenmessung auf eigener Infrastruktur, laedt ohne
+   Einwilligung (Begruendung in site.ts). data-domains begrenzt die Messung auf
+   die Produktionsdomain – sonst landen Aufrufe von Vorschau-Deployments und
+   vom Entwicklungsrechner in derselben Statistik und verfaelschen sie. */
+const umami = SITE.umami;
+const umamiDomains = [new URL(SITE.url).hostname]
+  .flatMap((h) => (h.startsWith('www.') ? [h, h.slice(4)] : [h, `www.${h}`]))
+  .join(',');
 ---
 <!doctype html>
 <html lang="de" class={SITE.theme}>
@@ -76,6 +85,10 @@ const schemas = [website(), ...jsonLd];
       href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    {umami.src && umami.websiteId && (
+      <script defer src={umami.src} data-website-id={umami.websiteId} data-domains={umamiDomains}></script>
+    )}
 
     {schemas.map((s) => (
       <script type="application/ld+json" set:html={JSON.stringify(s)} />

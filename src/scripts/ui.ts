@@ -4,7 +4,7 @@
  * jeweiligen Elemente im DOM vorhanden sind).
  */
 
-import { trackCall } from './track';
+import { trackCall, trackWhatsapp } from './track';
 
 const reduceMotion =
   typeof window !== 'undefined' &&
@@ -255,21 +255,33 @@ function initRevealAndParallax() {
 }
 
 /**
- * Klicks auf Telefonnummern messen. Bei Umzugsanfragen wird deutlich
- * häufiger angerufen als das Formular ausgefüllt – ohne diese Messung
- * fehlt in Google Ads der grösste Teil der Conversions.
+ * Klicks auf Telefonnummern und WhatsApp-Links messen. Bei Umzugsanfragen
+ * wird deutlich häufiger angerufen oder geschrieben als das Formular
+ * ausgefüllt – ohne diese Messung fehlt in Google Ads der grösste Teil der
+ * Conversions.
+ *
+ * Die Google-Ads-Conversion selbst hängt am Inline-Script im ConsentBanner,
+ * damit sie auch feuert, wenn dieses Modul nicht lädt. Hier entstehen nur
+ * die GA4- und Umami-Ereignisse mit der Angabe, wo geklickt wurde.
  */
 function initCallTracking() {
+  const ortBestimmen = (link: Element) =>
+    link.closest('nav') ? 'navigation'
+    : link.closest('footer') ? 'footer'
+    : link.closest('[data-cta-sheet]') ? 'mobiles-menue'
+    : link.closest('[data-mobile-cta]') ? 'mobile-leiste'
+    : link.closest('#kontakt') ? 'kontakt'
+    : 'seite';
+
   document.addEventListener('click', (e) => {
-    const link = (e.target as HTMLElement | null)?.closest?.('a[href^="tel:"]');
-    if (!link) return;
-    const ort =
-      link.closest('nav') ? 'navigation'
-      : link.closest('footer') ? 'footer'
-      : link.closest('[data-mobile-cta]') ? 'mobile-leiste'
-      : link.closest('#kontakt') ? 'kontakt'
-      : 'seite';
-    trackCall(ort);
+    const ziel = e.target as HTMLElement | null;
+    if (!ziel?.closest) return;
+
+    const tel = ziel.closest('a[href^="tel:"]');
+    if (tel) return trackCall(ortBestimmen(tel));
+
+    const wa = ziel.closest('a[href*="wa.me/"], a[href*="api.whatsapp.com"]');
+    if (wa) trackWhatsapp(ortBestimmen(wa));
   });
 }
 

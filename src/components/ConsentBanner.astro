@@ -20,6 +20,7 @@ const clarityId = SITE.analytics.clarityId;
 const consentMode = SITE.analytics.consentMode;
 const adsLabels = SITE.analytics.adsLabels;
 const leadWert = SITE.analytics.leadWert;
+const klickWert = SITE.analytics.klickWert;
 ---
 <div
   id="consent-banner"
@@ -42,7 +43,7 @@ const leadWert = SITE.analytics.leadWert;
   </div>
 </div>
 
-<script is:inline define:vars={{ gaId, adsId, clarityId, consentMode, adsLabels, leadWert }}>
+<script is:inline define:vars={{ gaId, adsId, clarityId, consentMode, adsLabels, leadWert, klickWert }}>
   (function () {
     var KEY = 'ub-consent';
     var banner = document.getElementById('consent-banner');
@@ -151,15 +152,26 @@ const leadWert = SITE.analytics.leadWert;
       });
     }
     window.trackConv = trackConv;
-    // Labels global, damit die Formulare sie aus gebuendelten Skripten erreichen
+    // Labels und Werte global, damit die Formulare sie aus gebuendelten
+    // Skripten erreichen
     window.__ubAdsLabels = adsLabels;
+    window.__ubWerte = { lead: leadWert, klick: klickWert };
 
-    /* Klick auf eine Telefonnummer. In ui.ts haengt am selben Klick noch
-       das GA4-Ereignis "contact" – zwei Systeme, keine Doppelzaehlung. */
+    /* Klick auf eine Telefonnummer oder einen WhatsApp-Link. In ui.ts haengt
+       am selben Klick noch das GA4-Ereignis "contact" – zwei Systeme, keine
+       Doppelzaehlung.
+
+       Beides sind Klick-Conversions und deshalb mit klickWert bewertet, nicht
+       mit leadWert: Der Waehler ist geoeffnet bzw. WhatsApp startet, aber ob
+       daraus ein Gespraech wird, weiss die Seite nicht. */
     document.addEventListener('click', function (e) {
       var ziel = e.target;
       if (!ziel || !ziel.closest) return;
-      if (ziel.closest('a[href^="tel:"]')) trackConv(adsLabels.anruf);
+      if (ziel.closest('a[href^="tel:"]')) {
+        trackConv(adsLabels.anruf, klickWert);
+      } else if (ziel.closest('a[href*="wa.me/"], a[href*="api.whatsapp.com"]')) {
+        trackConv(adsLabels.whatsapp, klickWert);
+      }
     });
   })();
 </script>
