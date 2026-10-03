@@ -1,0 +1,357 @@
+---
+/**
+ * Footer-Variante mit Portrait – zur Ansicht, vorerst nur im Impressum.
+ *
+ * Vorbild ist ein Aufbau, bei dem neben den Linkspalten ein hochformatiges
+ * Foto des Inhabers steht, mit dem Kontakt-Knopf direkt im Bild. Der Gedanke
+ * dahinter: Am Seitenende hat der Besucher alles gelesen und entscheidet, ob
+ * er schreibt. In dem Moment wirkt ein Gesicht stärker als jede Überschrift –
+ * er sieht, mit wem er es zu tun bekommt.
+ *
+ * Übersetzt in unsere Marke: Gelb → Orange, Schwarz → Espresso, Creme → Tint.
+ * Der Kontakt-Knopf im Bild ist WhatsApp, weil das der Haupt-Kontaktweg der
+ * Seite ist; er behält sein eigenes Grün wie überall sonst.
+ *
+ * Die Regional-Spalte verlinkt alle Ortsseiten. Wird dieser Footer einmal
+ * seitenweit eingesetzt, ist das nicht nur Optik: Jede Ortsseite bekäme dann
+ * von jeder Seite einen internen Link – genau das, was der Search Console
+ * bei "gefunden, zurzeit nicht indexiert" fehlt.
+ */
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import { SITE } from '../config/site';
+import Logo from './Logo.astro';
+import portrait from '../assets/Iwo-StolzMarketing.jpg';
+
+const orte = (await getCollection('locations', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const leistungen = (await getCollection('services', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const unternehmen = [
+  { href: '/#warum', label: 'Über uns' },
+  { href: '/#versprechen', label: 'Unser Versprechen' },
+  { href: '/#faq', label: 'Häufige Fragen' },
+  { href: '/#kontakt', label: 'Kontakt' },
+];
+
+const waNummer = SITE.contact.whatsapp;
+const waText = encodeURIComponent('Hallo Iwo, ich hätte gerne ein Angebot.');
+const waHref = waNummer ? `https://wa.me/${waNummer}?text=${waText}` : '/#kontakt';
+const year = new Date().getFullYear();
+const [mailName, mailDomain] = SITE.contact.email.split('@');
+
+const waIcon =
+  '<path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.25 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24zm-2.5 4.1c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28s-1.44-.71-1.66-.79c-.22-.08-.39-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.45-1.35-1.69-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.31-.74-1.79-.19-.46-.39-.4-.54-.41h-.47z"></path>';
+---
+<footer class="pf mt-5 rounded-t-[var(--radius-block)]">
+  <div class="wrap relative pb-8 pt-[clamp(56px,7vw,96px)] max-[900px]:pb-[112px]">
+    <div class="pf-raster">
+      <!-- Diagonale Markenlinie; die beiden Flaechen sind ::before/::after -->
+      <span class="pf-linie" aria-hidden="true"></span>
+
+      <!-- ===== Linkkarte ===== -->
+      <div class="pf-karte">
+        <div class="pf-kopfzeile">
+          <a href="/" aria-label={`${SITE.name} – Startseite`} class="shrink-0">
+            <Logo size="h-[42px]" class="text-espresso" truckClass="text-accent" />
+          </a>
+          <p class="m-0 max-w-[300px] text-[14.5px] leading-[1.5] text-muted">
+            Umzüge &amp; Entrümpelungen an der Bergstraße und im Odenwald – persönlich und aus einer Hand.
+          </p>
+        </div>
+
+        <div class="pf-spalten">
+          <nav aria-label="Regional">
+            <div class="pf-titel">Regional</div>
+            {orte.map((o) => (
+              <a href={`/umzug/${o.id}/`} class="pf-link">Umzug <span class="whitespace-nowrap">{o.data.name}</span></a>
+            ))}
+          </nav>
+
+          <nav aria-label="Leistungen">
+            <div class="pf-titel">Leistungen</div>
+            {leistungen.map((s) => (
+              <a href={`/leistungen/${s.id}/`} class="pf-link">{s.data.tab ?? s.data.title}</a>
+            ))}
+          </nav>
+
+          <nav aria-label="Unternehmen">
+            <div class="pf-titel">Unternehmen</div>
+            {unternehmen.map((u) => (
+              <a href={u.href} class="pf-link">{u.label}</a>
+            ))}
+
+            {/* Nur Orte, keine Strasse – die Anschrift steht im Impressum. */}
+            {SITE.standorte.length > 0 && (
+              <>
+                <div class="pf-titel mt-7">Standorte</div>
+                {SITE.standorte.map((ort) => (
+                  <span class="pf-ort">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 19 9.5C19 14.9 12 21 12 21z" /><circle cx="12" cy="9.5" r="2.5" /></svg>
+                    {ort}
+                  </span>
+                ))}
+              </>
+            )}
+          </nav>
+        </div>
+
+        <!-- Kontaktstreifen: dasselbe Espresso wie der Rest der Marke, als
+             Anker unten in der Karte – optisch das Gegengewicht zum Foto. -->
+        <div class="pf-streifen">
+          <div>
+            <div class="pf-streifen-titel">Telefon</div>
+            <a href={`tel:${SITE.contact.phoneHref}`} class="pf-streifen-wert" data-contact="phone">{SITE.contact.phone}</a>
+          </div>
+          <div>
+            <div class="pf-streifen-titel">E-Mail</div>
+            <a href={`mailto:${SITE.contact.email}`} class="pf-streifen-wert" data-contact="email">
+              {/* Muss die Adresse umbrechen, dann hinter dem @ – nicht am
+                  Bindestrich der Domain, wo "umzuege-" allein stehen bliebe. */}
+              {mailName}@<wbr /><span class="whitespace-nowrap">{mailDomain}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Portrait ===== -->
+      <figure class="pf-portrait">
+        <Image
+          src={portrait}
+          alt={`${SITE.legal.owner}, Inhaber von ${SITE.name}`}
+          widths={[380, 570, 760, 1140]}
+          sizes="(max-width: 900px) calc(100vw - 48px), 360px"
+          class="pf-foto"
+          loading="lazy"
+          quality={78}
+        />
+        <div class="pf-verlauf" aria-hidden="true"></div>
+        <figcaption class="pf-unterschrift">
+          <span class="block text-[19px] font-extrabold leading-tight text-white">{SITE.legal.owner}</span>
+          <span class="mt-1 block text-[14px] text-white/75">Inhaber · Ihr fester Ansprechpartner</span>
+        </figcaption>
+        <a
+          href={waHref}
+          target="_blank"
+          rel="noopener"
+          data-contact="whatsapp"
+          class="pf-knopf"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={waIcon} />
+          Schreiben Sie mir
+        </a>
+      </figure>
+    </div>
+
+    <!-- Rechtliches -->
+    <div class="pf-fuss">
+      <span>© {year} {SITE.name}</span>
+      <div class="flex flex-wrap gap-x-6 gap-y-2">
+        <a href="/impressum" class="pf-fuss-link">Impressum</a>
+        <a href="/datenschutz" class="pf-fuss-link">Datenschutz</a>
+        <a href="#" data-consent-open class="pf-fuss-link">Cookie-Einstellungen</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .pf {
+    position: relative;
+    overflow: hidden;
+    background: var(--tint);
+    color: var(--ink);
+  }
+
+  /* ---- Diagonalen ----
+     Die orangen Flaechen haengen an der Ober- und Unterkante des Rasters, nicht
+     am Footer: Ihre waagerechte Kante liegt dadurch immer exakt auf der Kante
+     der Karte und wirkt gesetzt. Frei positioniert endeten sie irgendwo im
+     Rand und sahen aus wie abgeschnitten. Alle Schraegen laufen parallel
+     (19 Grad, Steigung 0.344); nach links und oben/unten ragen die Flaechen
+     ueber den Footer hinaus und werden von seinem overflow:hidden gekappt. */
+  .pf-raster { position: relative; --schraege: .344; }
+  .pf-raster::before,
+  .pf-raster::after {
+    content: '';
+    position: absolute;
+    left: -100vw;
+    background: var(--accent);
+    pointer-events: none;
+  }
+  .pf-raster::before {
+    bottom: 100%;
+    height: 400px;
+    width: calc(100vw + 24%);
+    clip-path: polygon(0 0, calc(100% - 400px * var(--schraege)) 0, 100% 100%, 0 100%);
+  }
+  .pf-raster::after {
+    top: 100%;
+    height: 600px;
+    width: calc(100vw + 40% + 600px * var(--schraege));
+    clip-path: polygon(0 0, calc(100% - 600px * var(--schraege)) 0, 100% 100%, 0 100%);
+  }
+  .pf-linie {
+    position: absolute;
+    z-index: 0;
+    top: -400px;
+    left: calc(24% + 96px);
+    width: 1.5px;
+    height: calc(100% + 1100px);
+    background: var(--accent);
+    transform-origin: 0 400px; /* Drehpunkt auf Hoehe der Kartenoberkante */
+    transform: rotate(-19deg);
+    pointer-events: none;
+  }
+  .pf-karte, .pf-portrait { position: relative; z-index: 1; }
+
+  /* ---- Raster: Karte links, Foto rechts, gleich hoch ---- */
+  .pf-raster {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .pf-karte {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: 0 1px 0 color-mix(in srgb, var(--ink) 6%, transparent), 0 24px 60px -28px color-mix(in srgb, var(--espresso) 35%, transparent);
+  }
+
+  .pf-kopfzeile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 32px;
+    padding: clamp(28px, 3.6vw, 44px) clamp(28px, 4vw, 56px) 28px;
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 9%, transparent);
+  }
+
+  .pf-spalten {
+    display: grid;
+    /* Regional etwas breiter: "Umzug Wald-Michelbach" ist der laengste Eintrag */
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px;
+    padding: 34px clamp(28px, 4vw, 56px) 44px;
+  }
+  .pf-spalten nav { display: flex; flex-direction: column; align-items: flex-start; }
+
+  .pf-titel {
+    margin-bottom: 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .pf-link {
+    padding: 7px 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--ink);
+    transition: color .2s;
+  }
+  .pf-link:hover { color: var(--accent-dark); }
+  .pf-ort {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 0; font-size: 15px; font-weight: 600; color: var(--muted);
+  }
+  .pf-ort svg { color: var(--accent); }
+
+  /* ---- Kontaktstreifen ---- */
+  .pf-streifen {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 44px;
+    padding: 26px clamp(28px, 4vw, 56px) 28px;
+    background: var(--espresso);
+    color: #fff;
+  }
+  .pf-streifen-titel {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(255, 255, 255, .55);
+  }
+  .pf-streifen-wert {
+    display: block; margin-top: 4px;
+    font-size: 18px; font-weight: 700; color: #fff;
+  }
+  a.pf-streifen-wert:hover { color: var(--accent); }
+
+  /* ---- Portrait ---- */
+  .pf-portrait {
+    position: relative;
+    margin: 0;
+    min-height: 520px;
+    overflow: hidden;
+    border-radius: 22px;
+    background: var(--espresso);
+  }
+  .pf-foto {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    /* Gesicht sitzt im Original auf rund 49 % der Breite und 16 % der Höhe;
+       so bleibt der Kopf bei jedem Seitenverhältnis im Bild. */
+    object-position: 50% 14%;
+  }
+  .pf-verlauf {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, color-mix(in srgb, var(--espresso) 92%, transparent) 0%, color-mix(in srgb, var(--espresso) 55%, transparent) 22%, transparent 46%);
+  }
+  .pf-unterschrift {
+    position: absolute; left: 24px; right: 24px; bottom: 96px;
+  }
+  .pf-knopf {
+    position: absolute; left: 24px; right: 24px; bottom: 24px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 15px 20px;
+    border-radius: 999px;
+    background: #25D366;
+    color: #fff;
+    font-size: 16px; font-weight: 800;
+    box-shadow: 0 10px 26px rgba(37, 211, 102, .35);
+    transition: transform .2s, background .2s;
+  }
+  .pf-knopf:hover { color: #fff; background: #1EB558; transform: translateY(-2px); }
+
+  /* ---- Rechtliches ---- */
+  .pf-fuss {
+    position: relative; z-index: 1;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+    gap: 12px 24px;
+    margin-top: 40px;
+    font-size: 14.5px; font-weight: 600;
+    color: var(--espresso);
+  }
+  .pf-fuss-link { color: var(--espresso); }
+  .pf-fuss-link:hover { color: var(--espresso); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ---- Tablet: Foto zuerst, damit der Kontakt nicht unter 16 Links verschwindet ---- */
+  @media (max-width: 900px) {
+    .pf-raster { grid-template-columns: 1fr; }
+    .pf-portrait { order: -1; min-height: 0; aspect-ratio: 4 / 5; max-height: 640px; }
+    .pf-spalten { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pf-spalten nav:first-child { grid-row: span 2; }
+  }
+  @media (max-width: 560px) {
+    .pf-spalten { grid-template-columns: 1fr; gap: 26px; }
+    /* Die E-Mail-Adresse ist 30 Zeichen lang und darf nicht mitten im Wort
+       brechen: Schriftgroesse waechst mit der Breite, bis 16px. */
+    .pf-streifen { padding-inline: 24px; }
+    .pf-streifen-wert { font-size: min(16px, 3.85vw); }
+    .pf-spalten nav:first-child { grid-row: auto; }
+    .pf-fuss { flex-direction: column; align-items: flex-start; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pf-knopf, .pf-link { transition: none; }
+  }
+</style>
