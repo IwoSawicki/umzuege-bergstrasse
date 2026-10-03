@@ -1,7 +1,25 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import { NAV, SITE, isFilled } from '../config/site';
 import Logo from './Logo.astro';
+import portraitFoto from '../assets/Iwo-StolzMarketing.jpg';
+
+interface Props {
+  /** Foto des Inhabers neben der grossen Kontaktzeile, mit WhatsApp-Knopf im
+      Bild. Am Seitenende hat der Besucher alles gelesen und entscheidet, ob er
+      sich meldet – in dem Moment wirkt ein Gesicht staerker als jede
+      Ueberschrift. Vorerst nur im Impressum zur Ansicht eingeschaltet. */
+  portrait?: boolean;
+}
+const { portrait = false } = Astro.props;
+
+const waNummer = SITE.contact.whatsapp;
+const waHref = waNummer
+  ? `https://wa.me/${waNummer}?text=${encodeURIComponent('Hallo Iwo, ich hätte gerne ein Angebot.')}`
+  : '/#kontakt';
+const waIcon =
+  '<path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 1.67c2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.82c0 4.54-3.7 8.24-8.25 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.26-8.24zm-2.5 4.1c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.44-.59 1.64-1.16.2-.57.2-1.05.14-1.16-.06-.1-.22-.16-.46-.28s-1.44-.71-1.66-.79c-.22-.08-.39-.12-.55.12-.16.24-.63.79-.77.95-.14.16-.28.18-.52.06-.24-.12-1.03-.38-1.96-1.21-.72-.65-1.21-1.45-1.35-1.69-.14-.24-.02-.37.1-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.31-.74-1.79-.19-.46-.39-.4-.54-.41h-.47z"></path>';
 
 /* Echte Links auf die Leistungsseiten. Auf der Startseite steckt der
    "Mehr erfahren"-Button im Tab-Panel und wird per JS umgehängt – im
@@ -19,11 +37,45 @@ const year = new Date().getFullYear();
 ---
 <footer class="mt-5 overflow-hidden rounded-t-[var(--radius-block)] bg-espresso text-white">
   <div class="wrap pt-[clamp(64px,8vw,100px)]">
-    <div class="flex flex-col items-start gap-5 border-b border-white/[.12] pb-[clamp(44px,6vw,72px)]">
-      <span class="text-[13px] font-semibold uppercase tracking-[.18em] text-accent">Bereit für den nächsten Schritt?</span>
-      <a href="/#kontakt" class="mega max-w-[980px] text-[clamp(30px,5.2vw,68px)] font-extrabold leading-[1.08] tracking-[-.02em] text-white max-[560px]:!text-[clamp(26px,8vw,34px)]">
-        Lassen Sie uns über Ihren Umzug sprechen <span class="arr text-accent">→</span>
-      </a>
+    <div class:list={[
+      'border-b border-white/[.12] pb-[clamp(44px,6vw,72px)]',
+      portrait && 'foot-cta-mit-foto',
+    ]}>
+      <div class="flex flex-col items-start gap-5">
+        <span class="text-[13px] font-semibold uppercase tracking-[.18em] text-accent">Bereit für den nächsten Schritt?</span>
+        <a href="/#kontakt" class="mega max-w-[980px] text-[clamp(30px,5.2vw,68px)] font-extrabold leading-[1.08] tracking-[-.02em] text-white max-[560px]:!text-[clamp(26px,8vw,34px)]">
+          Lassen Sie uns über Ihren Umzug sprechen <span class="arr text-accent">→</span>
+        </a>
+        {portrait && (
+          <p class="m-0 mt-1 text-[17px] text-white/65">
+            Lieber direkt anrufen?{' '}
+            <a href={`tel:${SITE.contact.phoneHref}`} class="foot-link font-semibold text-white" data-contact="phone">{SITE.contact.phone}</a>
+          </p>
+        )}
+      </div>
+
+      {portrait && (
+        <figure class="foot-portrait">
+          <Image
+            src={portraitFoto}
+            alt={`${SITE.legal.owner}, Inhaber von ${SITE.name}`}
+            widths={[320, 480, 640, 900]}
+            sizes="(max-width: 760px) calc(100vw - 48px), 320px"
+            class="foot-portrait-foto"
+            loading="lazy"
+            quality={78}
+          />
+          <div class="foot-portrait-verlauf" aria-hidden="true"></div>
+          <figcaption class="foot-portrait-name">
+            <span class="block text-[19px] font-extrabold leading-tight text-white">{SITE.legal.owner}</span>
+            <span class="mt-1 block text-[14px] text-white/75">Inhaber · Ihr fester Ansprechpartner</span>
+          </figcaption>
+          <a href={waHref} target="_blank" rel="noopener" data-contact="whatsapp" class="foot-portrait-knopf">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={waIcon} />
+            Schreiben Sie mir
+          </a>
+        </figure>
+      )}
     </div>
 
     <div class="foot-grid grid grid-cols-[1.5fr_1fr_1fr_1fr_auto] gap-10 border-b border-white/[.12] py-12 max-[1100px]:grid-cols-[1.5fr_1fr_1fr_1fr] max-[900px]:grid-cols-2 max-[560px]:grid-cols-1 max-[560px]:gap-7">
@@ -123,3 +175,62 @@ const year = new Date().getFullYear();
     <div aria-hidden="true" class="foot-watermark mt-7 flex select-none justify-end whitespace-nowrap text-[min(10.5vw,132px)] font-extrabold leading-[.8] tracking-[-.03em] text-white/[.06] max-[560px]:!mt-4" style="margin-bottom:.02em"></div>
   </div>
 </footer>
+
+<style>
+  /* ---- Kontaktzeile mit Foto (nur mit portrait) ----
+     Ueberschrift links, Foto rechts; die Unterkanten liegen auf einer Linie,
+     damit Ueberschrift und Bild als ein Block lesen. */
+  .foot-cta-mit-foto {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: end;
+    gap: 48px;
+  }
+  .foot-portrait {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #1d1611;
+    /* Das Foto hat selbst einen dunklen Hintergrund und verschwamm oben links
+       mit dem Espresso des Footers. Eine helle Haarlinie gibt die Kante, ein
+       orangefarbener Schimmer darunter hebt die Karte warm vom Grund ab. */
+    border: 1px solid rgba(255, 255, 255, .1);
+    box-shadow: 0 30px 80px -24px rgba(232, 123, 46, .38), 0 18px 40px -20px rgba(0, 0, 0, .6);
+  }
+  .foot-portrait-foto {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    /* Gesicht sitzt im Original auf rund 49 % der Breite, 25 % der Hoehe */
+    object-position: 50% 12%;
+  }
+  .foot-portrait-verlauf {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(29, 22, 17, .94) 0%, rgba(29, 22, 17, .6) 24%, transparent 50%);
+  }
+  .foot-portrait-name { position: absolute; left: 22px; right: 22px; bottom: 90px; }
+  .foot-portrait-knopf {
+    position: absolute; left: 22px; right: 22px; bottom: 22px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 14px 18px;
+    border-radius: 999px;
+    background: #25D366;
+    color: #fff;
+    font-size: 16px; font-weight: 800;
+    box-shadow: 0 10px 26px rgba(37, 211, 102, .32);
+    transition: transform .2s, background .2s;
+  }
+  .foot-portrait-knopf:hover { color: #fff; background: #1EB558; transform: translateY(-2px); }
+
+  /* Schmal: Foto unter die Ueberschrift, volle Breite, aber nicht hoeher als
+     ein Bildschirm – sonst scrollt man durch ein einziges Bild. */
+  @media (max-width: 760px) {
+    .foot-cta-mit-foto { grid-template-columns: 1fr; gap: 32px; }
+    .foot-portrait { max-height: 72vh; width: 100%; max-width: 440px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .foot-portrait-knopf { transition: none; }
+  }
+</style>

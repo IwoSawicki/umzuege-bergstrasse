@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
-// Vorschau: Footer-Variante mit Portrait – nur hier, weil das Impressum
-// noindex ist und nicht in der Sitemap steht, also praktisch keinen Traffic hat.
-import Footer from '../components/FooterPortrait.astro';
+import Footer from '../components/Footer.astro';
 import MobileCta from '../components/MobileCta.astro';
 import { SITE } from '../config/site';
 
@@ -91,6 +89,8 @@ const { address, contact, legal } = SITE;
       </div>
     </section>
   </main>
-  <Footer />
+  {/* Vorschau: Footer mit Portrait – nur hier, weil das Impressum noindex ist
+      und nicht in der Sitemap steht, also praktisch keinen Traffic hat. */}
+  <Footer portrait />
   <MobileCta />
 </BaseLayout>
